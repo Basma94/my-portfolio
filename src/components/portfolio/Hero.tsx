@@ -105,9 +105,7 @@ export function Hero() {
                   inset: 0,
                   backfaceVisibility: "hidden",
                   WebkitBackfaceVisibility: "hidden",
-                  borderRadius: 28,
                   background: "transparent",
-                  overflow: "hidden",
                 }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
