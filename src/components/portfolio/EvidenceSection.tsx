@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
 import { CtaIcon, Icon } from "../Icon";
 import { DEMOS, type Demo } from "@/data/portfolio";
+import { events } from "@/lib/analytics";
 
 /** Each demo renders its page at full desktop width, then scales it to fit. */
 const PAGE_WIDTH = 1280;
@@ -60,7 +61,11 @@ export function EvidenceSection() {
           <p style={{ margin: 0, fontSize: 16, color: "var(--ink-600)" }}>
             The products are the output. The judgement behind them is the point.
           </p>
-          <Link href="#think" style={{ fontSize: 15, fontWeight: 600 }}>
+          <Link
+            href="#think"
+            style={{ fontSize: 15, fontWeight: 600 }}
+            onClick={() => events.ctaClick("evidence", "See how I think")}
+          >
             See how I think <CtaIcon />
           </Link>
         </div>
@@ -195,6 +200,7 @@ function DemoCard({ demo: d }: { demo: Demo }) {
             rel="noopener noreferrer"
             className="cta"
             style={{ padding: "12px 22px", fontSize: 14 }}
+            onClick={() => events.demoOpen(d.name)}
           >
             Open the demo <Icon name="arrow-up-right" size={16} />
           </a>
@@ -266,6 +272,7 @@ function DemoCard({ demo: d }: { demo: Demo }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`Open ${d.name}`}
+            onClick={() => events.demoOpen(d.name)}
             style={{ position: "absolute", inset: 0, display: "block" }}
           />
         </div>

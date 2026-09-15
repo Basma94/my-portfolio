@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CtaIcon, Icon } from "../Icon";
 import { CALENDAR_URL, CHALLENGE } from "@/data/portfolio";
 import { T } from "@/lib/palette";
+import { events } from "@/lib/analytics";
 
 /**
  * Nine product calls on one scenario. The visitor answers first, then sees the
@@ -25,6 +26,7 @@ export function ChallengeSection() {
 
   const pick = (j: number) => {
     if (answered) return;
+    events.challengeAnswer(step + 1, call.phase, j === call.correct);
     setAnswers((prev) => {
       const next = prev.slice();
       next[step] = j;
@@ -266,12 +268,17 @@ export function ChallengeSection() {
                   rel="noopener noreferrer"
                   className="cta"
                   style={{ padding: "13px 24px", fontSize: 15 }}
+                  onClick={() => events.contactClick("calendar", "challenge")}
                 >
                   Let&rsquo;s call <Icon name="phone" size={16} />
                 </a>
                 <button
                   type="button"
-                  onClick={() => setStep((s) => s + 1)}
+                  onClick={() => {
+                    const next = step + 1;
+                    setStep(next);
+                    if (next >= CHALLENGE.length) events.challengeComplete(score);
+                  }}
                   className="cta-quiet"
                   style={{
                     padding: "12px 20px",
@@ -387,7 +394,12 @@ export function ChallengeSection() {
                   marginTop: 8,
                 }}
               >
-                <Link href="/value-agent" className="cta" style={{ padding: "13px 24px", fontSize: 15 }}>
+                <Link
+                  href="/value-agent"
+                  className="cta"
+                  style={{ padding: "13px 24px", fontSize: 15 }}
+                  onClick={() => events.ctaClick("challenge", "Calculate the AI value")}
+                >
                   Calculate the AI value <CtaIcon />
                 </Link>
                 <button

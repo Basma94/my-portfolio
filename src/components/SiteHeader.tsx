@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CtaIcon } from "./Icon";
 import { asset } from "@/lib/asset";
+import { HeaderCta } from "./HeaderCta";
 
 const NAV = [
   { label: "Think", href: "/#think" },
@@ -79,13 +80,7 @@ export function SiteHeader({ current }: { current?: NavKey }) {
           )}
         </nav>
 
-        <Link
-          href="/#talk"
-          className="cta site-header-cta"
-          style={{ padding: "10px 20px", fontSize: 14, whiteSpace: "nowrap" }}
-        >
-          Let&rsquo;s talk <CtaIcon />
-        </Link>
+        <HeaderCta />
       </div>
     </header>
   );

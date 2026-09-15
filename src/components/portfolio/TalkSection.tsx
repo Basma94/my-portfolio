@@ -1,5 +1,6 @@
 import { Icon } from "../Icon";
 import { CALENDAR_URL, EMAIL, LINKEDIN_URL } from "@/data/portfolio";
+import { TrackedLink } from "../TrackedLink";
 
 /** The final conversion: one headline, one call booking, two ways to reach out. */
 export function TalkSection() {
@@ -26,10 +27,10 @@ export function TalkSection() {
           Have a complex product problem?
         </h2>
 
-        <a
+        <TrackedLink
           href={CALENDAR_URL}
-          target="_blank"
-          rel="noopener noreferrer"
+          event="contact_click"
+          props={{ channel: "calendar", location: "talk" }}
           style={{
             display: "inline-flex",
             alignItems: "center",
@@ -45,7 +46,7 @@ export function TalkSection() {
           }}
         >
           Let&rsquo;s solve it <Icon name="phone" size={18} />
-        </a>
+        </TrackedLink>
 
         <div
           style={{
@@ -58,19 +59,27 @@ export function TalkSection() {
             borderTop: "1px solid rgba(255,255,255,.16)",
           }}
         >
-          <a
+          <TrackedLink
             href={LINKEDIN_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+            event="contact_click"
+            props={{ channel: "linkedin", location: "talk" }}
             title="LinkedIn"
-            aria-label="LinkedIn"
+            ariaLabel="LinkedIn"
             style={socialStyle}
           >
             <Icon name="linkedin" size={20} />
-          </a>
-          <a href={`mailto:${EMAIL}`} title={EMAIL} aria-label="Email" style={socialStyle}>
+          </TrackedLink>
+          <TrackedLink
+            href={`mailto:${EMAIL}`}
+            event="contact_click"
+            props={{ channel: "email", location: "talk" }}
+            title={EMAIL}
+            ariaLabel="Email"
+            newTab={false}
+            style={socialStyle}
+          >
             <Icon name="mail" size={20} />
-          </a>
+          </TrackedLink>
         </div>
       </div>
     </section>

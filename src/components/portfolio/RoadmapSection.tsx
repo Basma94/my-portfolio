@@ -5,6 +5,7 @@ import { Icon } from "../Icon";
 import { CAPABILITIES, MONTHS, QUARTERS, type Capability, type Feature } from "@/data/portfolio";
 import { T } from "@/lib/palette";
 import { boldNumbers, costOfDelay, wsjfBand, wsjfScore } from "@/lib/wsjf";
+import { events } from "@/lib/analytics";
 
 const GRID =
   "minmax(210px,1.5fr) minmax(170px,1fr) minmax(320px,2.6fr) 116px";
@@ -177,13 +178,14 @@ export function RoadmapSection() {
                         capability={c}
                         feature={f}
                         delay={delay}
-                        onOpen={() =>
+                        onOpen={() => {
+                          events.wsjfOpen(f.name);
                           setWsjf({
                             feature: f,
                             capability: c.name,
                             score: wsjfScore(f),
-                          })
-                        }
+                          });
+                        }}
                       />
                     );
                   })}

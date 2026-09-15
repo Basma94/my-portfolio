@@ -111,6 +111,50 @@ without touching a component:
 `recommend()` never rests on ROI alone — value, feasibility, data readiness, adoption,
 confidence, alignment and payback all get a say, and the reasoning is always stated.
 
+## Analytics
+
+Off by default. With `NEXT_PUBLIC_ANALYTICS` unset — which is how it ships — no tracker
+script loads, no cookie is written and no request leaves the visitor's browser, so the
+site needs no consent banner until you opt in.
+
+To switch one on, set the variables in the workflow's build step:
+
+| Provider     | Variables                                            | Cookies | Custom events |
+| ------------ | ---------------------------------------------------- | ------- | ------------- |
+| `ga4`        | `NEXT_PUBLIC_GA_ID`                                   | yes     | yes           |
+| `plausible`  | `NEXT_PUBLIC_PLAUSIBLE_DOMAIN`                        | no      | yes           |
+| `umami`      | `NEXT_PUBLIC_UMAMI_ID`, optional `NEXT_PUBLIC_UMAMI_SRC` | no   | yes           |
+| `cloudflare` | `NEXT_PUBLIC_CF_BEACON`                               | no      | no            |
+
+`ga4` sets cookies, so UK/EU visitors need a consent banner — this repo does not ship
+one. The other three are cookieless and generally do not. Cloudflare counts page views
+only and will not receive the click events below.
+
+`src/lib/analytics.ts` is provider-agnostic: `track()` hands the event to whichever
+script is on the page and no-ops when none is, so changing provider is one env var, not
+an edit to every component.
+
+### What gets measured
+
+| Event                | Tells you                                                     |
+| -------------------- | ------------------------------------------------------------- |
+| `cta_click`          | Which call to action, in which section                        |
+| `demo_open`          | Which of the four products people actually open                |
+| `think_stage`        | How far through the seven-stage journey they go                |
+| `challenge_answer`   | Each call, its phase, and whether they matched                 |
+| `challenge_complete` | Reached the end — the strongest engagement signal on the page  |
+| `decision_open`      | Which decisions get expanded                                   |
+| `wsjf_open`          | Whether anyone digs into the scoring                           |
+| `agent_start`        | Started the interview, or loaded the example                   |
+| `agent_dashboard`    | Finished the interview, and what it recommended                |
+| `agent_gate_submit`  | Gave an email for the report                                   |
+| `agent_report`       | Reached the generated business case                            |
+| `toolkit_view` / `toolkit_download` / `toolkit_request` | Which documents draw interest |
+| `contact_click`      | Calendar, LinkedIn or email — the actual conversions            |
+
+Names are stable: they become column headings in whichever dashboard is attached, so
+renaming one loses its history.
+
 ## Content and honesty rules
 
 Employer work is confidential. Every product, backlog item and figure on the site is

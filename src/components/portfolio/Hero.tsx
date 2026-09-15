@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { CtaIcon } from "../Icon";
 import { asset } from "@/lib/asset";
+import { events } from "@/lib/analytics";
 
 /** The portrait holds for 2 seconds, the AI panel on the reverse for 4. */
 const FRONT_MS = 2000;
@@ -136,6 +137,7 @@ export function Hero() {
               key={c.href}
               href={c.href}
               className="lift"
+              onClick={() => events.ctaClick("hero", c.title)}
               style={{
                 display: "block",
                 background: "rgba(255,255,255,.74)",

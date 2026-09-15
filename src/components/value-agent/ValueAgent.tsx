@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { DEFAULTS, EXAMPLE } from "@/data/value-agent";
-import type { Assumptions } from "@/lib/value-engine";
+import { engine, recommend, type Assumptions } from "@/lib/value-engine";
+import { events } from "@/lib/analytics";
 import { Intro } from "./Intro";
 import { Interview } from "./Interview";
 import { Dashboard } from "./Dashboard";
@@ -64,10 +65,12 @@ export function ValueAgent() {
       {view === "intro" && (
         <Intro
           onStart={() => {
+            events.agentStart("interview");
             setStep(0);
             setView("interview");
           }}
           onExample={() => {
+            events.agentStart("example");
             setAssumptions(clone(EXAMPLE));
             setIsExample(true);
             setRealisation(100);
@@ -86,7 +89,10 @@ export function ValueAgent() {
           onSetNested={setNested}
           onToggle={toggle}
           onStep={setStep}
-          onFinish={() => setView("dash")}
+          onFinish={() => {
+            events.agentDashboard(recommend(assumptions, engine(assumptions, realisation)).label);
+            setView("dash");
+          }}
         />
       )}
 
@@ -104,7 +110,10 @@ export function ValueAgent() {
           onRealisation={setRealisation}
           onToggleAssumptions={() => setAssumptionsOpen((o) => !o)}
           onOpenAssumptions={() => setAssumptionsOpen(true)}
-          onGenerateCase={() => setView(gatePassed ? "doc" : "gate")}
+          onGenerateCase={() => {
+            events.ctaClick("value-agent", "Generate executive business case");
+            setView(gatePassed ? "doc" : "gate");
+          }}
           onRestart={restart}
           onEditAnswers={() => {
             setStep(0);
@@ -125,6 +134,10 @@ export function ValueAgent() {
           }}
           onSubmit={() => {
             if (EMAIL_PATTERN.test(gate.email.trim())) {
+              events.agentGateSubmit();
+              events.agentReport(
+                recommend(assumptions, engine(assumptions, realisation)).label,
+              );
               setGatePassed(true);
               setGateError(false);
               setView("doc");

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CtaIcon } from "../Icon";
 import { STAGES } from "@/data/portfolio";
 import { T } from "@/lib/palette";
+import { events } from "@/lib/analytics";
 
 /**
  * One decision system, traced end to end. Every stage carries the same seven
@@ -45,7 +46,10 @@ export function ThinkSection() {
               <button
                 key={s.label}
                 type="button"
-                onClick={() => setIndex(i)}
+                onClick={() => {
+                  setIndex(i);
+                  events.thinkStage(s.label, i);
+                }}
                 aria-pressed={active}
                 style={{
                   flex: "none",
@@ -161,13 +165,23 @@ export function ThinkSection() {
           >
             <button
               type="button"
-              onClick={() => setIndex((i) => (i + 1) % STAGES.length)}
+              onClick={() =>
+                setIndex((i) => {
+                  const next = (i + 1) % STAGES.length;
+                  events.thinkStage(STAGES[next].label, next);
+                  return next;
+                })
+              }
               className="cta"
               style={{ padding: "13px 24px", fontSize: 15 }}
             >
               {nextLabel} <CtaIcon />
             </button>
-            <Link href="#decisions" style={{ fontSize: 15, fontWeight: 600 }}>
+            <Link
+              href="#decisions"
+              style={{ fontSize: 15, fontWeight: 600 }}
+              onClick={() => events.ctaClick("think", "Explore the decisions")}
+            >
               Explore the decisions <CtaIcon />
             </Link>
           </div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Icon } from "../Icon";
 import { DECISIONS } from "@/data/portfolio";
 import { T } from "@/lib/palette";
+import { events } from "@/lib/analytics";
 
 /** A product leadership decision log: the option rejected and the cost accepted. */
 export function DecisionLog() {
@@ -37,7 +38,10 @@ export function DecisionLog() {
               >
                 <button
                   type="button"
-                  onClick={() => setOpen(isOpen ? null : i)}
+                  onClick={() => {
+                    setOpen(isOpen ? null : i);
+                    if (!isOpen) events.decisionOpen(d.q);
+                  }}
                   aria-expanded={isOpen}
                   aria-controls={panelId}
                   style={{

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { CtaIcon, Icon } from "../Icon";
 import { CATEGORIES, contentsToSections, type ToolkitDoc } from "@/data/toolkit";
 import { T } from "@/lib/palette";
+import { events } from "@/lib/analytics";
 
 type ModalMode = "view" | "form" | "sent";
 type ModalState = { mode: ModalMode; cat: number; doc: number };
@@ -28,7 +29,9 @@ export function Toolkit() {
       setEmailError("Enter a valid email address and it will be on its way.");
       return;
     }
-    setModal((m) => (m ? { ...m, mode: "sent" } : m));
+    const m = modal;
+    if (m) events.toolkitRequest(CATEGORIES[m.cat].name, CATEGORIES[m.cat].docs[m.doc].name);
+    setModal((prev) => (prev ? { ...prev, mode: "sent" } : prev));
   };
 
   return (
@@ -129,10 +132,12 @@ export function Toolkit() {
                 key={d.name}
                 doc={d}
                 onView={() => {
+                  events.toolkitView(category.name, d.name);
                   setModal({ mode: "view", cat, doc: i });
                   setEmailError("");
                 }}
                 onDownload={() => {
+                  events.toolkitDownload(category.name, d.name);
                   setModal({ mode: "form", cat, doc: i });
                   setEmailError("");
                 }}

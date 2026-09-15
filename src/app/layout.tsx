@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Poppins, Caveat } from "next/font/google";
+import { Analytics } from "@/components/Analytics";
 import "./globals.css";
 
 /* Poppins throughout, Light 300 / Regular 400 / Medium 500 / SemiBold 600 /
@@ -59,7 +60,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${poppins.variable} ${caveat.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
