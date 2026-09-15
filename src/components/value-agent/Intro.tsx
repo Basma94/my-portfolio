@@ -1,5 +1,6 @@
 import { CtaIcon } from "../Icon";
 import { PROMISES } from "@/data/value-agent";
+import { asset } from "@/lib/asset";
 
 export function Intro({
   onStart,
@@ -33,7 +34,7 @@ export function Intro({
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/assets/logo-mark.png"
+            src={asset("/assets/logo-mark.png")}
             alt=""
             style={{ width: 22, height: 22, borderRadius: 7, objectFit: "contain" }}
           />

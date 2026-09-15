@@ -19,8 +19,12 @@ const caveat = Caveat({
   display: "swap",
 });
 
+/* Absolute base for canonical and Open Graph URLs. Override with
+   NEXT_PUBLIC_SITE_URL once a custom domain is pointed at the site. */
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://basma94.github.io/my-portfolio";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://basmamahmoud.com"),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "Basma Mahmoud — Senior AI Product Manager",
     template: "%s — Basma Mahmoud",

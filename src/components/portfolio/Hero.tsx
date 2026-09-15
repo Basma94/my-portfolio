@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { CtaIcon } from "../Icon";
+import { asset } from "@/lib/asset";
 
 /** The portrait holds for 2 seconds, the AI panel on the reverse for 4. */
 const FRONT_MS = 2000;
@@ -110,7 +111,7 @@ export function Hero() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/assets/hero-portrait.webp"
+                  src={asset("/assets/hero-portrait.webp")}
                   alt="Basma Mahmoud"
                   className="hero-portrait-img"
                 />

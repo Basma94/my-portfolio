@@ -1,0 +1,73 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Lets you redeploy from the Actions tab without pushing a commit.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; a newer push waits rather than cancelling a live rollout.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Work out the base path
+        id: base
+        run: |
+          # A custom domain (public/CNAME) or a user page serves from the root;
+          # a project page serves from /<repo>. Getting this wrong is what makes
+          # a Pages deploy load with no CSS.
+          if [ -f public/CNAME ]; then
+            echo "path=" >> "$GITHUB_OUTPUT"
+            echo "Custom domain found — building for the site root."
+          elif [ "${GITHUB_REPOSITORY#*/}" = "${GITHUB_REPOSITORY_OWNER}.github.io" ]; then
+            echo "path=" >> "$GITHUB_OUTPUT"
+            echo "User page — building for the site root."
+          else
+            echo "path=/${GITHUB_REPOSITORY#*/}" >> "$GITHUB_OUTPUT"
+            echo "Project page — building for /${GITHUB_REPOSITORY#*/}."
+          fi
+
+      - run: npm ci
+
+      - run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.base.outputs.path }}
+
+      - name: Stop Pages running Jekyll over the export
+        run: touch out/.nojekyll
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

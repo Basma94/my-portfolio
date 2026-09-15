@@ -3,6 +3,7 @@
 import { CtaIcon } from "../Icon";
 import { GATE_CONTENTS } from "@/data/value-agent";
 import { T } from "@/lib/palette";
+import { asset } from "@/lib/asset";
 import { confidence, engine, money, recommend, type Assumptions } from "@/lib/value-engine";
 
 export type GateDetails = { name: string; email: string; org: string };
@@ -54,7 +55,7 @@ export function Gate({
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/assets/logo-mark.png"
+            src={asset("/assets/logo-mark.png")}
             alt=""
             style={{ width: 26, height: 26, borderRadius: 8, objectFit: "contain" }}
           />

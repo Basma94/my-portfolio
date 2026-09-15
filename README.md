@@ -25,6 +25,54 @@ prerenderable and all interactivity is client-side.
 
 Next.js (App Router) · TypeScript · Tailwind CSS v4 · React 19.
 
+## Deploying
+
+The site is a **static export** — no server, no API routes, no database — so it can be
+hosted anywhere that serves files. `.github/workflows/deploy.yml` builds it and publishes
+to GitHub Pages on every push to `main`.
+
+One-time setup on a fresh repo: **Settings → Pages → Build and deployment → Source:
+GitHub Actions**. After that, pushing to `main` deploys.
+
+### The base path
+
+A Pages *project* page serves from `https://<user>.github.io/<repo>/`, so Next has to be
+built with `basePath: '/<repo>'` or the site loads with no CSS. The workflow works this
+out for you:
+
+| Situation                                | Base path      |
+| ---------------------------------------- | -------------- |
+| `public/CNAME` exists (custom domain)     | empty          |
+| Repo is named `<user>.github.io`          | empty          |
+| Anything else (project page)              | `/<repo>`      |
+
+`src/lib/asset.ts` exists because `next/link` applies the base path itself but a raw
+`<img src>` does not — anything pointing into `public/` goes through `asset()`.
+
+### Putting it on your own domain
+
+Add a `public/CNAME` file containing the bare domain, point DNS at GitHub, and set
+`NEXT_PUBLIC_SITE_URL` in the workflow's build step so canonical and Open Graph URLs
+match. The workflow drops the base path automatically once the CNAME file is there.
+
+```
+# public/CNAME
+basmamahmoud.com
+```
+
+DNS at your registrar — four `A` records on the apex plus one `CNAME` for `www`:
+
+```
+@    A      185.199.108.153
+@    A      185.199.109.153
+@    A      185.199.110.153
+@    A      185.199.111.153
+www  CNAME  basma94.github.io
+```
+
+Then Settings → Pages → Custom domain, and tick **Enforce HTTPS** once the certificate
+is issued (usually a few minutes, occasionally up to 24 hours).
+
 ## Design system
 
 The visuals are bound to the **Mingloo Consulting** design system that shipped with the

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { CtaIcon } from "../Icon";
 import { T } from "@/lib/palette";
+import { asset } from "@/lib/asset";
 import { confidence, engine, money, recommend, type Assumptions } from "@/lib/value-engine";
 import { docSections, docToText, risks } from "@/lib/value-engine/document";
 import type { GateDetails } from "./Gate";
@@ -137,7 +138,7 @@ export function BusinessCaseDoc({
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/assets/logo-mark.png"
+              src={asset("/assets/logo-mark.png")}
               alt=""
               style={{ width: 34, height: 34, borderRadius: 10, objectFit: "contain" }}
             />

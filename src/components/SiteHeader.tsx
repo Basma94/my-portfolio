@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CtaIcon } from "./Icon";
+import { asset } from "@/lib/asset";
 
 const NAV = [
   { label: "Think", href: "/#think" },
@@ -35,7 +36,7 @@ export function SiteHeader({ current }: { current?: NavKey }) {
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/assets/logo-mark.png"
+            src={asset("/assets/logo-mark.png")}
             alt=""
             style={{ width: 34, height: 34, borderRadius: 10, objectFit: "contain", flex: "none" }}
           />
