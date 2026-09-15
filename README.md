@@ -117,7 +117,8 @@ Off by default. With `NEXT_PUBLIC_ANALYTICS` unset — which is how it ships —
 script loads, no cookie is written and no request leaves the visitor's browser, so the
 site needs no consent banner until you opt in.
 
-To switch one on, set the variables in the workflow's build step:
+To switch one on, set **repository variables** — Settings → Secrets and variables →
+Actions → Variables. The workflow reads them, so no code change is needed:
 
 | Provider     | Variables                                            | Cookies | Custom events |
 | ------------ | ---------------------------------------------------- | ------- | ------------- |
@@ -129,6 +130,11 @@ To switch one on, set the variables in the workflow's build step:
 `ga4` sets cookies, so UK/EU visitors need a consent banner — this repo does not ship
 one. The other three are cookieless and generally do not. Cloudflare counts page views
 only and will not receive the click events below.
+
+Vercel's Web Analytics is deliberately not in that list: on its free Hobby plan custom
+events are unavailable, so it would report page views but none of the click events below.
+Umami's free tier includes custom events and is cookieless, which is why it is the
+default suggestion.
 
 `src/lib/analytics.ts` is provider-agnostic: `track()` hands the event to whichever
 script is on the page and no-ops when none is, so changing provider is one env var, not
