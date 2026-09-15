@@ -120,12 +120,14 @@ site needs no consent banner until you opt in.
 To switch one on, set **repository variables** — Settings → Secrets and variables →
 Actions → Variables. The workflow reads them, so no code change is needed:
 
-| Provider     | Variables                                            | Cookies | Custom events |
-| ------------ | ---------------------------------------------------- | ------- | ------------- |
-| `ga4`        | `NEXT_PUBLIC_GA_ID`                                   | yes     | yes           |
-| `plausible`  | `NEXT_PUBLIC_PLAUSIBLE_DOMAIN`                        | no      | yes           |
-| `umami`      | `NEXT_PUBLIC_UMAMI_ID`, optional `NEXT_PUBLIC_UMAMI_SRC` | no   | yes           |
-| `cloudflare` | `NEXT_PUBLIC_CF_BEACON`                               | no      | no            |
+Set `ANALYTICS` to one of these, plus its companion variable:
+
+| `ANALYTICS`  | Also set                                | Cookies | Custom events |
+| ------------ | --------------------------------------- | ------- | ------------- |
+| `umami`      | `UMAMI_ID` (and `UMAMI_SRC` if self-hosted) | no  | yes           |
+| `plausible`  | `PLAUSIBLE_DOMAIN`                      | no      | yes           |
+| `ga4`        | `GA_ID`                                 | yes     | yes           |
+| `cloudflare` | `CF_BEACON`                             | no      | no            |
 
 `ga4` sets cookies, so UK/EU visitors need a consent banner — this repo does not ship
 one. The other three are cookieless and generally do not. Cloudflare counts page views
