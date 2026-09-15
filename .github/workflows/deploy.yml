@@ -27,22 +27,31 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Work out the base path
-        id: base
+      - name: Work out where the site is served from
+        id: site
         run: |
           # A custom domain (public/CNAME) or a user page serves from the root;
           # a project page serves from /<repo>. Getting this wrong is what makes
-          # a Pages deploy load with no CSS.
+          # a Pages deploy load with no CSS, so it is derived, not remembered.
+          repo="${GITHUB_REPOSITORY#*/}"
+          owner_lc="${GITHUB_REPOSITORY_OWNER,,}"
+
           if [ -f public/CNAME ]; then
-            echo "path=" >> "$GITHUB_OUTPUT"
-            echo "Custom domain found — building for the site root."
-          elif [ "${GITHUB_REPOSITORY#*/}" = "${GITHUB_REPOSITORY_OWNER}.github.io" ]; then
-            echo "path=" >> "$GITHUB_OUTPUT"
-            echo "User page — building for the site root."
+            base=""
+            url="https://$(tr -d '[:space:]' < public/CNAME)"
+            echo "Custom domain — serving from the root of $url"
+          elif [ "${repo,,}" = "${owner_lc}.github.io" ]; then
+            base=""
+            url="https://${owner_lc}.github.io"
+            echo "User page — serving from the root of $url"
           else
-            echo "path=/${GITHUB_REPOSITORY#*/}" >> "$GITHUB_OUTPUT"
-            echo "Project page — building for /${GITHUB_REPOSITORY#*/}."
+            base="/$repo"
+            url="https://${owner_lc}.github.io/$repo"
+            echo "Project page — serving from $url"
           fi
+
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
 
       - run: npm ci
 
@@ -51,7 +60,8 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          NEXT_PUBLIC_BASE_PATH: ${{ steps.base.outputs.path }}
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.site.outputs.base }}
+          NEXT_PUBLIC_SITE_URL: ${{ steps.site.outputs.url }}
 
       - name: Stop Pages running Jekyll over the export
         run: touch out/.nojekyll
