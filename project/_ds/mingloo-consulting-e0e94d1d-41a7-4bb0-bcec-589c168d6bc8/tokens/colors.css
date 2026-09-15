@@ -1,0 +1,53 @@
+:root{
+/* base — brand sheet swatches */
+--teal-500:#00D1B2;--teal-600:#00B49A;--teal-400:#3EE0C8;--teal-100:#D6F7F1;--teal-50:#EDFBF8;
+--violet-500:#7F56D9;--violet-600:#6941C6;--violet-400:#A98BE8;--violet-100:#EBE3FB;--violet-50:#F5F1FE;
+--indigo-500:#6366F1;--indigo-600:#4F46E5;--indigo-400:#8B8DF6;--indigo-100:#E4E5FD;--indigo-50:#F1F1FE;
+--blue-500:#3B82F6;--blue-400:#60A5FA;
+--pink-500:#FF7E9E;--pink-400:#FFA3BA;--pink-100:#FFE4EB;--pink-50:#FFF1F5;
+
+/* ink + neutrals */
+--ink-900:#12123A;--ink-800:#1D2251;--ink-700:#333A6B;--ink-600:#4B5583;--ink-500:#6B7599;
+--ink-400:#8E97B4;--ink-300:#B6BCD0;--ink-200:#DDE1EE;--ink-100:#ECEFF7;
+--mist-100:#F4F6FC;--mist-50:#FAFBFE;--white:#FFFFFF;
+
+/* semantic */
+--success-500:#00B49A;--warning-500:#F5A524;--danger-500:#E5484D;--info-500:#3B82F6;
+--success-50:#EDFBF8;--warning-50:#FEF6E7;--danger-50:#FDEDEE;--info-50:#EFF6FF;
+
+/* aliases */
+--brand-primary:var(--teal-500);
+--brand-secondary:var(--violet-500);
+--brand-tertiary:var(--indigo-500);
+--brand-accent:var(--pink-500);
+
+--text-heading:var(--ink-900);
+--text-body:var(--ink-700);
+--text-muted:var(--ink-500);
+--text-faint:var(--ink-400);
+--text-inverse:var(--white);
+--text-link:var(--indigo-600);
+--text-link-hover:var(--violet-600);
+
+--surface-page:var(--white);
+--surface-subtle:var(--mist-100);
+--surface-card:var(--white);
+--surface-inverse:var(--ink-900);
+--surface-tint-teal:var(--teal-50);
+--surface-tint-violet:var(--violet-50);
+--surface-tint-indigo:var(--indigo-50);
+--surface-tint-pink:var(--pink-50);
+
+--border-subtle:var(--ink-100);
+--border-default:var(--ink-200);
+--border-strong:var(--ink-300);
+--focus-ring:var(--indigo-500);
+
+/* gradients — the brand's signature device */
+--gradient-brand:linear-gradient(90deg,var(--teal-500) 0%,var(--indigo-500) 100%);
+--gradient-mark:linear-gradient(120deg,var(--teal-500) 0%,var(--blue-500) 38%,var(--violet-500) 70%,#C77DF0 100%);
+--gradient-headline:linear-gradient(92deg,var(--blue-500) 0%,var(--violet-500) 100%);
+--gradient-cta:linear-gradient(92deg,#00C6C0 0%,var(--blue-500) 100%);
+--gradient-wash:linear-gradient(135deg,var(--mist-50) 0%,#EEF2FE 45%,#F3ECFE 100%);
+--gradient-deep:linear-gradient(120deg,#0C1244 0%,#1E2A6B 55%,#3B2E7E 100%); /* @kind color */
+}

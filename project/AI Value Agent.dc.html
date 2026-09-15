@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/mingloo-consulting-e0e94d1d-41a7-4bb0-bcec-589c168d6bc8/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/mingloo-consulting-e0e94d1d-41a7-4bb0-bcec-589c168d6bc8/tokens/colors.css">
+<link rel="stylesheet" href="_ds/mingloo-consulting-e0e94d1d-41a7-4bb0-bcec-589c168d6bc8/tokens/typography.css">
+<link rel="stylesheet" href="_ds/mingloo-consulting-e0e94d1d-41a7-4bb0-bcec-589c168d6bc8/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/mingloo-consulting-e0e94d1d-41a7-4bb0-bcec-589c168d6bc8/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/mingloo-consulting-e0e94d1d-41a7-4bb0-bcec-589c168d6bc8/tokens/motion.css">
+<link rel="stylesheet" href="_ds/mingloo-consulting-e0e94d1d-41a7-4bb0-bcec-589c168d6bc8/styles.css">
+<script src="_ds/mingloo-consulting-e0e94d1d-41a7-4bb0-bcec-589c168d6bc8/_ds_bundle.js"></script>
+<style>
+  .ava input[type=range]{accent-color:#6366F1;width:100%;height:4px}
+  .ava input[type=text],.ava input[type=number],.ava textarea{font-family:Poppins,system-ui,sans-serif}
+  .ava ::placeholder{color:#9AA3BF}
+  @keyframes avaRise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes avaFade{from{opacity:0}to{opacity:1}}
+</style>
+</helmet>
+
+<div class="ava" style="width:100%;font-family:Poppins,system-ui,sans-serif;color:#333A6B">
+
+<sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;align-items:center;animation:avaFade 320ms cubic-bezier(.16,1,.3,1)">
+    <div>
+      <div style="display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--border-subtle);border-radius:999px;padding:6px 14px 6px 8px;box-shadow:0 4px 14px rgba(18,18,58,.06)">
+        <img src="assets/logo-mark.png" alt="" style="width:22px;height:22px;border-radius:7px;object-fit:contain">
+        <span style="font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-600)">Gartner-inspired AI business value assessment</span>
+      </div>
+      <h3 style="margin:22px 0 0;font-size:clamp(28px,4.4vw,50px);font-weight:700;line-height:1.06;letter-spacing:-0.02em;color:var(--ink-900);max-width:18ch">What is your AI use case worth?</h3>
+      <p style="margin:16px 0 0;font-size:clamp(18px,2.4vw,24px);font-weight:300;color:var(--ink-600)">Let's build the business case — together.</p>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:30px">
+        <button type="button" onClick="{{ start }}" style="cursor:pointer;border:none;background:var(--gradient-cta);color:#fff;border-radius:999px;padding:15px 28px;font-size:16px;font-weight:500;box-shadow:0 6px 18px rgba(0,177,190,.30)" style-hover="box-shadow:0 10px 26px rgba(0,177,190,.42)">Start assessment <span style="display:inline-flex;align-items:center;vertical-align:-3px"><x-import component-from-global-scope="DesignSystem_e0e94d.Icon" name="arrow-right" size="16" hint-size="16px,16px"></x-import></span></button>
+        <button type="button" onClick="{{ loadExample }}" style="cursor:pointer;background:#fff;border:1px solid var(--border-subtle);color:var(--ink-700);border-radius:999px;padding:14px 26px;font-size:16px;font-weight:500;box-shadow:0 4px 14px rgba(18,18,58,.05)" style-hover="color:#6941C6">See an example</button>
+      </div>
+      <p style="margin:22px 0 0;font-size:12px;line-height:1.7;color:var(--ink-400);max-width:52ch">Structured on the seven dimensions Gartner describes publicly for AI value realisation — business value, feasibility, readiness, strategic alignment, cost, risk and time to value. Independently built; not a Gartner tool, methodology implementation or certified calculation.</p>
+    </div>
+    <div style="background:var(--gradient-deep);border-radius:28px;padding:clamp(22px,3vw,32px);color:#fff;box-shadow:0 24px 60px rgba(18,18,58,.30)">
+      <div style="font-size:10px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:rgba(255,255,255,.55)">What you get</div>
+      <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
+        <sc-for list="{{ promises }}" as="p" hint-placeholder-count="6">
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <span style="flex:none;width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,.12);display:grid;place-items:center;font-size:11px;font-weight:700;color:#5CE1D2">{{ p.n }}</span>
+            <span style="display:flex;flex-direction:column;gap:3px">
+              <span style="font-size:15px;font-weight:600;color:#fff">{{ p.t }}</span>
+              <span style="font-size:13px;line-height:1.6;color:rgba(255,255,255,.66)">{{ p.d }}</span>
+            </span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top:26px;padding-top:20px;border-top:1px solid rgba(255,255,255,.16);font-size:13px;line-height:1.7;color:rgba(255,255,255,.6)">Every figure carries a source and a confidence level. Nothing is presented as fact that is actually an assumption.</div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isInterview }}" hint-placeholder-val="{{ false }}">
+  <div style="display:grid;grid-template-columns:{{ interviewCols }};gap:20px;align-items:start;animation:avaFade 320ms cubic-bezier(.16,1,.3,1)">
+
+    <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:28px;box-shadow:0 10px 34px rgba(18,18,58,.08);overflow:hidden">
+      <div style="padding:20px clamp(20px,3vw,30px);border-bottom:1px solid var(--border-subtle)">
+        <div style="display:flex;align-items:center;gap:14px;justify-content:space-between;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:10px">
+            <img src="assets/logo-mark.png" alt="" style="width:26px;height:26px;border-radius:8px;object-fit:contain">
+            <span style="font-size:13px;font-weight:600;color:var(--ink-800)">AI business value agent</span>
+          </div>
+          <span style="font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-400)">{{ stepLabel }}</span>
+        </div>
+        <div style="display:flex;gap:4px;margin-top:16px">
+          <sc-for list="{{ phaseDots }}" as="d" hint-placeholder-count="10">
+            <span style="flex:1;height:4px;border-radius:999px;background:{{ d.bg }};transition:background 200ms"></span>
+          </sc-for>
+        </div>
+        <div style="margin-top:10px;font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--teal-600)">{{ q.phaseLabel }}</div>
+      </div>
+
+      <div style="padding:clamp(22px,3vw,32px)">
+        <h4 style="margin:0;font-size:clamp(19px,2.5vw,25px);font-weight:600;line-height:1.35;letter-spacing:-0.01em;color:var(--ink-900);max-width:32ch">{{ q.prompt }}</h4>
+        <p style="margin:12px 0 0;font-size:14px;line-height:1.7;color:var(--ink-500);max-width:46ch">{{ q.help }}</p>
+
+        <sc-if value="{{ q.isText }}" hint-placeholder-val="{{ true }}">
+          <textarea rows="4" value="{{ q.textValue }}" onChange="{{ q.onText }}" placeholder="{{ q.placeholder }}" style="width:100%;margin-top:22px;background:#FBFCFE;border:1px solid var(--border-subtle);border-radius:10px;padding:14px 16px;font-size:15px;line-height:1.6;color:var(--ink-900);outline:none;resize:vertical"></textarea>
+        </sc-if>
+
+        <sc-if value="{{ q.isChoice }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:22px">
+            <sc-for list="{{ q.choices }}" as="c" hint-placeholder-count="4">
+              <button type="button" onClick="{{ c.pick }}" style="cursor:pointer;text-align:left;display:flex;align-items:center;gap:13px;background:{{ c.bg }};border:1px solid {{ c.border }};border-radius:14px;padding:14px 16px;transition:all 120ms cubic-bezier(.4,0,.2,1)" style-hover="transform:translateY(-2px)">
+                <span style="flex:none;width:18px;height:18px;border-radius:{{ c.dotRadius }};border:1px solid {{ c.dotBorder }};background:{{ c.dotBg }};display:grid;place-items:center;color:#fff"><sc-if value="{{ c.picked }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="DesignSystem_e0e94d.Icon" name="check" size="12" hint-size="12px,12px" style="display:block"></x-import></sc-if></span>
+                <span style="display:flex;flex-direction:column;gap:3px">
+                  <span style="font-size:15px;font-weight:500;color:{{ c.fg }}">{{ c.label }}</span>
+                  <span style="font-size:13px;line-height:1.55;color:var(--ink-400)">{{ c.note }}</span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ q.isSlider }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:24px">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+              <span style="font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-0.02em;color:var(--ink-900)">{{ q.display }}</span>
+              <span style="font-size:14px;color:var(--ink-400)">{{ q.unit }}</span>
+            </div>
+            <input type="range" min="{{ q.min }}" max="{{ q.max }}" step="{{ q.step }}" value="{{ q.value }}" onChange="{{ q.onSlide }}" style="margin-top:16px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ink-400);margin-top:4px">
+              <span>{{ q.minLabel }}</span><span>{{ q.maxLabel }}</span>
+            </div>
+            <sc-if value="{{ q.hasUnits }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:18px">
+                <sc-for list="{{ q.units }}" as="u" hint-placeholder-count="5">
+                  <button type="button" onClick="{{ u.pick }}" style="cursor:pointer;font-size:12px;font-weight:500;border-radius:999px;padding:7px 14px;background:{{ u.bg }};border:1px solid {{ u.border }};color:{{ u.fg }};transition:all 120ms">{{ u.label }}</button>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ q.isGroup }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:22px;display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ q.rows }}" as="r" hint-placeholder-count="8">
+              <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#FBFCFE;border:1px solid var(--border-subtle);border-radius:12px;padding:12px 14px">
+                <span style="flex:1;min-width:130px;font-size:14px;font-weight:500;color:var(--ink-800)">{{ r.label }}</span>
+                <input type="range" min="{{ r.min }}" max="{{ r.max }}" step="{{ r.step }}" value="{{ r.value }}" onChange="{{ r.onSlide }}" style="flex:2;min-width:120px">
+                <span style="flex:none;min-width:64px;text-align:right;font-size:14px;font-weight:600;color:var(--indigo-600);font-variant-numeric:tabular-nums">{{ r.display }}</span>
+              </div>
+            </sc-for>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--mist-100);border-radius:12px;font-size:15px;font-weight:600;color:var(--ink-900)">
+              <span>{{ q.totalLabel }}</span><span style="font-variant-numeric:tabular-nums">{{ q.total }}</span>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ q.hasChallenge }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:22px;display:flex;gap:14px;background:#FFF8E8;border:1px solid #F5D9A0;border-radius:16px;padding:18px;animation:avaRise 200ms cubic-bezier(.16,1,.3,1)">
+            <span style="flex:none;width:26px;height:26px;border-radius:8px;background:#F5D9A0;display:grid;place-items:center;font-size:13px;font-weight:700;color:#7A4E00">!</span>
+            <div>
+              <div style="font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8A5A00">I'd challenge that</div>
+              <p style="margin:8px 0 0;font-size:14px;line-height:1.7;color:#5C3D00">{{ q.challenge }}</p>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ q.hasBaseline }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:20px;background:var(--teal-50);border:1px solid #B8EDE6;border-radius:16px;padding:18px">
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--teal-600)">Annual baseline cost</div>
+            <div style="margin-top:8px;font-size:26px;font-weight:700;letter-spacing:-0.01em;color:#00707A">{{ baselineCost }}</div>
+            <p style="margin:8px 0 0;font-size:13px;line-height:1.6;color:var(--ink-600)">{{ baselineNote }}</p>
+          </div>
+        </sc-if>
+
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:28px">
+          <sc-if value="{{ canBack }}" hint-placeholder-val="{{ false }}">
+            <button type="button" onClick="{{ back }}" style="cursor:pointer;background:#fff;border:1px solid var(--border-subtle);border-radius:999px;padding:12px 20px;font-size:14px;font-weight:500;color:var(--ink-600)" style-hover="color:#6941C6">&#8592; Back</button>
+          </sc-if>
+          <button type="button" onClick="{{ next }}" style="cursor:pointer;border:none;background:var(--gradient-cta);color:#fff;border-radius:999px;padding:14px 26px;font-size:15px;font-weight:500;box-shadow:0 6px 18px rgba(0,177,190,.30)" style-hover="box-shadow:0 10px 26px rgba(0,177,190,.42)">{{ nextLabel }} <span style="display:inline-flex;align-items:center;vertical-align:-3px"><x-import component-from-global-scope="DesignSystem_e0e94d.Icon" name="arrow-right" size="16" hint-size="16px,16px"></x-import></span></button>
+          <button type="button" onClick="{{ skipToDash }}" style="cursor:pointer;background:none;border:none;font-size:14px;font-weight:500;color:var(--ink-400)" style-hover="color:#6941C6">Jump to the dashboard</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--gradient-deep);border-radius:28px;padding:clamp(20px,2.6vw,28px);color:#fff;box-shadow:0 20px 50px rgba(18,18,58,.28);position:sticky;top:84px">
+      <div style="display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap">
+        <span style="font-size:10px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,.55)">Live business case</span>
+        <span style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#FFE9A8;background:rgba(255,255,255,.12);border-radius:999px;padding:4px 10px">Updates as you answer</span>
+      </div>
+      <div style="margin-top:20px">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,.5)">Recommendation</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap">
+          <span style="font-size:clamp(24px,3.4vw,34px);font-weight:700;letter-spacing:-0.02em;color:{{ rec.color }};transition:color 320ms">{{ rec.label }}</span>
+          <span style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;background:rgba(255,255,255,.14);border-radius:999px;padding:4px 10px">{{ conf.label }} confidence</span>
+        </div>
+        <p style="margin:12px 0 0;font-size:14px;line-height:1.7;color:rgba(255,255,255,.78)">{{ rec.why }}</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:22px;background:rgba(255,255,255,.14);border-radius:16px;overflow:hidden">
+        <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+          <div style="background:rgba(255,255,255,.06);padding:16px 14px">
+            <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,.55)">{{ k.k }}</div>
+            <div style="margin-top:7px;font-size:20px;font-weight:700;letter-spacing:-0.01em;color:{{ k.fg }}">{{ k.v }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.16);display:flex;flex-direction:column;gap:9px">
+        <sc-for list="{{ miniScores }}" as="s" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:12px;justify-content:space-between;font-size:13px">
+            <span style="color:rgba(255,255,255,.6)">{{ s.k }}</span>
+            <span style="font-weight:600;color:{{ s.fg }}">{{ s.v }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <sc-if value="{{ hasAgentNote }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:20px;background:rgba(255,255,255,.08);border-radius:16px;padding:16px">
+          <div style="font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#5CE1D2">Agent read</div>
+          <p style="margin:8px 0 0;font-size:13px;line-height:1.7;color:rgba(255,255,255,.82)">{{ agentNote }}</p>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isDash }}" hint-placeholder-val="{{ false }}">
+  <div style="animation:avaFade 320ms cubic-bezier(.16,1,.3,1)">
+    <div style="background:var(--gradient-deep);border-radius:28px;padding:clamp(24px,3.4vw,40px);color:#fff;box-shadow:0 24px 60px rgba(18,18,58,.30)">
+      <div style="display:flex;align-items:flex-start;gap:20px;justify-content:space-between;flex-wrap:wrap">
+        <div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:rgba(255,255,255,.55)">AI business value assessment</div>
+          <h4 style="margin:12px 0 0;font-size:clamp(22px,3.2vw,34px);font-weight:600;letter-spacing:-0.01em;color:#fff;max-width:30ch">{{ caseName }}</h4>
+          <p style="margin:10px 0 0;font-size:14px;color:rgba(255,255,255,.6)">{{ caseSub }}</p>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,.5)">Recommendation</div>
+          <div style="margin-top:8px;font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-0.02em;color:{{ rec.color }}">{{ rec.label }}</div>
+          <div style="margin-top:6px;font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,.7)">Confidence {{ conf.label }}</div>
+        </div>
+      </div>
+
+      <p style="margin:24px 0 0;font-size:clamp(15px,1.9vw,17px);line-height:1.75;color:rgba(255,255,255,.85);max-width:76ch;padding-top:22px;border-top:1px solid rgba(255,255,255,.16)">{{ execSummary }}</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;margin-top:26px;background:rgba(255,255,255,.14);border-radius:20px;overflow:hidden">
+        <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+          <div style="background:rgba(255,255,255,.06);padding:20px 18px">
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,.55)">{{ k.k }}</div>
+            <div style="margin-top:9px;font-size:clamp(22px,3vw,28px);font-weight:700;letter-spacing:-0.01em;color:{{ k.fg }}">{{ k.v }}</div>
+            <div style="margin-top:5px;font-size:11px;color:rgba(255,255,255,.45)">{{ k.note }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:20px;margin-top:20px;align-items:start">
+      <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:24px;padding:28px;box-shadow:0 6px 24px rgba(18,18,58,.06)">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink-400)">Value build-up</div>
+        <div style="margin-top:20px;display:flex;flex-direction:column;gap:11px">
+          <sc-for list="{{ buildUp }}" as="b" hint-placeholder-count="7">
+            <div style="display:flex;align-items:center;gap:12px;justify-content:space-between;padding-top:{{ b.padTop }};border-top:{{ b.rule }}">
+              <span style="display:flex;flex-direction:column;gap:3px">
+                <span style="font-size:14px;font-weight:{{ b.weight }};color:{{ b.fg }}">{{ b.k }}</span>
+                <span style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:{{ b.tagFg }}">{{ b.tag }}</span>
+              </span>
+              <span style="font-size:{{ b.size }};font-weight:{{ b.weight }};color:{{ b.fg }};font-variant-numeric:tabular-nums">{{ b.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:24px;padding:28px;box-shadow:0 6px 24px rgba(18,18,58,.06)">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink-400)">Readiness scorecard</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px">
+          <sc-for list="{{ scorecard }}" as="s" hint-placeholder-count="6">
+            <div style="background:{{ s.bg }};border:1px solid {{ s.border }};border-radius:16px;padding:16px">
+              <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-400)">{{ s.k }}</div>
+              <div style="margin-top:8px;font-size:17px;font-weight:700;color:{{ s.fg }}">{{ s.v }}</div>
+              <div style="margin-top:4px;font-size:11px;color:var(--ink-400)">{{ s.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <p style="margin:18px 0 0;font-size:13px;line-height:1.7;color:var(--ink-600)">{{ scoreReasoning }}</p>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:24px;padding:28px;box-shadow:0 6px 24px rgba(18,18,58,.06)">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink-400)">AI opportunity matrix</div>
+        <div style="position:relative;margin-top:22px;aspect-ratio:1;width:100%;border:1px solid var(--border-subtle);border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#FBFCFE,#F4F6FC)">
+          <div style="position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr">
+            <sc-for list="{{ quadrants }}" as="qd" hint-placeholder-count="4">
+              <div style="border:0.5px solid rgba(18,18,58,.07);padding:14px;display:flex;flex-direction:column;justify-content:{{ qd.justify }};background:{{ qd.bg }}">
+                <div style="font-size:12px;font-weight:700;letter-spacing:-0.01em;color:{{ qd.fg }}">{{ qd.name }}</div>
+                <div style="margin-top:4px;font-size:10px;line-height:1.5;color:var(--ink-400)">{{ qd.sub }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="position:absolute;left:{{ dot.x }};bottom:{{ dot.y }};transform:translate(-50%,50%);transition:all 480ms cubic-bezier(.16,1,.3,1)">
+            <span style="display:block;width:18px;height:18px;border-radius:50%;background:var(--gradient-cta);box-shadow:0 0 0 6px rgba(0,177,190,.18),0 6px 18px rgba(18,18,58,.2)"></span>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-400)">
+          <span>Feasibility <span style="display:inline-flex;align-items:center;vertical-align:-3px"><x-import component-from-global-scope="DesignSystem_e0e94d.Icon" name="arrow-right" size="16" hint-size="16px,16px"></x-import></span></span><span>Business value &#8593;</span>
+        </div>
+        <p style="margin:16px 0 0;font-size:13px;line-height:1.7;color:var(--ink-600)">{{ dot.why }}</p>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:24px;padding:28px;box-shadow:0 6px 24px rgba(18,18,58,.06)">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink-400)">Cost profile</div>
+        <div style="margin-top:20px;display:flex;flex-direction:column;gap:14px">
+          <sc-for list="{{ costProfile }}" as="c" hint-placeholder-count="4">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:500;color:var(--ink-700)"><span>{{ c.k }}</span><span style="font-variant-numeric:tabular-nums;color:var(--ink-900);font-weight:600">{{ c.v }}</span></div>
+              <div style="height:8px;border-radius:999px;background:var(--mist-100);margin-top:7px;overflow:hidden">
+                <div style="height:100%;border-radius:999px;width:{{ c.w }};background:{{ c.bar }};transition:width 480ms cubic-bezier(.16,1,.3,1)"></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border-subtle);font-size:13px;line-height:1.7;color:var(--ink-600)">{{ costNote }}</div>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:24px;padding:28px;box-shadow:0 6px 24px rgba(18,18,58,.06);grid-column:{{ wideSpan }}">
+        <div style="display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap">
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink-400)">Value realisation · three years</div>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--ink-500)">
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:linear-gradient(90deg,#00B1BE,#3B82F6)"></span>Gross value</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#FFB3C6"></span>Cost</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#12123A"></span>Cumulative net</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px;align-items:end;min-height:200px">
+          <sc-for list="{{ years }}" as="y" hint-placeholder-count="3">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:8px;align-items:flex-end;height:150px">
+                <div style="flex:1;border-radius:8px 8px 0 0;height:{{ y.grossH }};background:linear-gradient(180deg,#3B82F6,#00B1BE);transition:height 480ms cubic-bezier(.16,1,.3,1)"></div>
+                <div style="flex:1;border-radius:8px 8px 0 0;height:{{ y.costH }};background:#FFB3C6;transition:height 480ms cubic-bezier(.16,1,.3,1)"></div>
+                <div style="flex:1;border-radius:8px 8px 0 0;height:{{ y.cumH }};background:{{ y.cumBg }};transition:height 480ms cubic-bezier(.16,1,.3,1)"></div>
+              </div>
+              <div style="border-top:1px solid var(--border-subtle);padding-top:10px">
+                <div style="font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-500)">{{ y.label }}</div>
+                <div style="margin-top:6px;font-size:15px;font-weight:700;color:var(--ink-900);font-variant-numeric:tabular-nums">{{ y.net }}</div>
+                <div style="font-size:11px;color:var(--ink-400)">net · cumulative {{ y.cum }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;background:#fff;border:1px solid var(--border-subtle);border-radius:24px;box-shadow:0 6px 24px rgba(18,18,58,.06);overflow:hidden">
+      <button type="button" onClick="{{ toggleAssumptions }}" style="width:100%;cursor:pointer;background:none;border:none;text-align:left;padding:24px 28px;display:flex;align-items:center;gap:16px;justify-content:space-between">
+        <span style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:18px;font-weight:600;letter-spacing:-0.01em;color:var(--ink-900)">Show my assumptions</span>
+          <span style="font-size:13px;color:var(--ink-500)">{{ assumptionCount }} inputs, each with its source, confidence and influence on the answer.</span>
+        </span>
+        <span style="flex:none;width:30px;height:30px;border-radius:50%;background:var(--mist-100);display:grid;place-items:center;color:var(--ink-600);transition:transform 200ms;transform:{{ assumptionsCaret }}"><x-import component-from-global-scope="DesignSystem_e0e94d.Icon" name="chevron-down" size="16" hint-size="16px,16px" style="display:block"></x-import></span>
+      </button>
+      <sc-if value="{{ assumptionsOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 28px 28px;animation:avaRise 200ms cubic-bezier(.16,1,.3,1)">
+          <div style="border:1px solid var(--border-subtle);border-radius:16px;overflow:hidden">
+            <div style="display:grid;grid-template-columns:2fr 1fr 1.2fr 1fr 1fr;gap:12px;padding:12px 16px;background:var(--mist-100);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-400)">
+              <span>Input</span><span>Value</span><span>Source</span><span>Confidence</span><span>Impact</span>
+            </div>
+            <sc-for list="{{ assumptions }}" as="a" hint-placeholder-count="8">
+              <div style="display:grid;grid-template-columns:2fr 1fr 1.2fr 1fr 1fr;gap:12px;padding:14px 16px;border-top:1px solid var(--border-subtle);font-size:13px;align-items:center">
+                <span style="color:var(--ink-800);font-weight:500">{{ a.k }}</span>
+                <span style="color:var(--ink-900);font-variant-numeric:tabular-nums">{{ a.v }}</span>
+                <span style="color:var(--ink-500)">{{ a.src }}</span>
+                <span style="font-weight:600;color:{{ a.cFg }}">{{ a.conf }}</span>
+                <span style="color:var(--ink-500)">{{ a.impact }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <div style="margin-top:20px;background:var(--mist-50);border:1px solid var(--border-subtle);border-radius:24px;padding:28px">
+      <div style="display:flex;align-items:flex-start;gap:20px;justify-content:space-between;flex-wrap:wrap">
+        <div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink-400)">Sensitivity</div>
+          <h5 style="margin:10px 0 0;font-size:20px;font-weight:600;letter-spacing:-0.01em;color:var(--ink-900)">How robust is the business case?</h5>
+        </div>
+        <div style="display:flex;gap:6px">
+          <sc-for list="{{ scenarios }}" as="s" hint-placeholder-count="3">
+            <button type="button" onClick="{{ s.pick }}" style="cursor:pointer;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;border-radius:999px;padding:9px 16px;background:{{ s.bg }};border:1px solid {{ s.border }};color:{{ s.fg }};transition:all 120ms">{{ s.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:22px">
+        <sc-for list="{{ scenarioRows }}" as="r" hint-placeholder-count="3">
+          <div style="background:#fff;border:1px solid {{ r.border }};border-radius:18px;padding:20px">
+            <div style="display:flex;align-items:center;gap:10px;justify-content:space-between">
+              <span style="font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:{{ r.fg }}">{{ r.label }}</span>
+              <span style="font-size:11px;color:var(--ink-400)">{{ r.assumption }}</span>
+            </div>
+            <div style="margin-top:14px;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--ink-500)">Net annual value</span><span style="font-weight:700;color:var(--ink-900);font-variant-numeric:tabular-nums">{{ r.net }}</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--ink-500)">Year 1 ROI</span><span style="font-weight:600;color:var(--ink-800)">{{ r.roi }}</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--ink-500)">Payback</span><span style="font-weight:600;color:var(--ink-800)">{{ r.payback }}</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--ink-500)">Recommendation</span><span style="font-weight:600;color:{{ r.recFg }}">{{ r.rec }}</span></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top:24px;background:#fff;border:1px solid var(--border-subtle);border-radius:18px;padding:20px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px">
+          <span style="font-size:13px;font-weight:500;color:var(--ink-700)">Benefit realisation</span>
+          <span style="font-size:20px;font-weight:700;color:var(--indigo-600)">{{ realisationPct }}</span>
+        </div>
+        <input type="range" min="40" max="125" step="5" value="{{ realisation }}" onChange="{{ setRealisation }}" style="margin-top:14px">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink-400);margin-top:4px"><span>40%</span><span>125%</span></div>
+        <p style="margin:14px 0 0;font-size:13px;line-height:1.7;color:var(--ink-600)">ROI here is sensitive to four things: adoption rate, benefit realisation, AI run cost and implementation cost. This slider moves the second one — everything above updates with it.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;background:#fff;border:1px solid var(--border-subtle);border-radius:24px;padding:28px;box-shadow:0 6px 24px rgba(18,18,58,.06)">
+      <div style="font-size:10px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink-400)">You've just built the first version of your AI business case</div>
+      <h5 style="margin:12px 0 0;font-size:clamp(20px,2.6vw,26px);font-weight:600;letter-spacing:-0.01em;color:var(--ink-900)">What would you like to do next?</h5>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:22px">
+        <sc-for list="{{ nextActions }}" as="a" hint-placeholder-count="5">
+          <button type="button" onClick="{{ a.go }}" style="cursor:pointer;text-align:left;background:{{ a.bg }};border:1px solid {{ a.border }};border-radius:18px;padding:20px;transition:all 120ms cubic-bezier(.4,0,.2,1)" style-hover="transform:translateY(-2px);box-shadow:0 10px 26px rgba(18,18,58,.09)">
+            <span style="display:block;font-size:15px;font-weight:600;color:{{ a.fg }}">{{ a.label }} <span style="display:inline-flex;align-items:center;vertical-align:-3px"><x-import component-from-global-scope="DesignSystem_e0e94d.Icon" name="arrow-right" size="16" hint-size="16px,16px"></x-import></span></span>
+            <span style="display:block;margin-top:6px;font-size:13px;line-height:1.6;color:var(--ink-500)">{{ a.note }}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="margin-top:26px;padding-top:24px;border-top:1px solid var(--border-subtle)">
+        <p style="margin:0;font-size:clamp(18px,2.4vw,22px);font-weight:500;letter-spacing:-0.01em;color:var(--ink-900)">Have an AI opportunity you're trying to justify?</p>
+        <p style="margin:8px 0 0;font-size:16px;color:var(--ink-500)">Let's turn it into a business case.</p>
+        <a href="#talk" style="display:inline-flex;align-items:center;gap:8px;margin-top:18px;background:var(--gradient-cta);color:#fff;border-radius:999px;padding:14px 26px;font-size:15px;font-weight:500;box-shadow:0 6px 18px rgba(0,177,190,.30)" style-hover="color:#fff">Let's talk <span style="display:inline-flex;align-items:center;vertical-align:-3px"><x-import component-from-global-scope="DesignSystem_e0e94d.Icon" name="arrow-right" size="16" hint-size="16px,16px"></x-import></span></a>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isGate }}" hint-placeholder-val="{{ false }}">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px;align-items:start;animation:avaFade 320ms cubic-bezier(.16,1,.3,1)">
+    <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:28px;padding:clamp(24px,3.4vw,40px);box-shadow:0 10px 34px rgba(18,18,58,.08)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <img src="assets/logo-mark.png" alt="" style="width:26px;height:26px;border-radius:8px;object-fit:contain">
+        <span style="font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-500)">Business case ready</span>
+      </div>
+      <h4 style="margin:20px 0 0;font-size:clamp(22px,3vw,32px);font-weight:700;line-height:1.12;letter-spacing:-0.02em;color:var(--ink-900);max-width:22ch">Where should I send <span style="background:var(--gradient-headline);-webkit-background-clip:text;background-clip:text;color:transparent">the report?</span></h4>
+      <p style="margin:14px 0 0;font-size:15px;line-height:1.7;color:var(--ink-500);max-width:44ch">Eighteen sections, your assumption register, the pilot plan and the risk register — addressed to you, so it reads like a document rather than a screen.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:26px">
+        <label style="display:block">
+          <span style="display:block;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-400);margin-bottom:8px">Name</span>
+          <input type="text" value="{{ gate.name }}" onChange="{{ setGateName }}" placeholder="Your name" style="width:100%;background:#FBFCFE;border:1px solid var(--border-subtle);border-radius:10px;padding:13px 14px;font-size:15px;color:var(--ink-900);outline:none">
+        </label>
+        <label style="display:block">
+          <span style="display:block;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-400);margin-bottom:8px">Work email</span>
+          <input type="email" value="{{ gate.email }}" onChange="{{ setGateEmail }}" placeholder="you@company.com" style="width:100%;background:#FBFCFE;border:1px solid {{ gate.emailBorder }};border-radius:10px;padding:13px 14px;font-size:15px;color:var(--ink-900);outline:none">
+        </label>
+      </div>
+      <label style="display:block;margin-top:14px">
+        <span style="display:block;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-400);margin-bottom:8px">Organisation <span style="font-weight:400;letter-spacing:0;text-transform:none;color:var(--ink-300)">· optional</span></span>
+        <input type="text" value="{{ gate.org }}" onChange="{{ setGateOrg }}" placeholder="Company or team" style="width:100%;background:#FBFCFE;border:1px solid var(--border-subtle);border-radius:10px;padding:13px 14px;font-size:15px;color:var(--ink-900);outline:none">
+      </label>
+
+      <sc-if value="{{ gate.showError }}" hint-placeholder-val="{{ false }}">
+        <p style="margin:14px 0 0;font-size:13px;font-weight:500;color:#C2185B">A valid email address, and the report is yours.</p>
+      </sc-if>
+
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:24px">
+        <button type="button" onClick="{{ submitGate }}" style="cursor:pointer;border:none;background:var(--gradient-cta);color:#fff;border-radius:999px;padding:14px 26px;font-size:15px;font-weight:500;box-shadow:0 6px 18px rgba(0,177,190,.30)" style-hover="box-shadow:0 10px 26px rgba(0,177,190,.42)">Send me the business case <span style="display:inline-flex;align-items:center;vertical-align:-3px"><x-import component-from-global-scope="DesignSystem_e0e94d.Icon" name="arrow-right" size="16" hint-size="16px,16px"></x-import></span></button>
+        <button type="button" onClick="{{ backToDash }}" style="cursor:pointer;background:#fff;border:1px solid var(--border-subtle);border-radius:999px;padding:13px 22px;font-size:14px;font-weight:500;color:var(--ink-600)" style-hover="color:#6941C6">Back to dashboard</button>
+      </div>
+      <p style="margin:20px 0 0;font-size:12px;line-height:1.7;color:var(--ink-400);max-width:46ch">This is a portfolio demo — nothing is stored or transmitted, and the report opens on screen for you to read, print or copy.</p>
+    </div>
+
+    <div style="background:var(--gradient-deep);border-radius:28px;padding:clamp(22px,3vw,32px);color:#fff;box-shadow:0 20px 50px rgba(18,18,58,.28)">
+      <div style="font-size:10px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,.55)">What's in it</div>
+      <div style="margin-top:20px;display:flex;flex-direction:column;gap:12px">
+        <sc-for list="{{ gateContents }}" as="g" hint-placeholder-count="6">
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="flex:none;width:22px;height:22px;border-radius:7px;background:rgba(255,255,255,.12);display:grid;place-items:center;font-size:10px;font-weight:700;color:#5CE1D2">{{ g.n }}</span>
+            <span style="font-size:14px;line-height:1.6;color:rgba(255,255,255,.82)">{{ g.t }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.16)">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,.5)">Headline</div>
+        <div style="margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <span style="font-size:26px;font-weight:700;letter-spacing:-0.02em;color:{{ rec.color }}">{{ rec.label }}</span>
+          <span style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;background:rgba(255,255,255,.14);border-radius:999px;padding:4px 10px">{{ conf.label }} confidence</span>
+        </div>
+        <div style="margin-top:12px;font-size:14px;color:rgba(255,255,255,.7)">Net annual value {{ netValueShort }}</div>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isDoc }}" hint-placeholder-val="{{ false }}">
+  <div style="animation:avaFade 320ms cubic-bezier(.16,1,.3,1)">
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:20px">
+      <button type="button" onClick="{{ backToDash }}" style="cursor:pointer;background:#fff;border:1px solid var(--border-subtle);border-radius:999px;padding:12px 20px;font-size:14px;font-weight:500;color:var(--ink-600)" style-hover="color:#6941C6">&#8592; Back to dashboard</button>
+      <button type="button" onClick="{{ editAssumptions }}" style="cursor:pointer;background:#fff;border:1px solid var(--border-subtle);border-radius:999px;padding:12px 20px;font-size:14px;font-weight:500;color:var(--ink-600)" style-hover="color:#6941C6">Edit assumptions</button>
+      <button type="button" onClick="{{ copyDoc }}" style="cursor:pointer;background:#fff;border:1px solid var(--border-subtle);border-radius:999px;padding:12px 20px;font-size:14px;font-weight:500;color:var(--ink-600)" style-hover="color:#6941C6">{{ copyLabel }}</button>
+      <span style="font-size:12px;color:var(--ink-400)">Print this page to export the case as PDF.</span>
+    </div>
+
+    <article style="background:#fff;border:1px solid var(--border-subtle);border-radius:28px;padding:clamp(26px,4vw,56px);box-shadow:0 10px 34px rgba(18,18,58,.07);max-width:860px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:space-between;padding-bottom:20px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <img src="assets/logo-mark.png" alt="" style="width:34px;height:34px;border-radius:10px;object-fit:contain">
+          <span style="display:flex;flex-direction:column;line-height:1.2">
+            <span style="font-size:14px;font-weight:600;letter-spacing:-0.01em;color:var(--ink-900)">Basma Mahmoud</span>
+            <span style="font-size:8px;font-weight:500;letter-spacing:0.42em;text-transform:uppercase;color:var(--ink-400)">AI Product</span>
+          </span>
+        </div>
+        <span style="font-size:11px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink-500)">Gartner-inspired assessment</span>
+      </div>
+      <div style="height:2px;background:var(--gradient-brand);border-radius:999px"></div>
+      <h4 style="margin:30px 0 0;font-size:clamp(26px,4vw,42px);font-weight:700;line-height:1.1;letter-spacing:-0.02em;color:var(--ink-900)">AI business case</h4>
+      <p style="margin:12px 0 0;font-size:clamp(17px,2.2vw,22px);font-weight:300;color:var(--ink-600)">{{ caseName }}</p>
+      <p style="margin:14px 0 0;font-size:13px;color:var(--ink-400)">{{ preparedFor }}</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px">
+        <span style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#fff;background:{{ rec.chipBg }};border-radius:999px;padding:6px 14px">{{ rec.label }}</span>
+        <span style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-600);background:var(--mist-100);border-radius:999px;padding:6px 14px">Confidence {{ conf.label }}</span>
+        <span style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-600);background:var(--mist-100);border-radius:999px;padding:6px 14px">Net {{ netValueShort }}</span>
+      </div>
+
+      <div style="margin-top:32px;background:var(--mist-50);border-left:none;border-radius:20px;padding:26px">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--teal-600)">Executive summary</div>
+        <p style="margin:12px 0 0;font-size:16px;line-height:1.8;color:var(--ink-800)">{{ execSummary }}</p>
+      </div>
+
+      <sc-for list="{{ docSections }}" as="s" hint-placeholder-count="18">
+        <section style="margin-top:34px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="flex:none;width:28px;height:28px;border-radius:9px;background:var(--teal-50);border:1px solid #B8EDE6;display:grid;place-items:center;font-size:11px;font-weight:700;color:#00707A;font-variant-numeric:tabular-nums">{{ s.n }}</span>
+            <h5 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em;color:var(--ink-900)">{{ s.title }}</h5>
+          </div>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.8;color:var(--ink-700)">{{ s.body }}</p>
+          <sc-if value="{{ s.hasRows }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:16px;border:1px solid var(--border-subtle);border-radius:14px;overflow:hidden">
+              <sc-for list="{{ s.rows }}" as="r" hint-placeholder-count="4">
+                <div style="display:grid;grid-template-columns:minmax(130px,1fr) 1.6fr;gap:14px;padding:13px 16px;border-bottom:1px solid var(--border-subtle);background:{{ r.bg }}">
+                  <span style="font-size:13px;font-weight:600;color:var(--ink-700)">{{ r.k }}</span>
+                  <span style="font-size:13px;line-height:1.65;color:var(--ink-700)">{{ r.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ s.hasBullets }}" hint-placeholder-val="{{ false }}">
+            <ul style="margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px">
+              <sc-for list="{{ s.bullets }}" as="b" hint-placeholder-count="4">
+                <li style="display:flex;gap:12px;font-size:14px;line-height:1.7;color:var(--ink-700)"><span style="color:var(--teal-600);font-weight:700">·</span><span>{{ b.t }}</span></li>
+              </sc-for>
+            </ul>
+          </sc-if>
+          <sc-if value="{{ s.hasLabel }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:12px;display:inline-block;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#8A5A00;background:var(--warning-50);border:1px solid #F5D9A0;border-radius:999px;padding:4px 11px">{{ s.label }}</div>
+          </sc-if>
+        </section>
+      </sc-for>
+
+      <section style="margin-top:38px;padding-top:28px;border-top:1px solid var(--border-subtle)">
+        <h5 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em;color:var(--ink-900)">Risk register</h5>
+        <div style="margin-top:16px;border:1px solid var(--border-subtle);border-radius:14px;overflow:hidden">
+          <div style="display:grid;grid-template-columns:1.4fr .7fr .7fr 1.8fr .8fr;gap:10px;padding:12px 14px;background:var(--mist-100);font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-400)">
+            <span>Risk</span><span>Prob.</span><span>Impact</span><span>Mitigation</span><span>Owner</span>
+          </div>
+          <sc-for list="{{ risks }}" as="r" hint-placeholder-count="7">
+            <div style="display:grid;grid-template-columns:1.4fr .7fr .7fr 1.8fr .8fr;gap:10px;padding:13px 14px;border-top:1px solid var(--border-subtle);font-size:13px;align-items:start">
+              <span style="color:var(--ink-800);font-weight:500">{{ r.risk }}</span>
+              <span style="font-weight:600;color:{{ r.pFg }}">{{ r.p }}</span>
+              <span style="font-weight:600;color:{{ r.iFg }}">{{ r.i }}</span>
+              <span style="line-height:1.6;color:var(--ink-600)">{{ r.m }}</span>
+              <span style="color:var(--ink-500)">{{ r.o }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <div style="margin-top:38px;height:2px;background:var(--gradient-brand);border-radius:999px"></div>
+      <div style="margin-top:26px;display:flex;gap:18px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+        <p style="margin:0;font-size:15px;font-weight:500;color:var(--ink-800);max-width:44ch">Want this pressure-tested against a real portfolio and a real budget cycle?</p>
+        <a href="#talk" style="background:var(--gradient-cta);color:#fff;border-radius:999px;padding:13px 24px;font-size:15px;font-weight:500;box-shadow:0 6px 18px rgba(0,177,190,.30)" style-hover="color:#fff">Let's talk <span style="display:inline-flex;align-items:center;vertical-align:-3px"><x-import component-from-global-scope="DesignSystem_e0e94d.Icon" name="arrow-right" size="16" hint-size="16px,16px"></x-import></span></a>
+      </div>
+    </article>
+  </div>
+</sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const C = {
+  ink: "#12123A", ink7: "#333A6B", ink4: "#6B7599", border: "#ECEFF7", mist: "#F4F6FC",
+  teal: "#00B1BE", tealD: "#00707A", tealBg: "#E6FAF7", tealBd: "#B8EDE6",
+  indigo: "#6366F1", indigoD: "#4F46E5", indigoBg: "#EEF0FF", indigoBd: "#D6DAFF",
+  amber: "#8A5A00", amberBg: "#FFF8E8", amberBd: "#F5D9A0",
+  pinkD: "#C2185B", pinkBg: "#FFF1F4", pinkBd: "#FFD6E0",
+  mint: "#5CE1D2", warm: "#FFE9A8", soft: "#FFB3C6"
+};
+const HOURS_PER_FTE = 1800;
+
+const DEF = {
+  problem: "", today: "", affected: ["Operations"], outcome: "Reduce cost",
+  unit: "transactions / year", volume: 1200000, costPerUnit: 6.5, hoursPerUnit: 0.25, fte: 45,
+  drivers: ["Cost reduction", "Productivity"],
+  reduction: 20, addressable: 55,
+  hoursSaved: 18000, loadedCost: 78000,
+  revenueOpp: 1200000, revenueRealisation: 60,
+  cxMetric: "Resolution time", cxImpact: 300000,
+  riskLoss: 2000000, riskReduction: 5,
+  solutionType: "Predictive ML", whatAI: "", aiRole: "Recommend",
+  dataAvailable: "Partially ready", dataQuality: "Medium", capability: "Medium", integration: "Yes", deployment: "Medium",
+  interaction: "Human-in-the-loop", workflowChange: "Medium", training: "Medium", trust: "High",
+  build: { dev: 450000, data: 180000, integration: 140000, infra: 60000, security: 40000, change: 90000, training: 50000, vendor: 0 },
+  run: { inference: 90000, cloud: 60000, licensing: 40000, maintenance: 70000, monitoring: 30000, oversight: 110000, support: 30000 },
+  scaleCost: "Yes", changeAnnual: 120000,
+  firstValue: "6–12 months", fullAdoption: "12–18 months",
+  objective: "Cost transformation", importance: "High",
+  evidence: "Internal estimates only", benchmark: "No comparable benchmark"
+};
+
+const EXAMPLE = Object.assign({}, DEF, {
+  problem: "Field engineering spends three working days a week triaging network alarms manually, and the backlog means avoidable faults escalate into customer-visible outages.",
+  today: "Alarms land in a queue and are triaged by hand against runbooks. Prioritisation depends on who is on shift, and roughly a third of tickets are re-opened because the first diagnosis was wrong.",
+  affected: ["Operations", "Customers"], outcome: "Reduce cost",
+  volume: 940000, costPerUnit: 8.2, hoursPerUnit: 0.3, fte: 62,
+  drivers: ["Cost reduction", "Productivity", "Risk reduction"],
+  reduction: 22, addressable: 60, hoursSaved: 24000, loadedCost: 82000,
+  riskLoss: 3400000, riskReduction: 8,
+  solutionType: "Anomaly detection", whatAI: "Cluster related alarms, rank by predicted customer impact and propose the most likely root cause with its supporting evidence.",
+  aiRole: "Recommend", dataAvailable: "Partially ready", dataQuality: "Medium",
+  capability: "Medium", integration: "Yes", deployment: "Medium",
+  interaction: "Human-in-the-loop", workflowChange: "Medium", training: "Medium", trust: "High",
+  objective: "Operational excellence", importance: "High",
+  evidence: "Baseline measured internally", benchmark: "No comparable benchmark"
+});
+
+const PHASES = ["Business problem", "Baseline", "Value drivers", "AI solution", "Feasibility", "Adoption & change", "Cost model", "Time to value", "Strategic alignment", "Value confidence"];
+
+class Component extends DCLogic {
+  state = {
+    view: "intro", step: 0, a: JSON.parse(JSON.stringify(DEF)),
+    scenario: "Base", realisation: 100, assumptionsOpen: false, copied: false, isExample: false,
+    gate: { name: "", email: "", org: "" }, gateError: false, gatePassed: false
+  };
+
+  set(k, v) { this.setState(s => ({ a: Object.assign({}, s.a, { [k]: v }) })); }
+  setNested(grp, k, v) { this.setState(s => ({ a: Object.assign({}, s.a, { [grp]: Object.assign({}, s.a[grp], { [k]: v }) }) })); }
+  toggleIn(k, v) {
+    this.setState(s => {
+      const cur = s.a[k] || [];
+      const nx = cur.indexOf(v) > -1 ? cur.filter(x => x !== v) : cur.concat([v]);
+      return { a: Object.assign({}, s.a, { [k]: nx.length ? nx : cur }) };
+    });
+  }
+  has(k, v) { return (this.state.a[k] || []).indexOf(v) > -1; }
+
+  money(n) {
+    const x = Math.abs(Math.round(n)), s = n < 0 ? "−" : "";
+    if (x >= 1000000) return s + "€" + (x / 1000000).toFixed(x >= 10000000 ? 1 : 2) + "M";
+    if (x >= 1000) return s + "€" + Math.round(x / 1000) + "k";
+    return s + "€" + x;
+  }
+  n(v) { return Math.round(v).toLocaleString("en-GB"); }
+
+  sumGroup(g) { const o = this.state.a[g]; return Object.keys(o).reduce((t, k) => t + o[k], 0); }
+
+  engine(realisation, reductionOverride) {
+    const a = this.state.a;
+    const r = (realisation === undefined ? this.state.realisation : realisation) / 100;
+    const reduction = (reductionOverride === undefined ? a.reduction : reductionOverride) / 100;
+    const on = (d) => (a.drivers || []).indexOf(d) > -1;
+    const baseline = a.volume * a.costPerUnit;
+    const savings = on("Cost reduction") ? baseline * (a.addressable / 100) * reduction * r : 0;
+    const productivity = on("Productivity") ? a.hoursSaved * (a.loadedCost / HOURS_PER_FTE) * r : 0;
+    const revenue = on("Revenue growth") ? a.revenueOpp * (a.revenueRealisation / 100) * r : 0;
+    const cx = on("Customer experience") ? a.cxImpact * r : 0;
+    const risk = on("Risk reduction") ? a.riskLoss * (a.riskReduction / 100) * r : 0;
+    const gross = savings + productivity + revenue + cx + risk;
+    const build = this.sumGroup("build");
+    const run = this.sumGroup("run") * (a.scaleCost === "Yes" ? 1.15 : 1);
+    const change = a.changeAnnual;
+    const y1Cost = build + run + change;
+    const ramp = { "<3 months": 0.8, "3–6 months": 0.65, "6–12 months": 0.45, "12–24 months": 0.25, ">24 months": 0.1 }[a.firstValue] || 0.45;
+    const y1Gross = gross * ramp;
+    const y1Net = y1Gross - y1Cost;
+    const steady = gross - run - change * 0.4;
+    const roi1 = y1Cost > 0 ? (y1Net / y1Cost) * 100 : 0;
+    const g3 = y1Gross + gross * 0.85 + gross;
+    const c3 = y1Cost + (run + change * 0.4) * 2;
+    const net3 = g3 - c3;
+    const roi3 = c3 > 0 ? (net3 / c3) * 100 : 0;
+    const monthly = steady / 12;
+    const payback = monthly > 0 ? build / monthly : Infinity;
+    return { baseline, savings, productivity, revenue, cx, risk, gross, build, run, change, y1Cost, y1Gross, y1Net, steady, roi1, g3, c3, net3, roi3, payback, ramp };
+  }
+
+  feasibility() {
+    const a = this.state.a;
+    const m = {
+      dataAvailable: { "Ready": 25, "Partially ready": 15, "Not ready": 5, "Unknown": 8 },
+      dataQuality: { "High": 25, "Medium": 15, "Low": 5, "Unknown": 8 },
+      capability: { "Low": 20, "Medium": 13, "High": 6 },
+      integration: { "No": 15, "Yes": 8, "Unknown": 6 },
+      deployment: { "Low": 15, "Medium": 9, "High": 4 }
+    };
+    let s = m.dataAvailable[a.dataAvailable] + m.dataQuality[a.dataQuality] + m.capability[a.capability] + m.integration[a.integration] + m.deployment[a.deployment];
+    if (a.aiRole === "Fully automate") s -= 8; else if (a.aiRole === "Execute") s -= 5;
+    s = Math.max(5, Math.min(100, s));
+    const parts = [
+      { k: "Data availability", v: m.dataAvailable[a.dataAvailable], max: 25 },
+      { k: "Data quality", v: m.dataQuality[a.dataQuality], max: 25 },
+      { k: "Capability complexity", v: m.capability[a.capability], max: 20 },
+      { k: "Integration", v: m.integration[a.integration], max: 15 },
+      { k: "Deployment", v: m.deployment[a.deployment], max: 15 }
+    ];
+    const weakest = parts.slice().sort((x, y) => (x.v / x.max) - (y.v / y.max))[0];
+    return { score: s, band: s >= 70 ? "High" : s >= 45 ? "Medium" : "Low", weakest: weakest.k };
+  }
+
+  adoption() {
+    const a = this.state.a;
+    const m = {
+      interaction: { "Assistive": 1, "Decision support": 2, "Human-in-the-loop": 2, "Semi-autonomous": 3, "Autonomous": 4 },
+      workflowChange: { "Low": 1, "Medium": 2, "High": 3 },
+      training: { "Low": 1, "Medium": 2, "High": 3 },
+      trust: { "Low": 1, "Medium": 2, "High": 3 }
+    };
+    let t = m.interaction[a.interaction] + m.workflowChange[a.workflowChange] + m.training[a.training] + m.trust[a.trust];
+    if (a.aiRole === "Fully automate") t += 2; else if (a.aiRole === "Assist") t -= 1;
+    return { raw: t, band: t >= 11 ? "High" : t >= 7 ? "Medium" : "Low" };
+  }
+
+  alignment() {
+    const a = this.state.a;
+    const imp = { "Low": 25, "Medium": 50, "High": 75, "Critical": 95 }[a.importance] || 50;
+    const fit = a.outcome === "Reduce cost" && a.objective === "Cost transformation" ? 15
+      : a.outcome === "Increase revenue" && a.objective === "Revenue growth" ? 15
+      : a.outcome === "Improve customer experience" && a.objective === "Customer experience" ? 15 : 8;
+    const s = Math.min(100, imp + fit);
+    return { score: s, band: s >= 75 ? "High" : s >= 45 ? "Medium" : "Low" };
+  }
+
+  confidence() {
+    const a = this.state.a, e = this.engine();
+    let s = 50;
+    s += { "Ready": 14, "Partially ready": 4, "Not ready": -12, "Unknown": -10 }[a.dataAvailable];
+    s += { "High": 12, "Medium": 3, "Low": -10, "Unknown": -8 }[a.dataQuality];
+    s += { "Measured with a validated baseline": 16, "Baseline measured internally": 8, "Internal estimates only": -4, "Vendor or supplier claims": -14 }[a.evidence] || 0;
+    s += { "Yes, a comparable internal benchmark": 12, "Yes, an external benchmark": 6, "No comparable benchmark": -6 }[a.benchmark] || 0;
+    const soft = e.gross > 0 ? (e.productivity + e.revenue + e.cx + e.risk) / e.gross : 0;
+    if (soft > 0.6) s -= 14; else if (soft > 0.35) s -= 6;
+    if (a.reduction > 40) s -= 8;
+    if (a.addressable > 80) s -= 6;
+    s = Math.max(8, Math.min(96, s));
+    return { score: s, label: s >= 70 ? "High" : s >= 45 ? "Medium" : "Low", softShare: Math.round(soft * 100) };
+  }
+
+  valueScore() {
+    const e = this.engine();
+    const mag = Math.max(0, Math.min(50, (Math.log10(Math.max(e.steady, 1)) - 4.3) * 28));
+    const roiPart = Math.max(0, Math.min(50, e.roi3 / 4));
+    return Math.round(Math.max(4, Math.min(98, mag + roiPart)));
+  }
+
+  recommend(over) {
+    const e = over || this.engine();
+    const f = this.feasibility(), ad = this.adoption(), cf = this.confidence(), al = this.alignment();
+    const a = this.state.a, v = this.valueScore();
+    const money = (n) => this.money(n);
+    if (e.steady <= 0 || (e.roi3 < 0)) return { label: "DON'T BUILD", color: C.soft, chipBg: C.pinkD,
+      why: "The case does not close. At these assumptions the run and change cost absorb the whole benefit, so steady-state net value is " + money(e.steady) + ". This is a cost problem, not an AI problem — either the volume is too small or the run cost is too heavy." };
+    if (a.dataAvailable === "Not ready" || a.dataQuality === "Low") return { label: "VALIDATE FIRST", color: C.warm, chipBg: "#8A5A00",
+      why: "The value looks real, but " + (a.dataAvailable === "Not ready" ? "the required data is not in place" : "data quality is low") + ". Spend one short cycle proving the data foundation. Committing now converts a " + Math.round(e.roi1) + "% first-year ROI into a data-remediation project with an AI label on it." };
+    if (cf.label === "Low") return { label: "VALIDATE FIRST", color: C.warm, chipBg: "#8A5A00",
+      why: "Attractive on paper, low confidence underneath: " + cf.softShare + "% of the value comes from modelled or assumed drivers rather than measured baselines. Validate the largest assumption before the number is quoted upward." };
+    if (v >= 55 && f.score >= 70 && cf.label === "High" && ad.band !== "High") return { label: "BUILD", color: C.mint, chipBg: C.tealD,
+      why: "Value, feasibility, readiness and confidence all point the same way: " + Math.round(e.roi1) + "% first-year ROI, payback in " + (e.payback > 36 ? "over 36" : e.payback.toFixed(1)) + " months, " + f.band.toLowerCase() + " technical feasibility and " + ad.band.toLowerCase() + " adoption complexity. Commit — and set the kill criterion before you start." };
+    if (v >= 40 && ad.band === "High") return { label: "PILOT", color: "#A7F3EB", chipBg: C.tealD,
+      why: "The financial case is attractive, but adoption complexity is the primary constraint — " + a.interaction.toLowerCase() + " use with " + a.workflowChange.toLowerCase() + " workflow change. A human-in-the-loop pilot with one willing team buys the adoption evidence a full commitment would otherwise assume." };
+    if (v >= 40 && f.score < 70) return { label: "PILOT", color: "#A7F3EB", chipBg: C.tealD,
+      why: "Strong value with " + f.band.toLowerCase() + " feasibility; the binding constraint is " + f.weakest.toLowerCase() + ". Pilot on the narrow slice that is already feasible, and let the gate for the rest be a stated condition rather than a hope." };
+    if (v >= 40) return { label: "PILOT", color: "#A7F3EB", chipBg: C.tealD,
+      why: "The economics work at " + Math.round(e.roi1) + "% first-year ROI. A controlled pilot converts the benefit-realisation assumption into measured evidence before the full investment is committed." };
+    if (al.band === "High" && v < 40) return { label: "DEFER", color: C.indigoBd, chipBg: C.indigoD,
+      why: "Strategically aligned but financially thin at " + money(e.steady) + " steady-state net value. Keep it on the portfolio, revisit when volume grows or run cost falls — do not fund it ahead of use cases that pay for themselves." };
+    return { label: "WATCH", color: C.indigoBd, chipBg: C.indigoD,
+      why: "Technically feasible, but it does not create enough measurable value to justify the investment. Net value of " + money(e.steady) + " against " + money(e.build) + " to build makes the opportunity cost the real argument." };
+  }
+
+  questions() {
+    const a = this.state.a, on = (d) => (a.drivers || []).indexOf(d) > -1;
+    const txt = (id, phase, prompt, help, ph) => ({ id, phase, prompt, help, type: "text", placeholder: ph, value: a[id], onText: (e) => this.set(id, e.target.value) });
+    const ch = (id, phase, prompt, help, opts, multi) => ({
+      id, phase, prompt, help, type: "choice", multi,
+      choices: opts.map(o => ({ label: o[0], note: o[1] || "", picked: multi ? this.has(id, o[0]) : a[id] === o[0], pick: () => multi ? this.toggleIn(id, o[0]) : this.set(id, o[0]) }))
+    });
+    const sl = (id, phase, prompt, help, min, max, step, unit, disp, minL, maxL) => ({
+      id, phase, prompt, help, type: "slider", min, max, step, unit, value: a[id],
+      display: disp, minLabel: minL, maxLabel: maxL, onSlide: (e) => this.set(id, Number(e.target.value))
+    });
+    const grp = (id, phase, prompt, help, group, rows, totalLabel) => ({
+      id, phase, prompt, help, type: "group", totalLabel,
+      total: this.money(this.sumGroup(group)),
+      rows: rows.map(r => ({ label: r[0], key: r[1], min: r[2], max: r[3], step: r[4], value: a[group][r[1]], display: this.money(a[group][r[1]]), onSlide: (e) => this.setNested(group, r[1], Number(e.target.value)) }))
+    });
+
+    const qs = [
+      txt("problem", 0, "What business problem are you trying to solve?", "Start with the problem, not the technology. If the sentence contains the word AI, you are probably describing a solution.", "e.g. Alarm triage is manual, so avoidable faults escalate into outages"),
+      txt("today", 0, "What happens today?", "Describe the current process as it actually runs, including the workarounds.", "Who does what, in what order, and where it breaks"),
+      ch("affected", 0, "Who is affected?", "Pick everyone who feels the problem. Select as many as apply.", [["Employees"], ["Customers"], ["Operations"], ["Sales"], ["Finance"], ["IT"], ["Leadership"], ["Multiple"]], true),
+      ch("outcome", 0, "What business outcome are you trying to improve?", "One primary outcome. If everything improves, nothing is prioritised.", [["Reduce cost"], ["Increase revenue"], ["Increase productivity"], ["Improve customer experience"], ["Reduce risk"], ["Improve decision quality"], ["Increase speed"], ["Enable new business model"]]),
+
+      Object.assign(sl("volume", 1, "How many cases does this process touch each year?", "Count only the volume genuinely in scope. Over-counting here inflates everything downstream.", 10000, 5000000, 10000, a.unit, this.n(a.volume), "10k", "5M"), {
+        hasUnits: true,
+        units: ["transactions / year", "customers / year", "cases / year", "decisions / year", "hours / year"].map(u => ({ label: u.split(" ")[0], value: u, picked: a.unit === u, pick: () => this.set("unit", u) }))
+      }),
+      Object.assign(sl("costPerUnit", 1, "What does one unit of this process cost today?", "Fully loaded: people, systems, rework. The cost of getting it wrong belongs in here too.", 0.5, 80, 0.5, "per unit", "€" + a.costPerUnit.toFixed(2), "€0.50", "€80"), { showsBaseline: true }),
+      sl("hoursPerUnit", 1, "How much time does one unit consume?", "Hours of human effort per case, end to end, including handoffs and waiting where a person is blocked.", 0.05, 8, 0.05, "hours per unit", a.hoursPerUnit.toFixed(2) + " h", "0.05 h", "8 h"),
+      sl("fte", 1, "How many people are involved?", "Full-time equivalents across the whole process, not just the team that owns it.", 1, 500, 1, "FTE", this.n(a.fte), "1", "500"),
+
+      ch("drivers", 2, "Which value drivers actually apply here?", "Not all AI value is cost saving. Be honest about which of these you could defend in front of finance.", [
+        ["Cost reduction", "Lower cost per unit of the same work"],
+        ["Productivity", "Time redirected to higher-value work"],
+        ["Revenue growth", "Additional revenue you could attribute"],
+        ["Customer experience", "A customer metric with a financial consequence"],
+        ["Risk reduction", "Reduced expected loss from a named exposure"]
+      ], true),
+      on("Cost reduction") ? sl("reduction", 2, "What share of the current cost could realistically be reduced?", "The default is 20%. Anything above 40% needs evidence, not enthusiasm.", 1, 70, 1, "cost reduction", a.reduction + "%", "1%", "70%") : null,
+      on("Cost reduction") ? sl("addressable", 2, "And what portion of the workflow is actually AI-addressable?", "This is the question that stops a 70% assumption becoming a 70% forecast. Most workflows have judgement, exceptions and handoffs AI will not touch.", 5, 100, 5, "of the workflow", a.addressable + "%", "5%", "100%") : null,
+      on("Productivity") ? sl("hoursSaved", 2, "How many hours a year could this give back?", "Hours redirected, not hours eliminated. Modelled productivity value is not cash unless headcount or contractor spend actually changes.", 500, 200000, 500, "hours / year", this.n(a.hoursSaved), "500", "200k") : null,
+      on("Productivity") ? sl("loadedCost", 2, "What is the loaded annual cost per employee?", "Salary plus employment cost plus tooling. Divided by " + HOURS_PER_FTE + " productive hours to get an hourly rate.", 30000, 200000, 1000, "per FTE / year", this.money(a.loadedCost), "€30k", "€200k") : null,
+      on("Revenue growth") ? sl("revenueOpp", 2, "What annual revenue opportunity could this create?", "Only revenue you could attribute to this change in front of finance.", 0, 20000000, 100000, "per year", this.money(a.revenueOpp), "€0", "€20M") : null,
+      on("Revenue growth") ? sl("revenueRealisation", 2, "How much of it would you actually realise?", "Full realisation is the most common error in an AI business case. Conversion, timing and cannibalisation all take a share.", 5, 100, 5, "realised", a.revenueRealisation + "%", "5%", "100%") : null,
+      on("Customer experience") ? ch("cxMetric", 2, "Which customer metric improves?", "Pick the one with a traceable financial consequence, not the one that is easiest to move.", [["NPS"], ["CSAT"], ["Churn"], ["Conversion"], ["Response time"], ["Resolution time"]]) : null,
+      on("Customer experience") ? sl("cxImpact", 2, "What is that worth annually?", "Your own estimate of the financial consequence. Recorded as an assumption, with its confidence shown.", 0, 5000000, 50000, "per year", this.money(a.cxImpact), "€0", "€5M") : null,
+      on("Risk reduction") ? sl("riskLoss", 2, "What is the current annual expected loss from this risk?", "Fraud, errors, compliance exposure, revenue leakage — whichever applies.", 0, 20000000, 100000, "per year", this.money(a.riskLoss), "€0", "€20M") : null,
+      on("Risk reduction") ? sl("riskReduction", 2, "By how much could AI reduce it?", "Modelled, not guaranteed. Risk reduction is the driver most often over-claimed in AI business cases.", 1, 40, 1, "reduction", a.riskReduction + "%", "1%", "40%") : null,
+
+      ch("solutionType", 3, "What kind of AI solution are you considering?", "This shapes cost, evaluation approach and the failure modes you will have to design around.", [["Predictive ML"], ["Generative AI"], ["AI assistant"], ["AI agent"], ["Recommendation engine"], ["Computer vision"], ["NLP"], ["Anomaly detection"], ["Automation"]]),
+      txt("whatAI", 3, "What exactly will the AI do?", "One sentence, concrete. If you cannot write it, the use case is not defined yet.", "e.g. Rank alarms by predicted customer impact and propose the likely root cause"),
+      ch("aiRole", 3, "Where does AI sit in the workflow?", "This is the single biggest driver of governance, adoption and risk. Automating the decision is a different product from informing it.", [
+        ["Assist", "Surfaces information, human decides"],
+        ["Recommend", "Proposes an action, human approves"],
+        ["Decide", "Decides within set bounds, human audits"],
+        ["Execute", "Acts, with human oversight after the fact"],
+        ["Fully automate", "No human in the path"]
+      ]),
+
+      ch("dataAvailable", 4, "Is the required data available?", "Available means it exists, you can access it, and someone owns it.", [["Ready"], ["Partially ready"], ["Not ready"], ["Unknown"]]),
+      ch("dataQuality", 4, "How good is that data?", "Completeness, accuracy, consistency and whether the labels mean what you think they mean.", [["High"], ["Medium"], ["Low"], ["Unknown"]]),
+      ch("capability", 4, "How complex is the AI capability itself?", "Low means a proven pattern. High means research-grade work with an uncertain end date.", [["Low"], ["Medium"], ["High"]]),
+      ch("integration", 4, "Must it integrate with existing systems or APIs?", "Integration is where AI timelines usually go wrong — rarely the model.", [["Yes"], ["No"], ["Unknown"]]),
+      ch("deployment", 4, "How difficult is deployment?", "Environments, security review, release process, and who is allowed to press the button.", [["Low"], ["Medium"], ["High"]]),
+
+      ch("interaction", 5, "How will people interact with the AI?", "Interaction mode sets the trust burden, and the trust burden sets the adoption curve.", [["Assistive"], ["Decision support"], ["Human-in-the-loop"], ["Semi-autonomous"], ["Autonomous"]]),
+      ch("workflowChange", 5, "How significant is the workflow change?", "New behaviour is harder than a new screen, and much harder than a new number.", [["Low"], ["Medium"], ["High"]]),
+      ch("training", 5, "How much user training is required?", "Training cost belongs in the business case, not in a footnote.", [["Low"], ["Medium"], ["High"]]),
+      ch("trust", 5, "How much trust will users need before they act on it?", "The higher this is, the more explanation and evidence the product must carry from day one.", [["Low"], ["Medium"], ["High"]]),
+
+      grp("build", 6, "What will it cost to build?", "One-off investment, component by component. A single arbitrary investment number is where most AI business cases lose credibility.", "build", [
+        ["AI development", "dev", 0, 3000000, 25000], ["Data preparation", "data", 0, 2000000, 10000],
+        ["Integration", "integration", 0, 2000000, 10000], ["Infrastructure", "infra", 0, 1000000, 10000],
+        ["Security & compliance", "security", 0, 1000000, 10000], ["Change management", "change", 0, 1000000, 10000],
+        ["Training", "training", 0, 500000, 5000], ["Vendor & licences", "vendor", 0, 2000000, 25000]
+      ], "Total initial investment"),
+      grp("run", 6, "And what will it cost to run each year?", "The line that turns a promising pilot into an uneconomic product at scale. Human oversight is a run cost, not a rounding error.", "run", [
+        ["AI inference", "inference", 0, 1500000, 10000], ["Cloud & infrastructure", "cloud", 0, 1000000, 10000],
+        ["Model & API usage", "licensing", 0, 1000000, 10000], ["Maintenance", "maintenance", 0, 1000000, 10000],
+        ["Monitoring & evaluation", "monitoring", 0, 500000, 5000], ["Human oversight", "oversight", 0, 1000000, 10000],
+        ["Support", "support", 0, 500000, 5000]
+      ], "Total annual run cost"),
+      ch("scaleCost", 6, "Will cost increase materially as usage scales?", "Per-inference pricing and human oversight both scale with volume. If yes, I add 15% to the run cost.", [["Yes"], ["No"], ["Unknown"]]),
+      sl("changeAnnual", 6, "What is the annual change and adoption cost?", "Training refresh, process support, the productivity dip. The line most business cases quietly omit.", 0, 1500000, 10000, "per year", this.money(a.changeAnnual), "€0", "€1.5M"),
+
+      ch("firstValue", 7, "When could the first value realistically be realised?", "This sets the year-one benefit ramp, which is usually the difference between a credible case and an optimistic one.", [["<3 months"], ["3–6 months"], ["6–12 months"], ["12–24 months"], [">24 months"]]),
+      ch("fullAdoption", 7, "How long until full-scale adoption?", "Full adoption, not first release.", [["<6 months"], ["6–12 months"], ["12–18 months"], ["18–24 months"], [">24 months"]]),
+
+      ch("objective", 8, "Which strategic objective does this support?", "If it maps to none of these, that is itself the answer.", [["Revenue growth"], ["Cost transformation"], ["Customer experience"], ["Digital transformation"], ["Operational excellence"], ["Risk"], ["Innovation"], ["Employee productivity"]]),
+      ch("importance", 8, "How strategically important is it?", "Be careful here. Everything cannot be critical.", [["Low"], ["Medium"], ["High"], ["Critical"]]),
+
+      ch("evidence", 9, "What evidence supports the value assumptions?", "This drives value confidence more than the size of the number does.", [
+        ["Measured with a validated baseline", "Instrumented, agreed with finance"],
+        ["Baseline measured internally", "Measured, not yet independently agreed"],
+        ["Internal estimates only", "Expert judgement, no measurement"],
+        ["Vendor or supplier claims", "Someone else's numbers"]
+      ]),
+      ch("benchmark", 9, "Do you have a comparable benchmark?", "A comparable case raises confidence far more than a more detailed spreadsheet does.", [
+        ["Yes, a comparable internal benchmark"], ["Yes, an external benchmark"], ["No comparable benchmark"]
+      ])
+    ].filter(Boolean);
+    return qs;
+  }
+
+  challengeFor(q) {
+    const a = this.state.a, cf = this.confidence(), e = this.engine();
+    if (q.id === "reduction" && a.reduction > 40) return a.reduction + "% is possible in some workflows, but it is a high assumption. Before I use it, let's establish the baseline and identify which activities are actually automatable — the next question does exactly that.";
+    if (q.id === "addressable" && a.addressable > 80) return "Above 80% addressable means almost no exceptions, no judgement calls and no handoffs. That is rare outside highly standardised back-office work. If you are confident, keep it — but expect finance to test it.";
+    if (q.id === "revenueRealisation" && a.revenueRealisation > 80) return "Assuming you realise more than 80% of a revenue opportunity is the most common way an AI business case overstates value. Conversion, timing and cannibalisation each take a share.";
+    if (q.id === "riskReduction" && a.riskReduction > 20) return "Risk reduction above 20% is difficult to evidence, and it is the driver auditors challenge first. I will carry it as a modelled assumption with low confidence.";
+    if (q.id === "aiRole" && (a.aiRole === "Fully automate" || a.aiRole === "Execute")) return "Putting AI in the execution path raises governance, adoption and reputational risk sharply. I have reduced feasibility and increased adoption complexity to reflect that. If the decision is reversible and low-stakes, fine — if not, recommend is usually the better first release.";
+    if (q.id === "drivers" && (a.drivers || []).length >= 4) return "Four or more value drivers usually means the case is being padded. The strongest business cases I have seen commit to one primary driver and treat the rest as secondary upside.";
+    if (q.id === "evidence" && a.evidence === "Vendor or supplier claims") return "Vendor numbers describe someone else's environment. I have dropped value confidence accordingly — validating one of these assumptions internally is worth more than any further modelling.";
+    if (q.id === "changeAnnual" && a.changeAnnual === 0) return "Zero annual change cost implies adoption sustains itself. It rarely does. Even a modest figure here makes the case more credible, not less.";
+    if (q.id === "run" && this.sumGroup("run") < this.sumGroup("build") * 0.12) return "Run cost under about 12% of build cost is optimistic for an AI product. Inference, monitoring, evaluation and human oversight all recur — this is the number that decides whether it survives at scale.";
+    if (q.id === "benchmark" && cf.label === "Low" && cf.softShare > 50) return cf.softShare + "% of the value now comes from modelled or assumed drivers. Your ROI looks attractive, but the case is low-confidence — the recommendation reflects that rather than the headline number.";
+    if (q.id === "costPerUnit" && e.baseline > 50000000) return "A baseline above €50M means this is a major cost programme, not a single use case. Consider scoping to one domain so the business case can actually be tested.";
+    return null;
+  }
+
+  agentRead() {
+    const e = this.engine(), f = this.feasibility(), ad = this.adoption(), cf = this.confidence();
+    if (cf.label === "Low" && e.roi1 > 40) return "Your ROI looks attractive, but the business case is currently low-confidence because " + cf.softShare + "% of the value depends on modelled or unvalidated assumptions.";
+    if (f.score < 60 && e.steady > 0) return "Strong value and " + f.band.toLowerCase() + " feasibility. The binding constraint is " + f.weakest.toLowerCase() + ", not the model.";
+    if (ad.band === "High") return "The financial case is attractive, but adoption complexity is the primary constraint. A human-in-the-loop pilot is the lower-risk route.";
+    if (e.steady <= 0) return "The use case is technically feasible but does not create enough measurable value to justify the investment at these cost assumptions.";
+    if (cf.label === "High" && e.roi1 > 50) return "Value, feasibility and evidence are aligned. The remaining question is sequencing, not whether this is worth doing.";
+    return "Value and feasibility are broadly balanced. Payback of " + (e.payback > 36 ? "over 36" : e.payback.toFixed(1)) + " months is the number to defend.";
+  }
+
+  docSections() {
+    const a = this.state.a, e = this.engine(), f = this.feasibility(), ad = this.adoption(), cf = this.confidence(), al = this.alignment(), rec = this.recommend();
+    const m = (x) => this.money(x);
+    const S = (title, body, extra) => Object.assign({ title, body, rows: [], bullets: [], label: "" }, extra || {});
+    const drivers = (a.drivers || []).join(", ").toLowerCase();
+    const pilot = rec.label === "PILOT" || rec.label === "VALIDATE FIRST";
+    return [
+      S("Business problem", a.problem || "Not yet described. The assessment used the baseline volume and cost figures supplied, but a business case without a written problem statement will not survive its first review."),
+      S("Current state", a.today || "Not yet described.", { rows: [
+        { k: "Annual volume", v: this.n(a.volume) + " " + a.unit },
+        { k: "Cost per unit", v: "€" + a.costPerUnit.toFixed(2) },
+        { k: "Annual baseline cost", v: m(e.baseline) },
+        { k: "People involved", v: this.n(a.fte) + " FTE" },
+        { k: "Effort per unit", v: a.hoursPerUnit.toFixed(2) + " hours" }
+      ] }),
+      S("Opportunity", "Against an annual baseline of " + m(e.baseline) + ", the assessed value drivers are " + (drivers || "not yet selected") + ". At the stated assumptions this produces " + m(e.gross) + " of annual gross value at full run-rate, of which " + Math.round(e.gross > 0 ? (e.savings / e.gross) * 100 : 0) + "% is direct cost saving and the remainder is modelled or attributed value."),
+      S("Proposed AI solution", (a.whatAI || "Not yet specified.") + " The approach is " + a.solutionType.toLowerCase() + ", positioned to " + a.aiRole.toLowerCase() + " within the existing workflow" + (a.aiRole === "Fully automate" ? " with no human in the decision path, which carries the governance burden noted in the risk register." : ", keeping accountability for the outcome with the human operator.")),
+      S("Strategic alignment", "The use case supports " + a.objective.toLowerCase() + " and is rated " + a.importance.toLowerCase() + " in strategic importance, giving an alignment score of " + al.score + " / 100 (" + al.band.toLowerCase() + "). Strategic alignment alone is not a funding argument; it is the tie-breaker between cases of similar financial merit."),
+      S("Value drivers", "Each driver below is carried at its stated confidence rather than as a single blended figure.", { rows: [
+        { k: "Cost savings", v: m(e.savings) + " · " + a.reduction + "% reduction on " + a.addressable + "% addressable workflow" },
+        { k: "Productivity", v: m(e.productivity) + " · modelled, not cash unless headcount or contractor spend changes" },
+        { k: "Revenue", v: m(e.revenue) + " · at " + a.revenueRealisation + "% realisation" },
+        { k: "Customer experience", v: m(e.cx) + " · estimated financial consequence of improving " + a.cxMetric.toLowerCase() },
+        { k: "Risk reduction", v: m(e.risk) + " · modelled " + a.riskReduction + "% reduction in expected loss" }
+      ] }),
+      S("Financial model", "Annual gross value of " + m(e.gross) + " at run-rate. Year one is benefit-ramped to " + Math.round(e.ramp * 100) + "% on a first-value expectation of " + a.firstValue + ", giving " + m(e.y1Gross) + ". Year-one net value is " + m(e.y1Net) + " after " + m(e.y1Cost) + " of cost, a first-year ROI of " + Math.round(e.roi1) + "%. Steady-state net annual value is " + m(e.steady) + ". Over three years: " + m(e.g3) + " gross, " + m(e.c3) + " cost, " + m(e.net3) + " net, " + Math.round(e.roi3) + "% ROI. Payback " + (e.payback > 36 ? "is not achieved within 36 months" : "in " + e.payback.toFixed(1) + " months") + "."),
+      S("Cost model", "Initial investment of " + m(e.build) + ", annual run cost of " + m(e.run) + (a.scaleCost === "Yes" ? " including a 15% allowance for cost that scales with usage" : "") + ", and annual change and adoption cost of " + m(e.change) + ". Three-year total cost of ownership: " + m(e.c3) + "."),
+      S("Feasibility", "AI feasibility scores " + f.score + " / 100 (" + f.band.toLowerCase() + "). " + (f.score >= 70 ? "Technical feasibility is strong." : "Feasibility is constrained.") + " The main constraint is " + f.weakest.toLowerCase() + ". Capability complexity is " + a.capability.toLowerCase() + ", deployment difficulty " + a.deployment.toLowerCase() + ", and integration with existing systems is " + (a.integration === "Yes" ? "required" : a.integration.toLowerCase()) + "."),
+      S("Data readiness", "Data is " + a.dataAvailable.toLowerCase() + " with " + a.dataQuality.toLowerCase() + " quality. " + (a.dataAvailable === "Ready" && a.dataQuality === "High" ? "This removes the most common cause of AI delivery failure." : "Data readiness is the strongest single predictor of whether this case survives delivery, and it is not yet where it needs to be. Treat it as a prerequisite workstream with its own owner.")),
+      S("Adoption and change", "Interaction model is " + a.interaction.toLowerCase() + ", workflow change is " + a.workflowChange.toLowerCase() + ", training need is " + a.training.toLowerCase() + " and the trust threshold before users will act is " + a.trust.toLowerCase() + ". Overall adoption complexity is " + ad.band.toLowerCase() + ". Full-scale adoption is expected in " + a.fullAdoption + "."),
+      S("Value confidence", "Value confidence is " + cf.label.toLowerCase() + " (" + cf.score + " / 100). Evidence base: " + a.evidence.toLowerCase() + "; benchmark availability: " + a.benchmark.toLowerCase() + ". " + cf.softShare + "% of the gross value comes from modelled or attributed drivers rather than measured cost. Financial magnitude and confidence are separate judgements — a large opportunity can still be low confidence.", { label: "Confidence is a judgement, not a measurement" }),
+      S("Sensitivity analysis", "At 50% benefit realisation the case returns " + m(this.engine(50).steady) + " steady-state net value; at 100%, " + m(this.engine(100).steady) + "; at 125%, " + m(this.engine(125).steady) + ". The case is most sensitive to adoption rate, benefit realisation, AI run cost and implementation cost, in that order."),
+      S("Risks", "See the risk register below. The dominant risk at this point in the case is " + (cf.label === "Low" ? "benefit realisation, because the value rests on unvalidated assumptions." : ad.band === "High" ? "adoption, because the workflow change is significant and trust must be earned before users act." : f.score < 60 ? f.weakest.toLowerCase() + ", which sits upstream of everything else in delivery." : "run-cost growth as volume scales.")),
+      S("Recommendation", rec.label + ". " + rec.why),
+      pilot ? S("Pilot proposal", "A controlled pilot to convert the largest assumption into evidence before full commitment.", { rows: [
+        { k: "Objective", v: "Validate that " + (a.drivers || ["the stated"])[0].toLowerCase() + " value is realisable at the assumed rate, in a live workflow." },
+        { k: "Scope", v: "One team, one " + a.unit.split(" ")[0] + " stream, on the data that is already available." },
+        { k: "Excluded", v: "Estate-wide rollout, automation of the decision itself, and any integration not already in place." },
+        { k: "Duration", v: a.firstValue === "<3 months" ? "8–10 weeks" : "12–16 weeks" },
+        { k: "Required data", v: "The subset rated " + a.dataAvailable.toLowerCase() + ", with a named owner per field." },
+        { k: "Users", v: "5–10 practitioners in the affected team, volunteering rather than assigned." },
+        { k: "Baseline", v: "Current cost per unit of €" + a.costPerUnit.toFixed(2) + " and " + a.hoursPerUnit.toFixed(2) + " hours per unit, measured for four weeks before launch." },
+        { k: "Experiment design", v: "Parallel run against the current process on the same cases, with acceptance and correction tracked per recommendation." },
+        { k: "Go / no-go", v: "Proceed only if measured benefit reaches at least 60% of the assumed rate and adoption holds without mandate." }
+      ], bullets: [
+        "At least " + Math.max(10, Math.round(a.reduction * 0.6)) + "% improvement on the measured baseline",
+        "Output accepted without material correction in the majority of cases",
+        "Adoption sustained by the pilot team without escalation or mandate",
+        "No critical compliance, security or data-protection issue raised"
+      ], label: "Proposed validation targets — not committed results" }) : S("Delivery approach", "With this recommendation the next step is not a pilot but a decision: either commit with a defined kill criterion, or park the case and revisit when the constraint above has changed."),
+      S("Success metrics", "Measured as a hierarchy, so the case cannot be declared a success on model performance alone.", { rows: [
+        { k: "Business outcome", v: a.outcome },
+        { k: "Value metric", v: m(e.steady) + " steady-state net annual value, attributed to accepted actions" },
+        { k: "Product metric", v: "Share of in-scope volume where the AI output is accepted and actioned" },
+        { k: "AI performance metric", v: a.solutionType === "Generative AI" ? "Groundedness and correction rate on a fixed evaluation set" : "Precision and recall on a fixed, versioned evaluation set" }
+      ] }),
+      S("Next steps", "", { bullets: [
+        cf.label === "Low" ? "Validate the single largest assumption (" + (e.savings >= e.gross / 2 ? "the " + a.reduction + "% cost reduction" : "the modelled non-cash value") + ") against measured data." : "Agree the baseline with finance so the value metric is not contested later.",
+        a.dataAvailable === "Ready" ? "Confirm data ownership per field and freeze the evaluation set." : "Stand up the data readiness workstream with a named owner and a dated gate.",
+        pilot ? "Approve the pilot scope, duration and go / no-go criteria above." : "Confirm the funding decision and record the kill criterion.",
+        "Set the review point at which this case is re-scored rather than re-argued."
+      ] })
+    ].map((s, i) => Object.assign({}, s, {
+      n: (i + 1 < 10 ? "0" : "") + (i + 1),
+      hasRows: s.rows.length > 0, hasBullets: s.bullets.length > 0, hasLabel: !!s.label,
+      rows: s.rows.map((r, j) => Object.assign({}, r, { bg: j % 2 ? "#FBFCFE" : "#fff" })),
+      bullets: s.bullets.map(t => ({ t }))
+    }));
+  }
+
+  renderVals() {
+    const st = this.state, a = st.a;
+    const e = this.engine(), f = this.feasibility(), ad = this.adoption(), cf = this.confidence(), al = this.alignment();
+    const rec = this.recommend();
+    const m = (x) => this.money(x);
+    const qs = this.questions();
+    const step = Math.min(st.step, qs.length - 1);
+    const cur = qs[step];
+    const challenge = cur ? this.challengeFor(cur) : null;
+    const vs = this.valueScore();
+
+    const q = cur ? Object.assign({}, cur, {
+      phaseLabel: "Phase " + (cur.phase + 1) + " · " + PHASES[cur.phase],
+      isText: cur.type === "text", isChoice: cur.type === "choice", isSlider: cur.type === "slider", isGroup: cur.type === "group",
+      textValue: cur.type === "text" ? (a[cur.id] || "") : "",
+      hasChallenge: !!challenge, challenge: challenge || "",
+      hasBaseline: !!cur.showsBaseline,
+      hasUnits: !!cur.hasUnits,
+      units: (cur.units || []).map(u => ({ label: u.label, bg: u.picked ? C.ink : "#fff", border: u.picked ? C.ink : C.border, fg: u.picked ? "#fff" : C.ink4, pick: u.pick })),
+      choices: (cur.choices || []).map(c => ({
+        label: c.label, note: c.note,
+        bg: c.picked ? C.indigoBg : "#fff", border: c.picked ? C.indigo : C.border,
+        fg: c.picked ? C.indigoD : C.ink,
+        dotRadius: cur.multi ? "5px" : "50%",
+        dotBorder: c.picked ? C.indigo : "#D3D8E8", dotBg: c.picked ? C.indigo : "#fff",
+        picked: !!c.picked, pick: c.pick
+      }))
+    }) : {};
+
+    const kpis = [
+      { k: "Net annual value", v: m(e.steady), fg: e.steady > 0 ? C.mint : C.soft, note: "steady state" },
+      { k: "Year 1 ROI", v: Math.round(e.roi1) + "%", fg: "#fff", note: "ramped benefit" },
+      { k: "Payback", v: e.payback > 36 ? "36+ mo" : e.payback.toFixed(1) + " mo", fg: "#fff", note: e.payback > 36 ? "not within 36 months" : "on initial investment" },
+      { k: "Gross annual value", v: m(e.gross), fg: "#fff", note: "at full run-rate" }
+    ];
+
+    const bandFg = (b) => b === "High" || b === "Ready" || b === "Low" ? C.tealD : b === "Medium" || b === "Partially ready" ? C.amber : C.pinkD;
+    const bandBg = (b) => b === "High" || b === "Ready" || b === "Low" ? C.tealBg : b === "Medium" || b === "Partially ready" ? C.amberBg : C.pinkBg;
+    const bandBd = (b) => b === "High" || b === "Ready" || b === "Low" ? C.tealBd : b === "Medium" || b === "Partially ready" ? C.amberBd : C.pinkBd;
+
+    const scDefs = [
+      { k: "AI feasibility", v: f.band, note: f.score + " / 100", band: f.band },
+      { k: "Data readiness", v: a.dataAvailable, note: a.dataQuality.toLowerCase() + " quality", band: a.dataAvailable === "Ready" ? "High" : a.dataAvailable === "Partially ready" ? "Medium" : "Low" },
+      { k: "Adoption complexity", v: ad.band, note: a.interaction.toLowerCase(), band: ad.band === "Low" ? "High" : ad.band === "Medium" ? "Medium" : "Low" },
+      { k: "Value confidence", v: cf.label, note: cf.score + " / 100", band: cf.label },
+      { k: "Strategic alignment", v: al.band, note: al.score + " / 100", band: al.band },
+      { k: "Time to value", v: a.firstValue, note: "first value", band: a.firstValue === "<3 months" || a.firstValue === "3–6 months" ? "High" : a.firstValue === "6–12 months" ? "Medium" : "Low" }
+    ];
+
+    const maxCost = Math.max(e.build, e.run, e.change, e.c3, 1);
+    const maxBar = Math.max(e.gross, e.y1Cost, Math.abs(e.net3), 1);
+    const y = [
+      { label: "Year 1", gross: e.y1Gross, cost: e.y1Cost, net: e.y1Net },
+      { label: "Year 2", gross: e.gross * 0.85, cost: e.run + e.change * 0.4, net: e.gross * 0.85 - (e.run + e.change * 0.4) },
+      { label: "Year 3", gross: e.gross, cost: e.run + e.change * 0.4, net: e.gross - (e.run + e.change * 0.4) }
+    ];
+    let cum = 0;
+    const years = y.map(r => {
+      cum += r.net;
+      return {
+        label: r.label, net: m(r.net), cum: m(cum),
+        grossH: Math.max(3, (r.gross / maxBar) * 100) + "%",
+        costH: Math.max(3, (r.cost / maxBar) * 100) + "%",
+        cumH: Math.max(3, (Math.abs(cum) / maxBar) * 100) + "%",
+        cumBg: cum >= 0 ? C.ink : C.pinkD
+      };
+    });
+
+    const scenarioDefs = [
+      { label: "Conservative", reduction: Math.max(1, Math.round(a.reduction * 0.5)), realisation: 60 },
+      { label: "Base", reduction: a.reduction, realisation: 100 },
+      { label: "Upside", reduction: Math.min(70, Math.round(a.reduction * 1.5)), realisation: 120 }
+    ];
+
+    const softLabel = (x) => x > 0 ? "Modelled" : "—";
+
+    return {
+      isIntro: st.view === "intro", isInterview: st.view === "interview", isDash: st.view === "dash", isDoc: st.view === "doc", isGate: st.view === "gate",
+      gate: {
+        name: st.gate.name, email: st.gate.email, org: st.gate.org,
+        showError: st.gateError,
+        emailBorder: st.gateError ? "#FFD6E0" : C.border
+      },
+      gateContents: [
+        { n: "01", t: "Executive summary written from your inputs, not a template." },
+        { n: "02", t: "Financial model: year one, steady state and three-year net value." },
+        { n: "03", t: "Itemised cost model — build, run and change, separately." },
+        { n: "04", t: "Feasibility, data readiness and adoption, each scored and explained." },
+        { n: "05", t: "Assumption register with source and confidence per input." },
+        { n: "06", t: "Pilot plan, success-metric hierarchy and a risk register." }
+      ],
+      setGateName: (ev) => this.setState(s => ({ gate: Object.assign({}, s.gate, { name: ev.target.value }) })),
+      setGateEmail: (ev) => this.setState(s => ({ gate: Object.assign({}, s.gate, { email: ev.target.value }), gateError: false })),
+      setGateOrg: (ev) => this.setState(s => ({ gate: Object.assign({}, s.gate, { org: ev.target.value }) })),
+      submitGate: () => {
+        const ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test((st.gate.email || "").trim());
+        if (ok) this.setState({ view: "doc", gatePassed: true, gateError: false });
+        else this.setState({ gateError: true });
+      },
+      preparedFor: (st.gate.name || st.gate.email)
+        ? "Prepared for " + (st.gate.name || st.gate.email) + (st.gate.org ? " · " + st.gate.org : "") + (st.gate.name && st.gate.email ? " · " + st.gate.email : "")
+        : "Prepared from your assessment inputs",
+      interviewCols: "repeat(auto-fit,minmax(300px,1fr))",
+      wideSpan: "1 / -1",
+      promises: [
+        { n: "01", t: "A quantified baseline", d: "Volume, cost per unit and the annual cost you are actually trying to move." },
+        { n: "02", t: "Value split by driver", d: "Cost, productivity, revenue, customer and risk kept separate, never blended." },
+        { n: "03", t: "A real cost model", d: "Build, run and change costs itemised — not one arbitrary investment number." },
+        { n: "04", t: "Feasibility and readiness scores", d: "Scored on data, capability, integration, deployment and adoption." },
+        { n: "05", t: "A transparent recommendation", d: "Build, pilot, validate, defer or don't build — with the reasoning shown." },
+        { n: "06", t: "An executive business case", d: "Eighteen sections, an assumption register, a pilot plan and a risk register." }
+      ],
+      start: () => this.setState({ view: "interview", step: 0 }),
+      loadExample: () => this.setState({ a: JSON.parse(JSON.stringify(EXAMPLE)), view: "dash", isExample: true, realisation: 100, scenario: "Base" }),
+
+      q, stepLabel: "Step " + (step + 1) + " of " + qs.length,
+      phaseDots: PHASES.map((_, i) => ({ bg: cur && i < cur.phase ? "linear-gradient(90deg,#00B1BE,#6366F1)" : (cur && i === cur.phase ? C.indigo : C.border) })),
+      canBack: step > 0,
+      back: () => this.setState({ step: step - 1 }),
+      nextLabel: step === qs.length - 1 ? "Build the business case" : "Next",
+      next: () => step === qs.length - 1 ? this.setState({ view: "dash" }) : this.setState({ step: step + 1 }),
+      skipToDash: () => this.setState({ view: "dash" }),
+      baselineCost: m(e.baseline),
+      baselineNote: this.n(a.volume) + " " + a.unit + " at €" + a.costPerUnit.toFixed(2) + " each. This is the number every benefit below is measured against.",
+
+      rec, conf: cf,
+      kpis,
+      miniScores: [
+        { k: "AI feasibility", v: f.band + " · " + f.score, fg: f.band === "High" ? C.mint : f.band === "Medium" ? C.warm : C.soft },
+        { k: "Data readiness", v: a.dataAvailable, fg: a.dataAvailable === "Ready" ? C.mint : a.dataAvailable === "Partially ready" ? C.warm : C.soft },
+        { k: "Adoption complexity", v: ad.band, fg: ad.band === "Low" ? C.mint : ad.band === "Medium" ? C.warm : C.soft },
+        { k: "Strategic alignment", v: al.band + " · " + al.score, fg: al.band === "High" ? C.mint : al.band === "Medium" ? C.warm : C.soft }
+      ],
+      hasAgentNote: st.view === "interview" && step > 3,
+      agentNote: this.agentRead(),
+
+      caseName: a.problem ? (a.problem.length > 90 ? a.problem.slice(0, 90).trim() + "…" : a.problem) : (a.solutionType + " for " + a.outcome.toLowerCase()),
+      caseSub: a.solutionType + " · " + a.aiRole.toLowerCase() + " in workflow · " + (a.affected || []).join(", ") + (st.isExample ? " · demo use case, synthetic inputs" : ""),
+      execSummary: "The proposed AI use case could generate approximately " + m(e.gross) + " in annual gross value at full run-rate, of which " + m(e.savings) + " is direct cost saving against a " + m(e.baseline) + " baseline. After " + m(e.run) + " of annual run cost and " + m(e.change) + " of change cost, steady-state net annual value is " + m(e.steady) + ", on an initial investment of " + m(e.build) + ". The opportunity has " + f.band.toLowerCase() + " feasibility (" + f.score + "/100), " + a.dataAvailable.toLowerCase() + " data and " + ad.band.toLowerCase() + " adoption complexity, at " + cf.label.toLowerCase() + " value confidence. " + rec.why,
+
+      buildUp: [
+        { k: "Annual cost savings", v: m(e.savings), tag: e.savings > 0 ? "User input · " + a.reduction + "% of " + a.addressable + "% addressable" : "Not selected", fg: C.ink7, tagFg: C.ink4, weight: "400", size: "14px", padTop: "0", rule: "none" },
+        { k: "Annual revenue opportunity", v: m(e.revenue), tag: e.revenue > 0 ? "Estimated · " + a.revenueRealisation + "% realised" : "Not selected", fg: C.ink7, tagFg: C.ink4, weight: "400", size: "14px", padTop: "0", rule: "none" },
+        { k: "Productivity value", v: m(e.productivity), tag: softLabel(e.productivity) + " · not cash", fg: C.ink7, tagFg: C.amber, weight: "400", size: "14px", padTop: "0", rule: "none" },
+        { k: "Customer experience value", v: m(e.cx), tag: e.cx > 0 ? "Estimated · " + a.cxMetric.toLowerCase() : "Not selected", fg: C.ink7, tagFg: C.ink4, weight: "400", size: "14px", padTop: "0", rule: "none" },
+        { k: "Risk reduction", v: m(e.risk), tag: softLabel(e.risk) + " · not guaranteed", fg: C.ink7, tagFg: C.amber, weight: "400", size: "14px", padTop: "0", rule: "none" },
+        { k: "Annual gross value", v: m(e.gross), tag: "Sum of selected drivers", fg: C.ink, tagFg: C.ink4, weight: "600", size: "17px", padTop: "12px", rule: "1px solid " + C.border },
+        { k: "Less annual run and change cost", v: "−" + m(e.run + e.change), tag: "Itemised in the cost model", fg: C.pinkD, tagFg: C.ink4, weight: "400", size: "14px", padTop: "0", rule: "none" },
+        { k: "Net annual value", v: m(e.steady), tag: "Steady state, excludes build", fg: e.steady > 0 ? C.tealD : C.pinkD, tagFg: C.ink4, weight: "700", size: "22px", padTop: "12px", rule: "1px solid " + C.border },
+        { k: "Initial investment", v: m(e.build), tag: "One-off, year one", fg: C.ink7, tagFg: C.ink4, weight: "400", size: "14px", padTop: "12px", rule: "1px solid " + C.border },
+        { k: "Three-year net value", v: m(e.net3), tag: Math.round(e.roi3) + "% three-year ROI", fg: e.net3 > 0 ? C.tealD : C.pinkD, tagFg: C.ink4, weight: "600", size: "17px", padTop: "0", rule: "none" }
+      ],
+
+      scorecard: scDefs.map(s => ({ k: s.k, v: s.v, note: s.note, fg: bandFg(s.band), bg: bandBg(s.band), border: bandBd(s.band) })),
+      scoreReasoning: "Feasibility " + f.score + "/100 — " + (f.score >= 70 ? "strong technical feasibility" : "constrained") + ", main constraint " + f.weakest.toLowerCase() + ". Adoption complexity is " + ad.band.toLowerCase() + " given " + a.interaction.toLowerCase() + " use and " + a.workflowChange.toLowerCase() + " workflow change. Confidence is " + cf.label.toLowerCase() + " because " + cf.softShare + "% of value is modelled rather than measured, on an evidence base of " + a.evidence.toLowerCase() + ".",
+
+      quadrants: [
+        { name: "Strategic bet", sub: "High value, low feasibility", justify: "flex-start", bg: "rgba(127,86,217,.05)", fg: "#6941C6" },
+        { name: "Likely win", sub: "High value, high feasibility", justify: "flex-start", bg: "rgba(0,177,190,.07)", fg: C.tealD },
+        { name: "Deprioritise", sub: "Low value, low feasibility", justify: "flex-end", bg: "rgba(255,126,158,.05)", fg: C.pinkD },
+        { name: "Quick efficiency", sub: "Low value, high feasibility", justify: "flex-end", bg: "rgba(99,102,241,.05)", fg: C.indigoD }
+      ],
+      dot: {
+        x: Math.max(6, Math.min(94, f.score)) + "%", y: Math.max(6, Math.min(94, vs)) + "%",
+        why: "Value scores " + vs + "/100 (from " + m(e.steady) + " steady-state net value and " + Math.round(e.roi3) + "% three-year ROI) against feasibility of " + f.score + "/100. That places this use case in the " + (vs >= 50 ? (f.score >= 50 ? "likely win" : "strategic bet") : (f.score >= 50 ? "quick efficiency" : "deprioritise")) + " quadrant. Moving " + f.weakest.toLowerCase() + " is the fastest way to move it right; validating the benefit assumption is the fastest way to move it up."
+      },
+
+      costProfile: [
+        { k: "Build cost (one-off)", v: m(e.build), w: (e.build / maxCost) * 100 + "%", bar: "linear-gradient(90deg,#6366F1,#7F56D9)" },
+        { k: "Annual run cost", v: m(e.run), w: (e.run / maxCost) * 100 + "%", bar: "linear-gradient(90deg,#00B1BE,#3B82F6)" },
+        { k: "Annual change cost", v: m(e.change), w: (e.change / maxCost) * 100 + "%", bar: "linear-gradient(90deg,#FF7E9E,#FFB3C6)" },
+        { k: "Three-year total cost", v: m(e.c3), w: (e.c3 / maxCost) * 100 + "%", bar: C.ink }
+      ],
+      costNote: "Run cost is " + Math.round(e.build > 0 ? (e.run / e.build) * 100 : 0) + "% of build cost" + (a.scaleCost === "Yes" ? ", including a 15% allowance for cost that scales with usage" : "") + ". Human oversight accounts for " + m(a.run.oversight) + " of it — a real product cost, not an implementation detail.",
+
+      years,
+
+      assumptionsOpen: st.assumptionsOpen,
+      assumptionsCaret: st.assumptionsOpen ? "rotate(180deg)" : "none",
+      toggleAssumptions: () => this.setState({ assumptionsOpen: !st.assumptionsOpen }),
+      assumptionCount: 12,
+      assumptions: [
+        { k: "Annual volume", v: this.n(a.volume), src: "User input", conf: "High", impact: "Scales all value" },
+        { k: "Cost per unit", v: "€" + a.costPerUnit.toFixed(2), src: "User input", conf: a.evidence.indexOf("Measured") === 0 ? "High" : "Medium", impact: "Sets the baseline" },
+        { k: "Expected cost reduction", v: a.reduction + "%", src: "User assumption", conf: a.reduction > 40 ? "Low" : "Medium", impact: "Direct on savings" },
+        { k: "AI-addressable share", v: a.addressable + "%", src: "User assumption", conf: a.addressable > 80 ? "Low" : "Medium", impact: "Caps savings" },
+        { k: "Hours redirected", v: this.n(a.hoursSaved), src: "User estimate", conf: "Medium", impact: "Productivity only" },
+        { k: "Loaded cost per FTE", v: m(a.loadedCost), src: "User input", conf: "High", impact: "Productivity rate" },
+        { k: "Revenue realisation", v: a.revenueRealisation + "%", src: "User assumption", conf: a.revenueRealisation > 80 ? "Low" : "Medium", impact: "Revenue driver" },
+        { k: "Risk reduction", v: a.riskReduction + "%", src: "Modelled assumption", conf: "Low", impact: "Risk driver" },
+        { k: "Benefit ramp, year 1", v: Math.round(e.ramp * 100) + "%", src: "Derived from time to value", conf: "Medium", impact: "Year 1 ROI" },
+        { k: "Build cost", v: m(e.build), src: "User input, itemised", conf: "Medium", impact: "Payback period" },
+        { k: "Annual run cost", v: m(e.run), src: a.scaleCost === "Yes" ? "User input +15% scale" : "User input", conf: "Medium", impact: "Steady-state net" },
+        { k: "Benefit realisation applied", v: st.realisation + "%", src: "Sensitivity setting", conf: "Scenario", impact: "All drivers" }
+      ].map(r => Object.assign({}, r, { cFg: r.conf === "High" ? C.tealD : r.conf === "Medium" ? C.amber : r.conf === "Scenario" ? C.indigoD : C.pinkD })),
+
+      scenarios: ["Conservative", "Base", "Upside"].map(s => ({
+        label: s, bg: st.scenario === s ? C.ink : "#fff", border: st.scenario === s ? C.ink : C.border, fg: st.scenario === s ? "#fff" : C.ink4,
+        pick: () => {
+          const d = scenarioDefs.filter(x => x.label === s)[0];
+          this.setState({ scenario: s, realisation: d.realisation });
+        }
+      })),
+      scenarioRows: scenarioDefs.map(d => {
+        const ee = this.engine(d.realisation, d.reduction);
+        const rr = this.recommend(ee);
+        const active = st.scenario === d.label;
+        return {
+          label: d.label, assumption: d.reduction + "% reduction · " + d.realisation + "% realised",
+          net: m(ee.steady), roi: Math.round(ee.roi1) + "%",
+          payback: ee.payback > 36 ? "36+ mo" : ee.payback.toFixed(1) + " mo",
+          rec: rr.label, recFg: rr.label === "BUILD" ? C.tealD : rr.label === "DON'T BUILD" ? C.pinkD : C.amber,
+          border: active ? C.indigo : C.border, fg: active ? C.indigoD : C.ink4
+        };
+      }),
+      realisation: st.realisation, realisationPct: st.realisation + "%",
+      setRealisation: (ev) => this.setState({ realisation: Number(ev.target.value) }),
+
+      nextActions: [
+        { label: "Generate executive business case", note: "Eighteen sections, assumption register, pilot plan and risk register.", go: () => this.setState({ view: st.gatePassed ? "doc" : "gate" }), bg: C.indigoBg, border: C.indigoBd, fg: C.indigoD },
+        { label: "Stress-test my assumptions", note: "Open the register and change what you disagree with.", go: () => this.setState({ assumptionsOpen: true }), bg: "#fff", border: C.border, fg: C.ink },
+        { label: "Build a pilot plan", note: "Scope, duration, baseline and go / no-go criteria.", go: () => this.setState({ view: st.gatePassed ? "doc" : "gate" }), bg: "#fff", border: C.border, fg: C.ink },
+        { label: "Compare another use case", note: "Start again with a clean set of inputs.", go: () => this.setState({ a: JSON.parse(JSON.stringify(DEF)), view: "interview", step: 0, isExample: false, realisation: 100, scenario: "Base" }), bg: "#fff", border: C.border, fg: C.ink },
+        { label: "Edit my answers", note: "Back into the interview at the first question.", go: () => this.setState({ view: "interview", step: 0 }), bg: "#fff", border: C.border, fg: C.ink }
+      ],
+
+      docSections: this.docSections(),
+      netValueShort: m(e.steady),
+      backToDash: () => this.setState({ view: "dash" }),
+      editAssumptions: () => this.setState({ view: "interview", step: 0 }),
+      copyLabel: st.copied ? "Copied to clipboard" : "Copy business case",
+      copyDoc: () => {
+        const secs = this.docSections();
+        const body = secs.map(s => s.n + ". " + s.title.toUpperCase() + "\n" + (s.body || "") + "\n" +
+          s.rows.map(r => "  " + r.k + ": " + r.v).join("\n") + (s.rows.length ? "\n" : "") +
+          s.bullets.map(b => "  · " + b.t).join("\n") + (s.bullets.length ? "\n" : "")).join("\n");
+        const out = "AI BUSINESS CASE\n" + (a.problem || a.solutionType) + "\n\nRECOMMENDATION: " + rec.label + " (confidence " + cf.label + ")\n\n" + body;
+        try { navigator.clipboard.writeText(out); } catch (err) { }
+        this.setState({ copied: true });
+        setTimeout(() => this.setState({ copied: false }), 2200);
+      },
+      risks: [
+        { risk: "Benefit realisation", p: cf.label === "Low" ? "High" : "Medium", i: "High", m: "Pilot with a measured baseline before committing the full investment; re-score rather than re-argue.", o: "Product" },
+        { risk: "Data quality and ownership", p: a.dataQuality === "High" ? "Low" : "High", i: "High", m: "Named owner per field, quality thresholds agreed before build, gate on stability.", o: "Data" },
+        { risk: "Integration and delivery", p: a.integration === "Yes" ? "Medium" : "Low", i: "Medium", m: "Narrow to the interfaces that exist today; publish the condition that unlocks the rest.", o: "Engineering" },
+        { risk: "Adoption", p: ad.band === "High" ? "High" : "Medium", i: "High", m: "Human-in-the-loop first release, correction loop as a first-class feature, no mandate.", o: "Operations" },
+        { risk: "Run-cost growth at scale", p: a.scaleCost === "Yes" ? "High" : "Medium", i: "Medium", m: "Cost per decision ceiling set before build; monitored as a product metric.", o: "Product" },
+        { risk: "AI performance drift", p: "Medium", i: "Medium", m: "Fixed versioned evaluation set, scheduled re-evaluation, explicit refusal over low-confidence output.", o: "Data science" },
+        { risk: "Compliance and security", p: a.aiRole === "Fully automate" ? "High" : "Low", i: "High", m: "Human accountability retained for irreversible actions; review before any autonomy increase.", o: "Risk" },
+        { risk: "Vendor dependency", p: a.build.vendor > 0 ? "Medium" : "Low", i: "Medium", m: "Exit path and data portability agreed at contract, not at renewal.", o: "Procurement" }
+      ].map(r => Object.assign({}, r, {
+        pFg: r.p === "High" ? C.pinkD : r.p === "Medium" ? C.amber : C.tealD,
+        iFg: r.i === "High" ? C.pinkD : r.i === "Medium" ? C.amber : C.tealD
+      }))
+    };
+  }
+}
+
+</script>
+</body>
+</html>

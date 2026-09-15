@@ -1,0 +1,16 @@
+:root{
+/* soft, cool-tinted, low-contrast shadows — never black */
+--shadow-xs:0 1px 2px rgba(18,18,58,.05);
+--shadow-sm:0 2px 6px rgba(18,18,58,.06);
+--shadow-md:0 8px 24px rgba(18,18,58,.07);
+--shadow-lg:0 18px 48px rgba(18,18,58,.10);
+--shadow-xl:0 32px 80px rgba(18,18,58,.13);
+--shadow-teal:0 12px 28px rgba(0,209,178,.28);
+--shadow-violet:0 12px 28px rgba(127,86,217,.26);
+--shadow-cta:0 14px 32px rgba(59,130,246,.30);
+--shadow-inset-top:inset 0 1px 0 rgba(255,255,255,.6);
+--ring-focus:0 0 0 3px rgba(99,102,241,.30);
+--glass-bg:rgba(255,255,255,.72); /* @kind color */
+--glass-border:rgba(255,255,255,.65); /* @kind color */
+--glass-blur:18px; /* @kind spacing */
+}
