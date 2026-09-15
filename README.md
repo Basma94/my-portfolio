@@ -1,25 +1,98 @@
-# CODING AGENTS: READ THIS FIRST
+# Basma Mahmoud — Product Portfolio
 
-This is a **handoff bundle** from Claude Design (claude.ai/design).
+An interactive portfolio for a Senior AI Product Manager, built from the Claude Design
+handoff in [`project/`](project). Three pages:
 
-A user mocked up designs in HTML/CSS/JS using an AI design tool, then exported this bundle so a coding agent can implement the designs for real.
+| Route          | What it is                                                                         |
+| -------------- | ---------------------------------------------------------------------------------- |
+| `/`            | The portfolio: hero, Evidence, Judgement, Challenge me, Decision log, Roadmap, Talk |
+| `/value-agent` | The AI Business Value Agent — interview, dashboard and generated business case      |
+| `/toolkit`     | The Product Toolkit — seven categories of working documents                         |
 
-## What you should do — IMPORTANT
+## Running it
 
-**Read the chat transcripts first.** There are 1 chat transcript(s) in `chats/`. The transcripts show the full back-and-forth between the user and the design assistant — they tell you **what the user actually wants** and **where they landed** after iterating. Don't skip them. The final HTML files are the output, but the chat is where the intent lives.
+```bash
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # production build; all three routes prerender as static
+npm run typecheck
+```
 
-**Read `project/Basma Mahmoud - Product Portfolio.dc.html` in full.** The user had this file open when they triggered the handoff, so it's almost certainly the primary design they want built. Read it top to bottom — don't skim. Then **follow its imports**: open every file it pulls in (shared components, CSS, scripts) so you understand how the pieces fit together before you start implementing.
+Node 20+. No environment variables, no server, no database — every page is statically
+prerenderable and all interactivity is client-side.
 
-**If anything is ambiguous, ask the user to confirm before you start implementing.** It's much cheaper to clarify scope up front than to build the wrong thing.
+## Stack
 
-## About the design files
+Next.js (App Router) · TypeScript · Tailwind CSS v4 · React 19.
 
-The design medium is **HTML/CSS/JS** — these are prototypes, not production code. Your job is to **recreate them pixel-perfectly** in whatever technology makes sense for the target codebase (React, Vue, native, whatever fits). Match the visual output; don't copy the prototype's internal structure unless it happens to fit.
+## Design system
 
-**Don't render these files in a browser or take screenshots unless the user asks you to.** Everything you need — dimensions, colors, layout rules — is spelled out in the source. Read the HTML and CSS directly; a screenshot won't tell you anything they don't.
+The visuals are bound to the **Mingloo Consulting** design system that shipped with the
+handoff bundle:
 
-## Bundle contents
+- `src/styles/tokens.css` is copied verbatim from the bundle's `tokens/*.css`. It is the
+  source of truth for colour, type, spacing, elevation and motion — don't hand-edit the
+  values, and reach for `var(--*)` rather than a literal hex wherever CSS can express it.
+- `src/app/globals.css` maps those tokens into Tailwind's `@theme` (so `bg-mist-100`,
+  `text-ink-500` and friends resolve to design-system values) and defines the handful of
+  recurring parts: `.eyebrow`, `.cta`, `.card`, `.lift`, `.label-chip`, `.nav-link`.
+- `src/lib/icon-paths.ts` vendors the bundle's 38 Lucide glyphs, plus `eye` (see
+  *Deviations* below). `src/components/Icon.tsx` renders them at 24×24 with a 2px stroke
+  and round caps, exactly as the bundle's `Icon` does — including its fallback to
+  `sparkles` for an unknown name.
+- `src/lib/palette.ts` holds the literal hexes for the places where a colour has to be
+  *computed* in TypeScript (a band, a score threshold, a selected state) and handed back
+  as a style value.
 
-- `README.md` — this file
-- `chats/` — conversation transcripts (read these!)
-- `project/` — the `My Portfolio` project files (HTML prototypes, assets, components)
+House rules worth keeping: gradients run left-to-right only; pink is an accent, never a
+button or body text; hover lifts 2px and steps the shadow; focus rings are never removed;
+no emoji, and every glyph comes from `Icon`.
+
+## The value engine
+
+`src/lib/value-engine/` is deliberately separate from the UI so assumptions can change
+without touching a component:
+
+| File            | Responsibility                                                              |
+| --------------- | --------------------------------------------------------------------------- |
+| `types.ts`      | `Assumptions` — every input the model reads, in one object                   |
+| `index.ts`      | `engine()`, plus feasibility, adoption, alignment, confidence, value score   |
+| `questions.ts`  | The adaptive interview, and where the agent pushes back on a shaky input     |
+| `document.ts`   | The generated 18-section business case, risk register and plain-text export  |
+
+`recommend()` never rests on ROI alone — value, feasibility, data readiness, adoption,
+confidence, alignment and payback all get a say, and the reasoning is always stated.
+
+## Content and honesty rules
+
+Employer work is confidential. Every product, backlog item and figure on the site is
+synthetic demo content, and the page says so in a band under the hero. Numbers carry a
+**Demo**, **Target**, **Hypothesis** or **Validation metric** label. When changing copy,
+keep that discipline: no invented professional metric, revenue figure, customer count or
+business outcome is presented as a reported result.
+
+Content lives in `src/data/` — `portfolio.ts`, `value-agent.ts`, `toolkit.ts` — so the
+words can be edited without reading a component.
+
+## Deviations from the prototype
+
+Two places where the implementation does not copy the prototype exactly, both fixing a
+defect rather than changing the design:
+
+1. **The mobile header.** In the prototype the nav pushes the "Let's talk" CTA off the
+   right edge below roughly 760px. Here the header row wraps: brand and CTA on the first
+   line, nav on its own scrollable line. Desktop is unchanged.
+2. **The toolkit's "View" icon.** The prototype asks for `eye`, which the design system
+   bundle does not ship, so it silently rendered `sparkles`. The `eye` glyph is vendored
+   from the same Lucide release in `src/lib/icon-paths.ts`.
+
+Known-unfinished content carried over as-is: the **Presales Agent** card's Problem and
+Role fields read "write-up pending" / "to be confirmed" in the prototype and still do.
+
+## The handoff bundle
+
+[`project/`](project) holds the original `.dc.html` prototypes, the bound design system
+under `project/_ds/`, and the uploaded assets. [`chats/`](chats) holds the transcript of
+the design session. Neither is built or deployed — they are the reference for what the
+design is meant to look like and why it ended up that way. The hero portrait and logo mark
+were extracted out of the bundle into `public/assets/`.

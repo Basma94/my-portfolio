@@ -1,0 +1,139 @@
+/* Mingloo Consulting design tokens — copied verbatim from the bound design system
+   (_ds/mingloo-consulting-e0e94d1d-41a7-4bb0-bcec-589c168d6bc8/tokens/*.css).
+   Do not hand-edit values here; they are the design system's source of truth. */
+
+/* ---- tokens/colors.css ---- */
+:root{
+/* base — brand sheet swatches */
+--teal-500:#00D1B2;--teal-600:#00B49A;--teal-400:#3EE0C8;--teal-100:#D6F7F1;--teal-50:#EDFBF8;
+--violet-500:#7F56D9;--violet-600:#6941C6;--violet-400:#A98BE8;--violet-100:#EBE3FB;--violet-50:#F5F1FE;
+--indigo-500:#6366F1;--indigo-600:#4F46E5;--indigo-400:#8B8DF6;--indigo-100:#E4E5FD;--indigo-50:#F1F1FE;
+--blue-500:#3B82F6;--blue-400:#60A5FA;
+--pink-500:#FF7E9E;--pink-400:#FFA3BA;--pink-100:#FFE4EB;--pink-50:#FFF1F5;
+
+/* ink + neutrals */
+--ink-900:#12123A;--ink-800:#1D2251;--ink-700:#333A6B;--ink-600:#4B5583;--ink-500:#6B7599;
+--ink-400:#8E97B4;--ink-300:#B6BCD0;--ink-200:#DDE1EE;--ink-100:#ECEFF7;
+--mist-100:#F4F6FC;--mist-50:#FAFBFE;--white:#FFFFFF;
+
+/* semantic */
+--success-500:#00B49A;--warning-500:#F5A524;--danger-500:#E5484D;--info-500:#3B82F6;
+--success-50:#EDFBF8;--warning-50:#FEF6E7;--danger-50:#FDEDEE;--info-50:#EFF6FF;
+
+/* aliases */
+--brand-primary:var(--teal-500);
+--brand-secondary:var(--violet-500);
+--brand-tertiary:var(--indigo-500);
+--brand-accent:var(--pink-500);
+
+--text-heading:var(--ink-900);
+--text-body:var(--ink-700);
+--text-muted:var(--ink-500);
+--text-faint:var(--ink-400);
+--text-inverse:var(--white);
+--text-link:var(--indigo-600);
+--text-link-hover:var(--violet-600);
+
+--surface-page:var(--white);
+--surface-subtle:var(--mist-100);
+--surface-card:var(--white);
+--surface-inverse:var(--ink-900);
+--surface-tint-teal:var(--teal-50);
+--surface-tint-violet:var(--violet-50);
+--surface-tint-indigo:var(--indigo-50);
+--surface-tint-pink:var(--pink-50);
+
+--border-subtle:var(--ink-100);
+--border-default:var(--ink-200);
+--border-strong:var(--ink-300);
+--focus-ring:var(--indigo-500);
+
+/* gradients — the brand's signature device */
+--gradient-brand:linear-gradient(90deg,var(--teal-500) 0%,var(--indigo-500) 100%);
+--gradient-mark:linear-gradient(120deg,var(--teal-500) 0%,var(--blue-500) 38%,var(--violet-500) 70%,#C77DF0 100%);
+--gradient-headline:linear-gradient(92deg,var(--blue-500) 0%,var(--violet-500) 100%);
+--gradient-cta:linear-gradient(92deg,#00C6C0 0%,var(--blue-500) 100%);
+--gradient-wash:linear-gradient(135deg,var(--mist-50) 0%,#EEF2FE 45%,#F3ECFE 100%);
+--gradient-deep:linear-gradient(120deg,#0C1244 0%,#1E2A6B 55%,#3B2E7E 100%); /* @kind color */
+}
+
+/* ---- tokens/typography.css ---- */
+:root{
+--font-core:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;
+--font-script:"Caveat","Segoe Script",cursive;
+--font-mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
+
+--fw-light:300; /* @kind font */
+--fw-regular:400; /* @kind font */
+--fw-medium:500; /* @kind font */
+--fw-semibold:600; /* @kind font */
+--fw-bold:700; /* @kind font */
+
+--fs-display-1:64px;--fs-display-2:52px;--fs-h1:40px;--fs-h2:32px;--fs-h3:24px;--fs-h4:20px;
+--fs-body-lg:18px;--fs-body:16px;--fs-body-sm:14px;--fs-caption:13px;--fs-micro:11px;
+
+--lh-tight:1.04; /* @kind font */
+--lh-snug:1.18; /* @kind font */
+--lh-normal:1.4; /* @kind font */
+--lh-relaxed:1.65; /* @kind font */
+
+--ls-display:-0.02em; /* @kind font */
+--ls-heading:-0.01em; /* @kind font */
+--ls-body:0; /* @kind font */
+--ls-eyebrow:0.26em; /* @kind font */
+--ls-wordmark:0.42em; /* @kind font */
+
+--type-eyebrow-size:var(--fs-caption); /* @kind font */
+--type-eyebrow-weight:var(--fw-medium); /* @kind font */
+--type-eyebrow-tracking:var(--ls-eyebrow); /* @kind font */
+}
+
+/* ---- tokens/spacing.css ---- */
+:root{
+--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;
+--space-8:32px;--space-10:40px;--space-12:48px;--space-16:64px;--space-20:80px;--space-24:96px;--space-32:128px;
+
+--radius-xs:6px;--radius-sm:10px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;--radius-2xl:36px;--radius-pill:999px;
+
+--border-width:1px;--border-width-strong:2px; /* @kind spacing */
+
+--container-max:1200px;
+--container-narrow:720px;
+--gutter:var(--space-6);
+--section-y:var(--space-24);
+--stack-tight:var(--space-3);
+--stack:var(--space-6);
+--stack-loose:var(--space-12);
+}
+
+/* ---- tokens/elevation.css ---- */
+:root{
+/* soft, cool-tinted, low-contrast shadows — never black */
+--shadow-xs:0 1px 2px rgba(18,18,58,.05);
+--shadow-sm:0 2px 6px rgba(18,18,58,.06);
+--shadow-md:0 8px 24px rgba(18,18,58,.07);
+--shadow-lg:0 18px 48px rgba(18,18,58,.10);
+--shadow-xl:0 32px 80px rgba(18,18,58,.13);
+--shadow-teal:0 12px 28px rgba(0,209,178,.28);
+--shadow-violet:0 12px 28px rgba(127,86,217,.26);
+--shadow-cta:0 14px 32px rgba(59,130,246,.30);
+--shadow-inset-top:inset 0 1px 0 rgba(255,255,255,.6);
+--ring-focus:0 0 0 3px rgba(99,102,241,.30);
+--glass-bg:rgba(255,255,255,.72); /* @kind color */
+--glass-border:rgba(255,255,255,.65); /* @kind color */
+--glass-blur:18px; /* @kind spacing */
+}
+
+/* ---- tokens/motion.css ---- */
+:root{
+--ease-standard:cubic-bezier(.4,0,.2,1); /* @kind other */
+--ease-out:cubic-bezier(.16,1,.3,1); /* @kind other */
+--ease-in-out:cubic-bezier(.65,0,.35,1); /* @kind other */
+--dur-fast:120ms; /* @kind other */
+--dur-base:200ms; /* @kind other */
+--dur-slow:320ms; /* @kind other */
+--dur-reveal:600ms; /* @kind other */
+--lift-hover:translateY(-2px); /* @kind other */
+--press-scale:.985; /* @kind other */
+}
+
