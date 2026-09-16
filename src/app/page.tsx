@@ -15,7 +15,6 @@ export default function PortfolioPage() {
     <div style={{ minHeight: "100vh", background: "#fff", overflowX: "clip" }}>
       <SiteHeader />
       <Hero />
-      <DemoDataBand />
       <EvidenceSection />
       <ThinkSection />
       <ChallengeSection />
@@ -27,43 +26,3 @@ export default function PortfolioPage() {
   );
 }
 
-/** Stated once, at the top, before any number on the page is read. */
-function DemoDataBand() {
-  return (
-    <div
-      style={{
-        background: "var(--mist-50)",
-        borderTop: "1px solid var(--border-subtle)",
-        borderBottom: "1px solid var(--border-subtle)",
-        padding: "14px 24px",
-      }}
-    >
-      <div
-        className="shell"
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 12,
-          alignItems: "center",
-          fontSize: 13,
-          lineHeight: 1.6,
-          color: "var(--ink-500)",
-        }}
-      >
-        <span className="label-chip" style={{ flex: "none" }}>
-          Demo data
-        </span>
-        <span>
-          Employer work is confidential, so the products, backlog and figures on this page run on
-          synthetic data and illustrative scenarios. Nothing here is a reported business result —
-          every number is labelled <Strong>Demo</Strong>, <Strong>Target</Strong> or{" "}
-          <Strong>Hypothesis</Strong>.
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function Strong({ children }: { children: React.ReactNode }) {
-  return <strong style={{ fontWeight: 600, color: "var(--ink-700)" }}>{children}</strong>;
-}

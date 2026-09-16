@@ -8,7 +8,6 @@ import { sendContactMessage } from "@/lib/siteMailer";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
-const AUTO_OPEN_KEY = "contactWidgetAutoOpened";
 const AUTO_OPEN_DELAY_MS = 2000;
 
 /**
@@ -16,9 +15,10 @@ const AUTO_OPEN_DELAY_MS = 2000;
  * so it floats above every route. Emails the owner via EmailJS (see
  * src/lib/siteMailer.ts), with the visitor's address set as reply-to.
  *
- * Opens itself once, 2 seconds after a visitor lands, unless they've already
- * interacted with it by then — tracked in sessionStorage so it doesn't
- * reopen on every page navigated to within the same visit.
+ * Opens itself 2 seconds after a page loads, unless the visitor has already
+ * interacted with it by then. This fires on every full page load/reload —
+ * it won't refire from a client-side route change within the same load,
+ * since the root layout (and this component) stays mounted across those.
  */
 export function ContactWidget() {
   const [open, setOpen] = useState(false);
@@ -41,22 +41,7 @@ export function ContactWidget() {
   }, [open]);
 
   useEffect(() => {
-    let alreadyOffered = false;
-    try {
-      alreadyOffered = sessionStorage.getItem(AUTO_OPEN_KEY) === "1";
-    } catch {
-      // Private browsing or blocked storage — just skip the auto-open rather
-      // than risk it firing on every page.
-      alreadyOffered = true;
-    }
-    if (alreadyOffered) return;
-
     const timer = setTimeout(() => {
-      try {
-        sessionStorage.setItem(AUTO_OPEN_KEY, "1");
-      } catch {
-        // Nothing to do — worst case it can offer again next page.
-      }
       if (!userInteracted.current) {
         setOpen(true);
         events.contactWidgetOpen();
@@ -246,7 +231,7 @@ export function ContactWidget() {
                     marginBottom: 7,
                   }}
                 >
-                  What do you need?
+                  How can I help?
                 </span>
                 <textarea
                   value={message}

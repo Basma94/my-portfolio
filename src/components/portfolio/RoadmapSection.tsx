@@ -69,7 +69,6 @@ export function RoadmapSection() {
                 Capabilities, scored and sequenced
               </h3>
             </div>
-            <span className="label-chip">Demo backlog · WSJF illustrative</span>
           </div>
 
           <div style={{ overflowX: "auto" }}>

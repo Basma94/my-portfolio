@@ -65,14 +65,6 @@ export default function ToolkitPage() {
             one-pagers, scoring models, blueprints and registers. Each one has a purpose, an owner
             and a moment it is written.
           </p>
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 28 }}>
-            <span className="label-chip" style={{ padding: "5px 12px" }}>
-              Demo content
-            </span>
-            <span style={{ fontSize: 13, color: "var(--ink-500)" }}>
-              Structures are real; any figures inside them are illustrative.
-            </span>
-          </div>
         </div>
       </section>
 

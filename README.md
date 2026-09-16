@@ -224,11 +224,10 @@ workflow (or push to `main`) after setting the variables.
 
 ## Content and honesty rules
 
-Employer work is confidential. Every product, backlog item and figure on the site is
-synthetic demo content, and the page says so in a band under the hero. Numbers carry a
-**Demo**, **Target**, **Hypothesis** or **Validation metric** label. When changing copy,
-keep that discipline: no invented professional metric, revenue figure, customer count or
-business outcome is presented as a reported result.
+Employer work is confidential, so every product, backlog item and figure on the site is
+synthetic demo content — there's no visible "this is a demo" banner, but the discipline
+still holds when changing copy: no invented professional metric, revenue figure, customer
+count or business outcome is presented as a reported result.
 
 Content lives in `src/data/` — `portfolio.ts`, `value-agent.ts`, `toolkit.ts` — so the
 words can be edited without reading a component.
