@@ -10,15 +10,14 @@ export type MailerResult = { ok: boolean; message: string };
 
 const EMAILJS_ENDPOINT = "https://api.emailjs.com/api/v1.0/email/send";
 
-export async function sendContactMessage(params: {
-  email: string;
-  message: string;
-}): Promise<MailerResult> {
+async function sendEmailJs(
+  templateId: string,
+  templateParams: Record<string, string>
+): Promise<MailerResult> {
   const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
   const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
-  if (!serviceId || !templateId || !publicKey) {
+  if (!serviceId || !publicKey) {
     return { ok: false, message: "Sending isn't configured yet." };
   }
 
@@ -30,9 +29,7 @@ export async function sendContactMessage(params: {
         service_id: serviceId,
         template_id: templateId,
         user_id: publicKey,
-        // Keys here must match the {{variables}} used in the EmailJS
-        // template — see the README for the exact template.
-        template_params: { from_email: params.email, message: params.message },
+        template_params: templateParams,
       }),
     });
 
@@ -42,6 +39,39 @@ export async function sendContactMessage(params: {
   } catch {
     return { ok: false, message: "Couldn't reach the send service. Please try again shortly." };
   }
+}
+
+/**
+ * Sends two emails: a notification to the owner (with the visitor's address
+ * as reply-to, so replying reaches them directly) and a confirmation to the
+ * visitor (so they know the message went through and a reply is coming).
+ * The confirmation is best-effort — the owner notification is what actually
+ * makes the widget useful, so its result is what the UI reports on.
+ */
+export async function sendContactMessage(params: {
+  email: string;
+  message: string;
+}): Promise<MailerResult> {
+  const ownerTemplateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+  const confirmTemplateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_CONFIRM;
+
+  if (!ownerTemplateId) {
+    return { ok: false, message: "Sending isn't configured yet." };
+  }
+
+  // Keys here must match the {{variables}} each EmailJS template uses —
+  // see the README for both templates.
+  const ownerSend = sendEmailJs(ownerTemplateId, {
+    from_email: params.email,
+    message: params.message,
+  });
+
+  const confirmSend = confirmTemplateId
+    ? sendEmailJs(confirmTemplateId, { to_email: params.email, message: params.message })
+    : Promise.resolve();
+
+  const [ownerResult] = await Promise.all([ownerSend, confirmSend.catch(() => undefined)]);
+  return ownerResult;
 }
 
 /**

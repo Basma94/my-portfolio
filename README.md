@@ -167,38 +167,52 @@ renaming one loses its history.
 ## Contact widget email
 
 The floating "Get in touch" widget (`src/components/ContactWidget.tsx`, on every page)
-emails the owner a visitor's message, with the visitor's address set as reply-to — even
-though the site itself is a static export with no server. It calls
-[EmailJS](https://www.emailjs.com)'s REST API directly from the browser
-(`src/lib/siteMailer.ts`) rather than running any backend of its own.
+sends **two** emails per submission — even though the site itself is a static export
+with no server — by calling [EmailJS](https://www.emailjs.com)'s REST API directly from
+the browser (`src/lib/siteMailer.ts`) rather than running any backend of its own:
 
-One-time setup, all in the EmailJS dashboard:
+1. **A notification to the owner**, with the visitor's address set as reply-to, so
+   replying reaches them directly. This is the one that matters functionally — its
+   result is what the widget's UI reports success or failure on.
+2. **A confirmation to the visitor**, best-effort (a failure here doesn't fail the
+   submission), letting them know the message arrived and a reply is coming.
+
+Two separate EmailJS templates, one Gmail-connected service. One-time setup, all in the
+EmailJS dashboard:
 
 1. Create a free account at [emailjs.com](https://www.emailjs.com) and add an **Email
    Service** connected to the Gmail account that should send (Email Services → Add New
    Service → Gmail → sign in and authorize).
-2. Create an **Email Template** (Email Templates → Create New Template) with:
+2. Create the **owner notification template** (Email Templates → Create New Template)
+   with:
    - **To Email**: `basma.gm.hassan@gmail.com`
    - **Reply To**: `{{from_email}}`
    - Body referencing `{{from_email}}` and `{{message}}` — those two names must match
-     exactly, since `siteMailer.ts` sends `template_params: { from_email, message }`.
-3. Account → General → copy the **Public Key**, and note the **Service ID** and
-   **Template ID** from the service/template you just created.
-4. In this repo, Settings → Secrets and variables → Actions → Variables, set:
+     exactly, since `siteMailer.ts` sends them as `template_params`.
+3. Create a second **visitor confirmation template** with:
+   - **To Email**: `{{to_email}}` (literally that — it's resolved per-send from
+     `template_params.to_email`, since the recipient is a different visitor every time)
+   - **Reply To**: `basma.gm.hassan@gmail.com`
+   - Body referencing `{{message}}` only.
+4. Account → General → copy the **Public Key**, and note the **Service ID** and both
+   **Template ID**s.
+5. In this repo, Settings → Secrets and variables → Actions → Variables, set:
 
-| Variable               | Value                          |
-| ----------------------- | ------------------------------ |
-| `EMAILJS_SERVICE_ID`    | the Service ID from step 3     |
-| `EMAILJS_TEMPLATE_ID`   | the Template ID from step 3    |
-| `EMAILJS_PUBLIC_KEY`    | the Public Key from step 3     |
+| Variable                         | Value                                  |
+| ---------------------------------- | --------------------------------------- |
+| `EMAILJS_SERVICE_ID`               | the Service ID                          |
+| `EMAILJS_TEMPLATE_ID`              | the owner notification Template ID      |
+| `EMAILJS_TEMPLATE_ID_CONFIRM`      | the visitor confirmation Template ID    |
+| `EMAILJS_PUBLIC_KEY`               | the Public Key                          |
 
 None of these are secret in the sense of needing to stay hidden — they end up in the
 site's public JS bundle either way, the same as any client-side EmailJS integration. In
 EmailJS's dashboard (Account → Security), restrict the Public Key to this site's own
 domains (`basma94.github.io`, and `basmamahmoud.com` once that's live) so the key can't be
-used to send from somewhere else. EmailJS's free tier also caps monthly sends — Account →
-General shows the current limit. Re-run the deploy workflow (or push to `main`) after
-setting the variables.
+used to send from somewhere else. EmailJS's free tier also caps monthly sends (now split
+across two templates, so double the volume per submission) — Account → General shows the
+current limit. Re-run the deploy workflow (or push to `main`) after setting the
+variables.
 
 Emailing a toolkit document to a visitor (the `/toolkit` page's "Send me this template"
 form) isn't wired up yet — it needs an attachment, which EmailJS only supports on a paid
