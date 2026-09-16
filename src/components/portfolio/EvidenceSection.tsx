@@ -194,19 +194,6 @@ function DemoCard({ demo: d }: { demo: Demo }) {
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#FF7E9E" }} />
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#FFE9A8" }} />
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#5CE1D2" }} />
-          <span
-            style={{
-              marginLeft: 8,
-              fontSize: 11,
-              fontWeight: 500,
-              color: "var(--ink-500)",
-              overflow: "hidden",
-              whiteSpace: "nowrap",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {d.host}
-          </span>
         </div>
 
         <div

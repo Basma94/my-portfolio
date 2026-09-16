@@ -32,7 +32,6 @@ export type Demo = {
    * "Request demo" button and the card's own overlay link).
    */
   snapshot: string;
-  host: string;
   note: string;
   /**
    * Where `snapshot` was captured from, and the frame size / crop rect used
@@ -74,7 +73,6 @@ export const DEMOS: Demo[] = [
     ],
     primaryHref: "https://planzen-app.com",
     snapshot: "/assets/demo-snapshots/planzen.png",
-    host: "planzen-app.com",
     note: "Snapshot of the live product. Request a walkthrough to see it in action.",
     // The prototype centers a phone mockup on a ~1280×865 desktop page
     // rather than filling it, so the capture used a taller frame and a crop
@@ -107,7 +105,6 @@ export const DEMOS: Demo[] = [
     ],
     primaryHref: "https://basma94.github.io/ai-sales-coach/",
     snapshot: "/assets/demo-snapshots/ai-sales-coach.png",
-    host: "basma94.github.io/ai-sales-coach",
     note: "Snapshot of the live product. Request a walkthrough to see it in action.",
     captureUrl: "https://basma94.github.io/ai-sales-coach/",
   },
@@ -126,7 +123,6 @@ export const DEMOS: Demo[] = [
     ],
     primaryHref: "https://basma94.github.io/presales-agent-demo/",
     snapshot: "/assets/demo-snapshots/presales-agent.png",
-    host: "basma94.github.io/presales-agent-demo",
     note: "Snapshot of the live product. Request a walkthrough to see it in action.",
     captureUrl: "https://basma94.github.io/presales-agent-demo/",
   },
@@ -152,7 +148,6 @@ export const DEMOS: Demo[] = [
     ],
     primaryHref: "https://basma94.github.io/rehearsal/",
     snapshot: "/assets/demo-snapshots/rehearsal.png",
-    host: "basma94.github.io/rehearsal",
     note: "Snapshot of the live product. Request access to run a full rehearsal.",
     captureUrl: "https://basma94.github.io/rehearsal/",
   },

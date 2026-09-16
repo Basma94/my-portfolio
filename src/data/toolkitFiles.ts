@@ -8,7 +8,11 @@ import { toolkitDocSlug } from "@/lib/toolkitSlug";
  * A doc with no entry here shows as "coming soon" instead of a send form.
  */
 export const TOOLKIT_FILES: Record<string, string> = {
-  // "problem-statement-one-pager": "problem-statement-one-pager.pdf",
+  "problem-statement-one-pager": "problem-statement-one-pager.pdf",
+  "opportunity-solution-tree": "opportunity-solution-tree.pdf",
+  "journey-map-with-pain-quantification": "journey-map-with-pain-quantification.pdf",
+  "market-and-competitive-read": "market-and-competitive-read.pdf",
+  "ai-use-case-canvas": "ai-use-case-canvas.pdf",
 };
 
 export function toolkitFileUrl(docName: string): string | null {
