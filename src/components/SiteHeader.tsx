@@ -7,7 +7,7 @@ const NAV = [
   { label: "Think", href: "/#think" },
   { label: "Build", href: "/#build" },
   { label: "Value agent", href: "/value-agent" },
-  { label: "Tools", href: "/toolkit" },
+  { label: "Toolkit", href: "/toolkit" },
 ] as const;
 
 export type NavKey = (typeof NAV)[number]["label"];

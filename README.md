@@ -7,7 +7,7 @@ handoff in [`project/`](project). Three pages:
 | -------------- | ---------------------------------------------------------------------------------- |
 | `/`            | The portfolio: hero, Evidence, Judgement, Challenge me, Decision log, Roadmap, Talk |
 | `/value-agent` | The AI Business Value Agent — interview, dashboard and generated business case      |
-| `/toolkit`     | The Product Toolkit — seven categories of working documents                         |
+| `/toolkit`     | The Product Toolkit — eight categories of working documents                         |
 
 ## Running it
 

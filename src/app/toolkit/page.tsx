@@ -8,13 +8,13 @@ import { Icon } from "@/components/Icon";
 export const metadata: Metadata = {
   title: "Product Toolkit",
   description:
-    "A working product toolkit: the documents, templates and scoring models Basma Mahmoud uses across discovery, strategy, prioritisation, design, build, measurement and AI product management.",
+    "A working product toolkit: the documents, templates and scoring models Basma Mahmoud uses across discovery, strategy, prioritisation, design, build, measurement, AI product management and AI portfolio management.",
 };
 
 export default function ToolkitPage() {
   return (
     <div style={{ minHeight: "100vh", background: "#fff", overflowX: "clip" }}>
-      <SiteHeader current="Tools" />
+      <SiteHeader current="Toolkit" />
 
       <section
         style={{
