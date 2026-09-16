@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Poppins, Caveat } from "next/font/google";
 import { Analytics } from "@/components/Analytics";
+import { ContactWidget } from "@/components/ContactWidget";
 import "./globals.css";
 
 /* Poppins throughout, Light 300 / Regular 400 / Medium 500 / SemiBold 600 /
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${poppins.variable} ${caveat.variable}`}>
       <body>
         {children}
+        <ContactWidget />
         <Analytics />
       </body>
     </html>

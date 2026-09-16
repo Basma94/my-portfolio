@@ -6,12 +6,11 @@ import { CATEGORIES, contentsToSections, type ToolkitDoc } from "@/data/toolkit"
 import { toolkitFileUrl } from "@/data/toolkitFiles";
 import { T } from "@/lib/palette";
 import { events } from "@/lib/analytics";
-import { sendToolkitDoc } from "@/lib/toolkitSend";
+import { isValidEmail } from "@/lib/email";
+import { sendToolkitDoc } from "@/lib/siteMailer";
 
 type ModalMode = "view" | "form" | "sending" | "sent" | "error" | "unavailable";
 type ModalState = { mode: ModalMode; cat: number; doc: number };
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export function Toolkit() {
   const [cat, setCat] = useState(0);
@@ -29,7 +28,7 @@ export function Toolkit() {
   };
 
   const send = async () => {
-    if (!EMAIL_PATTERN.test(email.trim())) {
+    if (!isValidEmail(email)) {
       setEmailError("Enter a valid email address and it will be on its way.");
       return;
     }

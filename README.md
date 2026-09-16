@@ -159,23 +159,28 @@ an edit to every component.
 | `agent_report`       | Reached the generated business case                            |
 | `toolkit_view` / `toolkit_download` / `toolkit_request` | Which documents draw interest |
 | `contact_click`      | Calendar, LinkedIn or email — the actual conversions            |
+| `contact_widget_open` / `contact_widget_submit` | Use of the floating contact widget |
 
 Names are stable: they become column headings in whichever dashboard is attached, so
 renaming one loses its history.
 
-## Sending toolkit documents
+## Sending email from the site
 
-The `/toolkit` page's "Send me this template" form sends a real email with a real
-attachment — from the site owner's own Gmail — even though the site itself is a static
-export with no server. It works by calling a small [Google Apps
-Script](https://script.google.com) Web App that runs under that Gmail account and does the
-actual sending (`GmailApp.sendEmail`), fetching the file to attach from this site.
+Two features send real email even though the site itself is a static export with no
+server — the site owner's own Gmail does the actual sending:
 
-Two things have to exist before any doc can actually be sent:
+- **The floating contact widget** (`src/components/ContactWidget.tsx`, on every page)
+  emails the owner a visitor's message, with the visitor's address set as reply-to.
+- **The `/toolkit` page's "Send me this template" form** emails a real attachment to a
+  visitor.
 
-**1. A real file for the doc.** Every toolkit doc is metadata only (see
-`src/data/toolkit.ts`) until a file is dropped into `public/toolkit-files/` and registered
-in `src/data/toolkitFiles.ts`:
+Both call the same small [Google Apps Script](https://script.google.com) Web App
+(`tools/apps-script/Code.gs`), which runs under the owner's Gmail account and does the
+actual sending (`GmailApp.sendEmail`) — see `src/lib/siteMailer.ts` for the client side.
+
+**Toolkit sends need one extra thing**: a real file for the doc. Every toolkit doc is
+metadata only (see `src/data/toolkit.ts`) until a file is dropped into
+`public/toolkit-files/` and registered in `src/data/toolkitFiles.ts`:
 
 ```ts
 // src/data/toolkitFiles.ts
@@ -186,13 +191,16 @@ export const TOOLKIT_FILES: Record<string, string> = {
 
 The key is `toolkitDocSlug(doc.name)` (`src/lib/toolkitSlug.ts`) — lowercase, hyphenated.
 A doc with no entry shows "coming soon" in the UI instead of a send form; no other code
-changes when a file is added.
+changes when a file is added. The contact widget needs no per-message setup.
 
-**2. The Apps Script deployed, and two repo variables set.** One-time setup:
+**Both features need the Apps Script deployed, and two repo variables set.** One-time
+setup:
 
 1. At [script.google.com](https://script.google.com), New project, paste in
    `tools/apps-script/Code.gs`.
 2. Set `SHARED_SECRET` in that script to a random string (e.g. `openssl rand -hex 24`).
+   `OWNER_EMAIL` is already set to the address the contact widget sends to — change it if
+   that ever needs to move.
 3. Deploy → New deployment → type **Web app** → Execute as **Me** → Who has access
    **Anyone** → Deploy, then authorize it (it needs permission to send Gmail on your
    behalf) and copy the Web app URL.
@@ -200,14 +208,15 @@ changes when a file is added.
 
 | Variable                   | Value                                      |
 | --------------------------- | ------------------------------------------ |
-| `TOOLKIT_ENDPOINT`          | the Web app URL from step 3                |
-| `TOOLKIT_SECRET`            | the same random string as `SHARED_SECRET`  |
+| `SEND_ENDPOINT`             | the Web app URL from step 3                |
+| `SEND_SECRET`               | the same random string as `SHARED_SECRET`  |
 
 The secret is a basic abuse deterrent, not real security — it ends up in the site's public
 JS bundle either way, since there's no server of its own to keep it on. The actual
-backstops are in `Code.gs`: it only ever fetches files from this site's own domains
-(`ALLOWED_FILE_PREFIXES`) and caps sends to `MAX_SENDS_PER_HOUR`. Re-run the deploy
-workflow (or push to `main`) after setting the variables.
+backstops are in `Code.gs`: toolkit sends only ever fetch files from this site's own
+domains (`ALLOWED_FILE_PREFIXES`), and every send — toolkit or contact — is capped at
+`MAX_SENDS_PER_HOUR` combined. Re-run the deploy workflow (or push to `main`) after
+setting the variables.
 
 ## Content and honesty rules
 

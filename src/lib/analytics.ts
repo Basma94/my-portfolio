@@ -87,4 +87,8 @@ export const events = {
   /** The conversions that matter: booking a call, LinkedIn, email. */
   contactClick: (channel: "calendar" | "linkedin" | "email", location: string) =>
     track("contact_click", { channel, location }),
+
+  /** The floating contact widget, present on every page. */
+  contactWidgetOpen: () => track("contact_widget_open"),
+  contactWidgetSubmit: () => track("contact_widget_submit"),
 } as const;

@@ -76,10 +76,11 @@ jobs:
           NEXT_PUBLIC_PLAUSIBLE_DOMAIN: ${{ vars.PLAUSIBLE_DOMAIN }}
           NEXT_PUBLIC_GA_ID: ${{ vars.GA_ID }}
           NEXT_PUBLIC_CF_BEACON: ${{ vars.CF_BEACON }}
-          # Toolkit "send me this template" feature — see tools/apps-script/Code.gs
-          # and README.md for how to deploy the Apps Script and get these values.
-          NEXT_PUBLIC_TOOLKIT_ENDPOINT: ${{ vars.TOOLKIT_ENDPOINT }}
-          NEXT_PUBLIC_TOOLKIT_SECRET: ${{ vars.TOOLKIT_SECRET }}
+          # The site's mailer — toolkit "send me this template" and the
+          # floating contact widget. See tools/apps-script/Code.gs and
+          # README.md for how to deploy the Apps Script and get these values.
+          NEXT_PUBLIC_SEND_ENDPOINT: ${{ vars.SEND_ENDPOINT }}
+          NEXT_PUBLIC_SEND_SECRET: ${{ vars.SEND_SECRET }}
 
       - name: Stop Pages running Jekyll over the export
         run: touch out/.nojekyll
