@@ -27,6 +27,28 @@ export type Demo = {
   embed: string;
   host: string;
   note: string;
+  /**
+   * Rendered size (in px) of the embedded page before any scaling. Defaults
+   * to 1280×800 (a full-bleed desktop app) if omitted — set this only when
+   * the embed's real content is taller than that, e.g. a page that centers
+   * a mobile mockup rather than filling the frame edge to edge.
+   */
+  embedFrame?: { width: number; height: number };
+  /**
+   * Sub-rectangle of `embedFrame` (in the same px units) to zoom into,
+   * instead of showing the whole rendered page. Use this when the embed's
+   * real content occupies only part of its page — e.g. Planzen's prototype
+   * centers a phone mockup on an otherwise mostly-empty desktop page, so
+   * without a crop the interface itself renders tiny inside the card.
+   */
+  embedCrop?: { x: number; y: number; width: number; height: number };
+  /**
+   * CSS `aspect-ratio` for this card's frame. Defaults to "16 / 10" (a
+   * desktop screenshot shape) — override for content that's naturally
+   * portrait (e.g. a phone mockup), or the crop above still has to pad the
+   * sides to hit the landscape shape.
+   */
+  cardAspectRatio?: string;
 };
 
 export const DEMOS: Demo[] = [
@@ -50,10 +72,17 @@ export const DEMOS: Demo[] = [
       },
       { k: "Role", v: "Product owner and designer, end to end." },
     ],
-    primaryHref: "http://planzen-app.com",
+    primaryHref: "https://planzen-app.com",
     embed: "https://temporary-flying-mandolin-88behgg.vercel.app/prototype.html",
     host: "planzen-app.com",
     note: "Live interface. Click to open it full size.",
+    // The prototype centers a phone mockup on a ~1280×865 desktop page
+    // rather than filling it, so the raw page needs a taller render frame
+    // and a crop tight around the phone or the login screen shows tiny in
+    // a mostly-empty card.
+    embedFrame: { width: 1280, height: 880 },
+    embedCrop: { x: 406, y: 134, width: 468, height: 715 },
+    cardAspectRatio: "468 / 715",
   },
   {
     name: "AI Sales Coach",

@@ -13,14 +13,20 @@ const PAGE_HEIGHT = 800;
 export function EvidenceSection() {
   const root = useRef<HTMLDivElement>(null);
 
-  // Measure each frame and scale the 1280px page to exactly that width, so the
-  // whole interface fits edge to edge instead of showing a cropped corner.
+  // Measure each frame and scale (and, for a demo with an embedCrop, pan)
+  // the rendered page to exactly fill that width, so the interface fits
+  // edge to edge instead of showing a cropped corner or a shrunken island.
   const fit = useCallback(() => {
     root.current?.querySelectorAll<HTMLElement>("[data-demo-frame]").forEach((frame) => {
       const iframe = frame.querySelector("iframe");
       if (!iframe) return;
-      const k = frame.clientWidth / PAGE_WIDTH;
-      if (k > 0) iframe.style.transform = `scale(${k})`;
+      const cropRaw = frame.dataset.crop;
+      const crop = cropRaw ? (JSON.parse(cropRaw) as NonNullable<Demo["embedCrop"]>) : null;
+      const k = frame.clientWidth / (crop?.width ?? PAGE_WIDTH);
+      if (k <= 0) return;
+      const tx = crop ? -crop.x * k : 0;
+      const ty = crop ? -crop.y * k : 0;
+      iframe.style.transform = `translate(${tx}px, ${ty}px) scale(${k})`;
     });
   }, []);
 
@@ -238,10 +244,11 @@ function DemoCard({ demo: d }: { demo: Demo }) {
 
         <div
           data-demo-frame=""
+          data-crop={d.embedCrop ? JSON.stringify(d.embedCrop) : undefined}
           style={{
             position: "relative",
             width: "100%",
-            aspectRatio: "16 / 10",
+            aspectRatio: d.cardAspectRatio ?? "16 / 10",
             borderRadius: 14,
             overflow: "hidden",
             background: "#fff",
@@ -259,8 +266,8 @@ function DemoCard({ demo: d }: { demo: Demo }) {
               position: "absolute",
               top: 0,
               left: 0,
-              width: PAGE_WIDTH,
-              height: PAGE_HEIGHT,
+              width: d.embedFrame?.width ?? PAGE_WIDTH,
+              height: d.embedFrame?.height ?? PAGE_HEIGHT,
               transform: "scale(.3)",
               transformOrigin: "top left",
               border: "none",
