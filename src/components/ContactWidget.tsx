@@ -111,45 +111,45 @@ export function ContactWidget() {
           aria-label="Get in touch"
           style={{
             position: "absolute",
-            bottom: "calc(100% + 14px)",
+            bottom: "calc(100% + 18px)",
             right: 0,
-            width: "min(360px, calc(100vw - 32px))",
+            width: "min(440px, calc(100vw - 32px))",
             background: "#fff",
-            borderRadius: 22,
+            borderRadius: 26,
             border: "1px solid var(--border-subtle)",
-            boxShadow: "0 24px 60px rgba(18,18,58,.24)",
+            boxShadow: "0 28px 70px rgba(18,18,58,.26)",
             overflow: "hidden",
             animation: "rise 260ms cubic-bezier(.16,1,.3,1) both",
           }}
         >
           <div
             style={{
-              padding: "18px 20px",
+              padding: "24px 28px",
               borderBottom: "1px solid var(--border-subtle)",
               display: "flex",
               alignItems: "center",
-              gap: 12,
+              gap: 14,
             }}
           >
             <span
               style={{
                 flex: "none",
-                width: 36,
-                height: 36,
-                borderRadius: 11,
+                width: 48,
+                height: 48,
+                borderRadius: 14,
                 background: "var(--violet-50)",
                 color: "var(--violet-500)",
                 display: "grid",
                 placeItems: "center",
               }}
             >
-              <Icon name="bot-smile" size={18} />
+              <Icon name="bot-smile" size={26} />
             </span>
             <div style={{ flex: "1 1 auto" }}>
               <h3
                 style={{
                   margin: 0,
-                  fontSize: 15,
+                  fontSize: 19,
                   fontWeight: 600,
                   color: "var(--ink-900)",
                 }}
@@ -164,8 +164,8 @@ export function ContactWidget() {
               style={{
                 flex: "none",
                 cursor: "pointer",
-                width: 30,
-                height: 30,
+                width: 38,
+                height: 38,
                 borderRadius: "50%",
                 border: "1px solid var(--border-subtle)",
                 background: "#fff",
@@ -174,50 +174,50 @@ export function ContactWidget() {
                 placeItems: "center",
               }}
             >
-              <Icon name="x" size={14} />
+              <Icon name="x" size={18} />
             </button>
           </div>
 
           {status === "sent" ? (
-            <div style={{ padding: 22, display: "flex", flexDirection: "column", gap: 14 }}>
+            <div style={{ padding: 28, display: "flex", flexDirection: "column", gap: 16 }}>
               <span
                 style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 12,
+                  width: 50,
+                  height: 50,
+                  borderRadius: 14,
                   background: "var(--teal-50)",
                   color: "var(--teal-600)",
                   display: "grid",
                   placeItems: "center",
                 }}
               >
-                <Icon name="circle-check" size={20} />
+                <Icon name="circle-check" size={26} />
               </span>
-              <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: "var(--ink-800)" }}>
+              <p style={{ margin: 0, fontSize: 16, lineHeight: 1.6, color: "var(--ink-800)" }}>
                 Thanks — that's on its way. I reply from this same address.
               </p>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
                 className="cta-quiet"
-                style={{ padding: "10px 18px", fontSize: 13, color: "var(--ink-600)" }}
+                style={{ padding: "12px 20px", fontSize: 14, color: "var(--ink-600)" }}
               >
                 Close
               </button>
             </div>
           ) : (
-            <form onSubmit={submit} style={{ padding: 20, display: "flex", flexDirection: "column", gap: 14 }}>
-              <p style={{ margin: 0, fontSize: 13, lineHeight: 1.6, color: "var(--ink-600)" }}>
+            <form onSubmit={submit} style={{ padding: 26, display: "flex", flexDirection: "column", gap: 18 }}>
+              <p style={{ margin: 0, fontSize: 15, lineHeight: 1.6, color: "var(--ink-600)" }}>
                 Leave your email and a line about what you need — I reply directly.
               </p>
               <label style={{ display: "block" }}>
                 <span
                   style={{
                     display: "block",
-                    fontSize: 12,
+                    fontSize: 13,
                     fontWeight: 500,
                     color: "var(--ink-700)",
-                    marginBottom: 6,
+                    marginBottom: 7,
                   }}
                 >
                   Your email
@@ -231,6 +231,7 @@ export function ContactWidget() {
                   }}
                   placeholder="you@company.com"
                   className="field"
+                  style={{ fontSize: 16, padding: "15px 17px" }}
                   disabled={status === "sending"}
                   aria-invalid={!!error}
                 />
@@ -239,10 +240,10 @@ export function ContactWidget() {
                 <span
                   style={{
                     display: "block",
-                    fontSize: 12,
+                    fontSize: 13,
                     fontWeight: 500,
                     color: "var(--ink-700)",
-                    marginBottom: 6,
+                    marginBottom: 7,
                   }}
                 >
                   What do you need?
@@ -254,19 +255,19 @@ export function ContactWidget() {
                     setError("");
                   }}
                   placeholder="A short description is enough."
-                  rows={3}
+                  rows={4}
                   className="field"
-                  style={{ resize: "vertical", fontFamily: "inherit" }}
+                  style={{ resize: "vertical", fontFamily: "inherit", fontSize: 16, padding: "15px 17px" }}
                   disabled={status === "sending"}
                   aria-invalid={!!error}
                 />
               </label>
-              {error && <p style={{ margin: 0, fontSize: 12, color: "#B42318" }}>{error}</p>}
+              {error && <p style={{ margin: 0, fontSize: 13, color: "#B42318" }}>{error}</p>}
               <button
                 type="submit"
                 className="cta"
                 disabled={status === "sending"}
-                style={{ padding: "12px 20px", fontSize: 14, justifyContent: "center", opacity: status === "sending" ? 0.7 : 1 }}
+                style={{ padding: "16px 24px", fontSize: 16, justifyContent: "center", opacity: status === "sending" ? 0.7 : 1 }}
               >
                 {status === "sending" ? "Sending…" : (
                   <>
@@ -286,19 +287,19 @@ export function ContactWidget() {
         aria-expanded={open}
         style={{
           cursor: "pointer",
-          width: 68,
-          height: 68,
+          width: 96,
+          height: 96,
           borderRadius: "50%",
           border: "none",
           background: "var(--gradient-headline)",
           color: "#fff",
           display: "grid",
           placeItems: "center",
-          boxShadow: "0 12px 28px rgba(18,18,58,.28)",
+          boxShadow: "0 14px 34px rgba(18,18,58,.32)",
           transition: "transform 160ms cubic-bezier(.4,0,.2,1)",
         }}
       >
-        <Icon name={open ? "x" : "bot-smile"} size={32} />
+        <Icon name={open ? "x" : "bot-smile"} size={48} />
       </button>
     </div>
   );
