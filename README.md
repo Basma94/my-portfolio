@@ -164,59 +164,46 @@ an edit to every component.
 Names are stable: they become column headings in whichever dashboard is attached, so
 renaming one loses its history.
 
-## Sending email from the site
+## Contact widget email
 
-Two features send real email even though the site itself is a static export with no
-server — the site owner's own Gmail does the actual sending:
+The floating "Get in touch" widget (`src/components/ContactWidget.tsx`, on every page)
+emails the owner a visitor's message, with the visitor's address set as reply-to — even
+though the site itself is a static export with no server. It calls
+[EmailJS](https://www.emailjs.com)'s REST API directly from the browser
+(`src/lib/siteMailer.ts`) rather than running any backend of its own.
 
-- **The floating contact widget** (`src/components/ContactWidget.tsx`, on every page)
-  emails the owner a visitor's message, with the visitor's address set as reply-to.
-- **The `/toolkit` page's "Send me this template" form** emails a real attachment to a
-  visitor.
+One-time setup, all in the EmailJS dashboard:
 
-Both call the same small [Google Apps Script](https://script.google.com) Web App
-(`tools/apps-script/Code.gs`), which runs under the owner's Gmail account and does the
-actual sending (`GmailApp.sendEmail`) — see `src/lib/siteMailer.ts` for the client side.
-
-**Toolkit sends need one extra thing**: a real file for the doc. Every toolkit doc is
-metadata only (see `src/data/toolkit.ts`) until a file is dropped into
-`public/toolkit-files/` and registered in `src/data/toolkitFiles.ts`:
-
-```ts
-// src/data/toolkitFiles.ts
-export const TOOLKIT_FILES: Record<string, string> = {
-  "problem-statement-one-pager": "problem-statement-one-pager.pdf",
-};
-```
-
-The key is `toolkitDocSlug(doc.name)` (`src/lib/toolkitSlug.ts`) — lowercase, hyphenated.
-A doc with no entry shows "coming soon" in the UI instead of a send form; no other code
-changes when a file is added. The contact widget needs no per-message setup.
-
-**Both features need the Apps Script deployed, and two repo variables set.** One-time
-setup:
-
-1. At [script.google.com](https://script.google.com), New project, paste in
-   `tools/apps-script/Code.gs`.
-2. Set `SHARED_SECRET` in that script to a random string (e.g. `openssl rand -hex 24`).
-   `OWNER_EMAIL` is already set to the address the contact widget sends to — change it if
-   that ever needs to move.
-3. Deploy → New deployment → type **Web app** → Execute as **Me** → Who has access
-   **Anyone** → Deploy, then authorize it (it needs permission to send Gmail on your
-   behalf) and copy the Web app URL.
+1. Create a free account at [emailjs.com](https://www.emailjs.com) and add an **Email
+   Service** connected to the Gmail account that should send (Email Services → Add New
+   Service → Gmail → sign in and authorize).
+2. Create an **Email Template** (Email Templates → Create New Template) with:
+   - **To Email**: `basma.gm.hassan@gmail.com`
+   - **Reply To**: `{{from_email}}`
+   - Body referencing `{{from_email}}` and `{{message}}` — those two names must match
+     exactly, since `siteMailer.ts` sends `template_params: { from_email, message }`.
+3. Account → General → copy the **Public Key**, and note the **Service ID** and
+   **Template ID** from the service/template you just created.
 4. In this repo, Settings → Secrets and variables → Actions → Variables, set:
 
-| Variable                   | Value                                      |
-| --------------------------- | ------------------------------------------ |
-| `SEND_ENDPOINT`             | the Web app URL from step 3                |
-| `SEND_SECRET`               | the same random string as `SHARED_SECRET`  |
+| Variable               | Value                          |
+| ----------------------- | ------------------------------ |
+| `EMAILJS_SERVICE_ID`    | the Service ID from step 3     |
+| `EMAILJS_TEMPLATE_ID`   | the Template ID from step 3    |
+| `EMAILJS_PUBLIC_KEY`    | the Public Key from step 3     |
 
-The secret is a basic abuse deterrent, not real security — it ends up in the site's public
-JS bundle either way, since there's no server of its own to keep it on. The actual
-backstops are in `Code.gs`: toolkit sends only ever fetch files from this site's own
-domains (`ALLOWED_FILE_PREFIXES`), and every send — toolkit or contact — is capped at
-`MAX_SENDS_PER_HOUR` combined. Re-run the deploy workflow (or push to `main`) after
+None of these are secret in the sense of needing to stay hidden — they end up in the
+site's public JS bundle either way, the same as any client-side EmailJS integration. In
+EmailJS's dashboard (Account → Security), restrict the Public Key to this site's own
+domains (`basma94.github.io`, and `basmamahmoud.com` once that's live) so the key can't be
+used to send from somewhere else. EmailJS's free tier also caps monthly sends — Account →
+General shows the current limit. Re-run the deploy workflow (or push to `main`) after
 setting the variables.
+
+Emailing a toolkit document to a visitor (the `/toolkit` page's "Send me this template"
+form) isn't wired up yet — it needs an attachment, which EmailJS only supports on a paid
+plan. Every doc shows "coming soon" in the UI regardless, since none has a real file yet
+(see `src/data/toolkitFiles.ts`); revisit the backend once that changes.
 
 ## Content and honesty rules
 

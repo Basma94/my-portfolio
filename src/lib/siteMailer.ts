@@ -1,48 +1,60 @@
 /**
- * Client for the site's one mail-sending backend: a Google Apps Script Web
- * App running under the owner's own Gmail account (GmailApp.sendEmail) —
- * see tools/apps-script/Code.gs and README.md for the deployed script and
- * setup. Two request types share it: "toolkit" (email a doc to a visitor)
- * and "contact" (email the owner a visitor's message).
- *
- * The request body is sent as text/plain (not application/json) so the
- * browser treats it as a "simple request" and skips a CORS preflight, which
- * Apps Script Web Apps don't handle.
+ * Client for the site's mail sending. The site is a static export with no
+ * server of its own, so this calls EmailJS's REST API directly from the
+ * browser — no backend to host or deploy. See README.md ("Contact widget
+ * email") for how to connect a Gmail account and template in EmailJS's
+ * dashboard, and which values map to which env var here.
  */
 
 export type MailerResult = { ok: boolean; message: string };
 
-async function postToMailer(payload: Record<string, unknown>): Promise<MailerResult> {
-  const endpoint = process.env.NEXT_PUBLIC_SEND_ENDPOINT;
-  const secret = process.env.NEXT_PUBLIC_SEND_SECRET;
+const EMAILJS_ENDPOINT = "https://api.emailjs.com/api/v1.0/email/send";
 
-  if (!endpoint) {
+export async function sendContactMessage(params: {
+  email: string;
+  message: string;
+}): Promise<MailerResult> {
+  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+  if (!serviceId || !templateId || !publicKey) {
     return { ok: false, message: "Sending isn't configured yet." };
   }
 
   try {
-    const res = await fetch(endpoint, {
+    const res = await fetch(EMAILJS_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ ...payload, secret }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        service_id: serviceId,
+        template_id: templateId,
+        user_id: publicKey,
+        // Keys here must match the {{variables}} used in the EmailJS
+        // template — see the README for the exact template.
+        template_params: { from_email: params.email, message: params.message },
+      }),
     });
-    return (await res.json()) as MailerResult;
+
+    if (res.ok) return { ok: true, message: "sent" };
+    const detail = await res.text().catch(() => "");
+    return { ok: false, message: detail || "Something went wrong. Please try again." };
   } catch {
     return { ok: false, message: "Couldn't reach the send service. Please try again shortly." };
   }
 }
 
-export function sendToolkitDoc(params: {
+/**
+ * Emailing a toolkit document to a visitor needs an attachment, which is a
+ * paid-plan feature on EmailJS — not wired up yet. Every doc currently shows
+ * "coming soon" in the UI regardless (see src/data/toolkitFiles.ts), so this
+ * path isn't reachable in production; revisit once real files exist and a
+ * backend for them is chosen.
+ */
+export async function sendToolkitDoc(_params: {
   email: string;
   docName: string;
   fileUrl: string;
 }): Promise<MailerResult> {
-  return postToMailer({ type: "toolkit", ...params });
-}
-
-export function sendContactMessage(params: {
-  email: string;
-  message: string;
-}): Promise<MailerResult> {
-  return postToMailer({ type: "contact", ...params });
+  return { ok: false, message: "Sending isn't configured yet." };
 }

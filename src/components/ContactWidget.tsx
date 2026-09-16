@@ -10,9 +10,8 @@ type Status = "idle" | "sending" | "sent" | "error";
 
 /**
  * Fixed, site-wide "get in touch" widget — rendered once in the root layout
- * so it floats above every route. Emails the owner via the same Apps Script
- * mailer the Product Toolkit uses (see src/lib/siteMailer.ts), with the
- * visitor's address set as reply-to.
+ * so it floats above every route. Emails the owner via EmailJS (see
+ * src/lib/siteMailer.ts), with the visitor's address set as reply-to.
  */
 export function ContactWidget() {
   const [open, setOpen] = useState(false);
