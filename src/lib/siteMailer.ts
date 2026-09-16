@@ -75,16 +75,26 @@ export async function sendContactMessage(params: {
 }
 
 /**
- * Emailing a toolkit document to a visitor needs an attachment, which is a
- * paid-plan feature on EmailJS — not wired up yet. Every doc currently shows
- * "coming soon" in the UI regardless (see src/data/toolkitFiles.ts), so this
- * path isn't reachable in production; revisit once real files exist and a
- * backend for them is chosen.
+ * Emails a visitor a download link for a toolkit document — a link rather
+ * than an attachment, since attachments are a paid-plan feature on EmailJS.
+ * Every doc currently shows "coming soon" in the UI regardless (see
+ * src/data/toolkitFiles.ts), so this only actually reaches EmailJS once a
+ * real file exists for the requested doc.
  */
-export async function sendToolkitDoc(_params: {
+export async function sendToolkitDoc(params: {
   email: string;
   docName: string;
   fileUrl: string;
 }): Promise<MailerResult> {
-  return { ok: false, message: "Sending isn't configured yet." };
+  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_TOOLKIT;
+
+  if (!templateId) {
+    return { ok: false, message: "Sending isn't configured yet." };
+  }
+
+  return sendEmailJs(templateId, {
+    to_email: params.email,
+    doc_name: params.docName,
+    file_url: params.fileUrl,
+  });
 }

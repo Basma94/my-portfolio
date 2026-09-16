@@ -164,21 +164,27 @@ an edit to every component.
 Names are stable: they become column headings in whichever dashboard is attached, so
 renaming one loses its history.
 
-## Contact widget email
+## Email sending (EmailJS)
 
-The floating "Get in touch" widget (`src/components/ContactWidget.tsx`, on every page)
-sends **two** emails per submission — even though the site itself is a static export
-with no server — by calling [EmailJS](https://www.emailjs.com)'s REST API directly from
-the browser (`src/lib/siteMailer.ts`) rather than running any backend of its own:
+Two features send real email even though the site itself is a static export with no
+server, by calling [EmailJS](https://www.emailjs.com)'s REST API directly from the
+browser (`src/lib/siteMailer.ts`) rather than running any backend of their own — one
+Gmail-connected EmailJS service, three templates:
 
-1. **A notification to the owner**, with the visitor's address set as reply-to, so
-   replying reaches them directly. This is the one that matters functionally — its
-   result is what the widget's UI reports success or failure on.
-2. **A confirmation to the visitor**, best-effort (a failure here doesn't fail the
-   submission), letting them know the message arrived and a reply is coming.
+1. **The floating "Get in touch" widget** (`src/components/ContactWidget.tsx`, on every
+   page) sends two emails per submission:
+   - **A notification to the owner**, with the visitor's address set as reply-to, so
+     replying reaches them directly. This is the one that matters functionally — its
+     result is what the widget's UI reports success or failure on.
+   - **A confirmation to the visitor**, best-effort (a failure here doesn't fail the
+     submission), letting them know the message arrived and a reply is coming.
+2. **The `/toolkit` page's "Send me this template" form** emails a visitor a *download
+   link* to the requested doc — a link rather than an attachment, since attachments are
+   a paid-plan feature on EmailJS. Every doc shows "coming soon" in the UI until it has
+   a real file registered in `src/data/toolkitFiles.ts`; this send only actually reaches
+   EmailJS once that's true for the requested doc.
 
-Two separate EmailJS templates, one Gmail-connected service. One-time setup, all in the
-EmailJS dashboard:
+One-time setup, all in the EmailJS dashboard:
 
 1. Create a free account at [emailjs.com](https://www.emailjs.com) and add an **Email
    Service** connected to the Gmail account that should send (Email Services → Add New
@@ -187,37 +193,37 @@ EmailJS dashboard:
    with:
    - **To Email**: `basma.gm.hassan@gmail.com`
    - **Reply To**: `{{from_email}}`
-   - Body referencing `{{from_email}}` and `{{message}}` — those two names must match
-     exactly, since `siteMailer.ts` sends them as `template_params`.
-3. Create a second **visitor confirmation template** with:
+   - Body referencing `{{from_email}}` and `{{message}}` — names must match exactly,
+     since `siteMailer.ts` sends them as `template_params`.
+3. Create a **visitor confirmation template** with:
    - **To Email**: `{{to_email}}` (literally that — it's resolved per-send from
      `template_params.to_email`, since the recipient is a different visitor every time)
    - **Reply To**: `basma.gm.hassan@gmail.com`
    - Body referencing `{{message}}` only.
-4. Account → General → copy the **Public Key**, and note the **Service ID** and both
-   **Template ID**s.
-5. In this repo, Settings → Secrets and variables → Actions → Variables, set:
+4. Create a **toolkit download template** with:
+   - **To Email**: `{{to_email}}`
+   - **Reply To**: `basma.gm.hassan@gmail.com`
+   - Body referencing `{{doc_name}}` and `{{file_url}}` (a download button/link — see
+     the template for the exact markup).
+5. Account → General → copy the **Public Key**, and note the **Service ID** and all
+   three **Template ID**s.
+6. In this repo, Settings → Secrets and variables → Actions → Variables, set:
 
-| Variable                         | Value                                  |
-| ---------------------------------- | --------------------------------------- |
-| `EMAILJS_SERVICE_ID`               | the Service ID                          |
-| `EMAILJS_TEMPLATE_ID`              | the owner notification Template ID      |
-| `EMAILJS_TEMPLATE_ID_CONFIRM`      | the visitor confirmation Template ID    |
-| `EMAILJS_PUBLIC_KEY`               | the Public Key                          |
+| Variable                       | Value                                |
+| -------------------------------- | ------------------------------------- |
+| `EMAILJS_SERVICE_ID`             | the Service ID                        |
+| `EMAILJS_TEMPLATE_ID`            | the owner notification Template ID    |
+| `EMAILJS_TEMPLATE_ID_CONFIRM`    | the visitor confirmation Template ID  |
+| `EMAILJS_TEMPLATE_ID_TOOLKIT`    | the toolkit download Template ID      |
+| `EMAILJS_PUBLIC_KEY`             | the Public Key                        |
 
 None of these are secret in the sense of needing to stay hidden — they end up in the
 site's public JS bundle either way, the same as any client-side EmailJS integration. In
 EmailJS's dashboard (Account → Security), restrict the Public Key to this site's own
 domains (`basma94.github.io`, and `basmamahmoud.com` once that's live) so the key can't be
-used to send from somewhere else. EmailJS's free tier also caps monthly sends (now split
-across two templates, so double the volume per submission) — Account → General shows the
-current limit. Re-run the deploy workflow (or push to `main`) after setting the
-variables.
-
-Emailing a toolkit document to a visitor (the `/toolkit` page's "Send me this template"
-form) isn't wired up yet — it needs an attachment, which EmailJS only supports on a paid
-plan. Every doc shows "coming soon" in the UI regardless, since none has a real file yet
-(see `src/data/toolkitFiles.ts`); revisit the backend once that changes.
+used to send from somewhere else. EmailJS's free tier also caps monthly sends across all
+three templates combined — Account → General shows the current limit. Re-run the deploy
+workflow (or push to `main`) after setting the variables.
 
 ## Content and honesty rules
 

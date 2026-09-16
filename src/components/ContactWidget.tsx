@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CtaIcon, Icon } from "./Icon";
 import { events } from "@/lib/analytics";
 import { isValidEmail } from "@/lib/email";
@@ -8,10 +8,17 @@ import { sendContactMessage } from "@/lib/siteMailer";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
+const AUTO_OPEN_KEY = "contactWidgetAutoOpened";
+const AUTO_OPEN_DELAY_MS = 2000;
+
 /**
  * Fixed, site-wide "get in touch" widget — rendered once in the root layout
  * so it floats above every route. Emails the owner via EmailJS (see
  * src/lib/siteMailer.ts), with the visitor's address set as reply-to.
+ *
+ * Opens itself once, 2 seconds after a visitor lands, unless they've already
+ * interacted with it by then — tracked in sessionStorage so it doesn't
+ * reopen on every page navigated to within the same visit.
  */
 export function ContactWidget() {
   const [open, setOpen] = useState(false);
@@ -19,17 +26,48 @@ export function ContactWidget() {
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
+  const userInteracted = useRef(false);
 
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        userInteracted.current = true;
+        setOpen(false);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
+  useEffect(() => {
+    let alreadyOffered = false;
+    try {
+      alreadyOffered = sessionStorage.getItem(AUTO_OPEN_KEY) === "1";
+    } catch {
+      // Private browsing or blocked storage — just skip the auto-open rather
+      // than risk it firing on every page.
+      alreadyOffered = true;
+    }
+    if (alreadyOffered) return;
+
+    const timer = setTimeout(() => {
+      try {
+        sessionStorage.setItem(AUTO_OPEN_KEY, "1");
+      } catch {
+        // Nothing to do — worst case it can offer again next page.
+      }
+      if (!userInteracted.current) {
+        setOpen(true);
+        events.contactWidgetOpen();
+      }
+    }, AUTO_OPEN_DELAY_MS);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const toggle = () => {
+    userInteracted.current = true;
     const next = !open;
     setOpen(next);
     if (next) {
@@ -105,7 +143,7 @@ export function ContactWidget() {
                 placeItems: "center",
               }}
             >
-              <Icon name="mail" size={18} />
+              <Icon name="bot-smile" size={18} />
             </span>
             <div style={{ flex: "1 1 auto" }}>
               <h3
@@ -248,8 +286,8 @@ export function ContactWidget() {
         aria-expanded={open}
         style={{
           cursor: "pointer",
-          width: 56,
-          height: 56,
+          width: 68,
+          height: 68,
           borderRadius: "50%",
           border: "none",
           background: "var(--gradient-headline)",
@@ -260,7 +298,7 @@ export function ContactWidget() {
           transition: "transform 160ms cubic-bezier(.4,0,.2,1)",
         }}
       >
-        <Icon name={open ? "x" : "mail"} size={22} />
+        <Icon name={open ? "x" : "bot-smile"} size={32} />
       </button>
     </div>
   );
