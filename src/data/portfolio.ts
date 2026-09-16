@@ -23,30 +23,30 @@ export type Demo = {
   tintBorder: string;
   value: string;
   facts: { k: string; v: string }[];
+  /** The real product's URL — documentation only, not linked to from the card. */
   primaryHref: string;
-  embed: string;
+  /**
+   * Static screenshot shown in the card, under public/assets/demo-snapshots/
+   * — not a live embed. The real products aren't exposed for anyone to open,
+   * inspect or copy; a request goes through CALENDAR_URL instead (see the
+   * "Request demo" button and the card's own overlay link).
+   */
+  snapshot: string;
   host: string;
   note: string;
   /**
-   * Rendered size (in px) of the embedded page before any scaling. Defaults
-   * to 1280×800 (a full-bleed desktop app) if omitted — set this only when
-   * the embed's real content is taller than that, e.g. a page that centers
-   * a mobile mockup rather than filling the frame edge to edge.
+   * Where `snapshot` was captured from, and the frame size / crop rect used
+   * — documentation of how the image was produced, e.g. Planzen's prototype
+   * centers a phone mockup on an otherwise mostly-empty desktop page, so the
+   * crop zooms into just the phone. Not used at render time.
    */
-  embedFrame?: { width: number; height: number };
-  /**
-   * Sub-rectangle of `embedFrame` (in the same px units) to zoom into,
-   * instead of showing the whole rendered page. Use this when the embed's
-   * real content occupies only part of its page — e.g. Planzen's prototype
-   * centers a phone mockup on an otherwise mostly-empty desktop page, so
-   * without a crop the interface itself renders tiny inside the card.
-   */
-  embedCrop?: { x: number; y: number; width: number; height: number };
+  captureUrl?: string;
+  captureFrame?: { width: number; height: number };
+  captureCrop?: { x: number; y: number; width: number; height: number };
   /**
    * CSS `aspect-ratio` for this card's frame. Defaults to "16 / 10" (a
    * desktop screenshot shape) — override for content that's naturally
-   * portrait (e.g. a phone mockup), or the crop above still has to pad the
-   * sides to hit the landscape shape.
+   * portrait (e.g. a phone mockup).
    */
   cardAspectRatio?: string;
 };
@@ -73,15 +73,16 @@ export const DEMOS: Demo[] = [
       { k: "Role", v: "Product owner and designer, end to end." },
     ],
     primaryHref: "https://planzen-app.com",
-    embed: "https://temporary-flying-mandolin-88behgg.vercel.app/prototype.html",
+    snapshot: "/assets/demo-snapshots/planzen.png",
     host: "planzen-app.com",
-    note: "Live interface. Click to open it full size.",
+    note: "Snapshot of the live product. Request a walkthrough to see it in action.",
     // The prototype centers a phone mockup on a ~1280×865 desktop page
-    // rather than filling it, so the raw page needs a taller render frame
-    // and a crop tight around the phone or the login screen shows tiny in
-    // a mostly-empty card.
-    embedFrame: { width: 1280, height: 880 },
-    embedCrop: { x: 406, y: 134, width: 468, height: 715 },
+    // rather than filling it, so the capture used a taller frame and a crop
+    // tight around the phone — otherwise the login screen shows tiny in a
+    // mostly-empty image.
+    captureUrl: "https://temporary-flying-mandolin-88behgg.vercel.app/prototype.html",
+    captureFrame: { width: 1280, height: 880 },
+    captureCrop: { x: 406, y: 134, width: 468, height: 715 },
     cardAspectRatio: "468 / 715",
   },
   {
@@ -105,9 +106,10 @@ export const DEMOS: Demo[] = [
       { k: "Role", v: "Product lead — scope, evidence model, scoring and interface." },
     ],
     primaryHref: "https://basma94.github.io/ai-sales-coach/",
-    embed: "https://basma94.github.io/ai-sales-coach/",
+    snapshot: "/assets/demo-snapshots/ai-sales-coach.png",
     host: "basma94.github.io/ai-sales-coach",
-    note: "Demo data throughout. Click to open it full size.",
+    note: "Snapshot of the live product. Request a walkthrough to see it in action.",
+    captureUrl: "https://basma94.github.io/ai-sales-coach/",
   },
   {
     name: "Presales Agent",
@@ -123,9 +125,10 @@ export const DEMOS: Demo[] = [
       { k: "Role", v: "To be confirmed." },
     ],
     primaryHref: "https://basma94.github.io/presales-agent-demo/",
-    embed: "https://basma94.github.io/presales-agent-demo/",
+    snapshot: "/assets/demo-snapshots/presales-agent.png",
     host: "basma94.github.io/presales-agent-demo",
-    note: "Running demo. Click to open it full size.",
+    note: "Snapshot of the live product. Request a walkthrough to see it in action.",
+    captureUrl: "https://basma94.github.io/presales-agent-demo/",
   },
   {
     name: "Rehearsal",
@@ -148,9 +151,10 @@ export const DEMOS: Demo[] = [
       { k: "Role", v: "Product owner and designer, end to end." },
     ],
     primaryHref: "https://basma94.github.io/rehearsal/",
-    embed: "https://basma94.github.io/rehearsal/",
+    snapshot: "/assets/demo-snapshots/rehearsal.png",
     host: "basma94.github.io/rehearsal",
-    note: "Sign-in is invite-only. Ask for access to run a full rehearsal.",
+    note: "Snapshot of the live product. Request access to run a full rehearsal.",
+    captureUrl: "https://basma94.github.io/rehearsal/",
   },
 ];
 

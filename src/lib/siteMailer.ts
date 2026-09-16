@@ -75,26 +75,26 @@ export async function sendContactMessage(params: {
 }
 
 /**
- * Emails a visitor a download link for a toolkit document — a link rather
- * than an attachment, since attachments are a paid-plan feature on EmailJS.
- * Every doc currently shows "coming soon" in the UI regardless (see
- * src/data/toolkitFiles.ts), so this only actually reaches EmailJS once a
- * real file exists for the requested doc.
+ * Records a toolkit-doc request as a lead: notifies the owner (same
+ * template as the contact widget's owner notification) with the visitor's
+ * address and which doc they wanted, building a list from inbox history.
+ * The actual file reaches the visitor via a direct browser download
+ * (see Toolkit.tsx) — no attachment or second email involved, since a real
+ * attachment needs a paid EmailJS plan and this avoids that entirely.
+ * Best-effort: the download isn't gated on this succeeding.
  */
-export async function sendToolkitDoc(params: {
+export async function notifyToolkitRequest(params: {
   email: string;
   docName: string;
-  fileUrl: string;
 }): Promise<MailerResult> {
-  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_TOOLKIT;
+  const ownerTemplateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
 
-  if (!templateId) {
+  if (!ownerTemplateId) {
     return { ok: false, message: "Sending isn't configured yet." };
   }
 
-  return sendEmailJs(templateId, {
-    to_email: params.email,
-    doc_name: params.docName,
-    file_url: params.fileUrl,
+  return sendEmailJs(ownerTemplateId, {
+    from_email: params.email,
+    message: `Requested the toolkit template: ${params.docName}`,
   });
 }

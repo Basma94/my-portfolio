@@ -55,9 +55,6 @@ export const events = {
   /** Any call to action. `location` is the section, `label` the button text. */
   ctaClick: (location: string, label: string) => track("cta_click", { location, label }),
 
-  /** A product demo was opened — which one is the interesting part. */
-  demoOpen: (product: string) => track("demo_open", { product }),
-
   /** How far through the seven-stage thinking journey people actually go. */
   thinkStage: (stage: string, index: number) => track("think_stage", { stage, index }),
 

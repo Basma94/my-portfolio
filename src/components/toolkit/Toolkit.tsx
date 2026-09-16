@@ -7,27 +7,52 @@ import { toolkitFileUrl } from "@/data/toolkitFiles";
 import { T } from "@/lib/palette";
 import { events } from "@/lib/analytics";
 import { isValidEmail } from "@/lib/email";
-import { sendToolkitDoc } from "@/lib/siteMailer";
+import { notifyToolkitRequest } from "@/lib/siteMailer";
 
-type ModalMode = "view" | "form" | "sending" | "sent" | "error" | "unavailable";
+type ModalMode = "view" | "form" | "sent" | "unavailable";
 type ModalState = { mode: ModalMode; cat: number; doc: number };
+
+/**
+ * Forces a real download regardless of the file's origin — a plain
+ * `<a download>` only honors the attribute for same-origin links, and
+ * toolkitFileUrl() returns an absolute URL that's cross-origin in local dev
+ * (it points at the production site). Fetching as a blob sidesteps that,
+ * since GitHub Pages serves these with permissive CORS headers.
+ */
+function downloadFile(url: string) {
+  fetch(url)
+    .then((res) => res.blob())
+    .then((blob) => {
+      const blobUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = url.split("/").pop() || "download";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(blobUrl);
+    })
+    .catch(() => {
+      // Fall back to a plain navigation if the fetch fails for any reason
+      // (e.g. offline) — still gets the visitor to the file.
+      window.open(url, "_blank");
+    });
+}
 
 export function Toolkit() {
   const [cat, setCat] = useState(0);
   const [modal, setModal] = useState<ModalState | null>(null);
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [sendError, setSendError] = useState("");
 
   const category = CATEGORIES[cat];
 
   const closeModal = () => {
     setModal(null);
     setEmailError("");
-    setSendError("");
   };
 
-  const send = async () => {
+  const send = () => {
     if (!isValidEmail(email)) {
       setEmailError("Enter a valid email address and it will be on its way.");
       return;
@@ -42,17 +67,13 @@ export function Toolkit() {
     }
 
     events.toolkitRequest(category.name, doc.name);
-    setSendError("");
-    setModal({ ...m, mode: "sending" });
+    setModal({ ...m, mode: "sent" });
 
-    const result = await sendToolkitDoc({ email: email.trim(), docName: doc.name, fileUrl });
+    downloadFile(fileUrl);
 
-    setModal((prev) => {
-      if (!prev) return prev;
-      if (result.ok) return { ...prev, mode: "sent" };
-      setSendError(result.message || "Something went wrong. Please try again.");
-      return { ...prev, mode: "form" };
-    });
+    // Best-effort lead notification — the download already happened above,
+    // so this isn't allowed to block or fail the visitor-facing flow.
+    notifyToolkitRequest({ email: email.trim(), docName: doc.name }).catch(() => {});
   };
 
   return (
@@ -161,7 +182,6 @@ export function Toolkit() {
                   events.toolkitDownload(category.name, d.name);
                   setModal({ mode: toolkitFileUrl(d.name) ? "form" : "unavailable", cat, doc: i });
                   setEmailError("");
-                  setSendError("");
                 }}
               />
             ))}
@@ -174,7 +194,6 @@ export function Toolkit() {
           state={modal}
           email={email}
           emailError={emailError}
-          sendError={sendError}
           onEmail={(v) => {
             setEmail(v);
             setEmailError("");
@@ -184,7 +203,6 @@ export function Toolkit() {
             const doc = CATEGORIES[modal.cat].docs[modal.doc];
             setModal({ ...modal, mode: toolkitFileUrl(doc.name) ? "form" : "unavailable" });
             setEmailError("");
-            setSendError("");
           }}
           onClose={closeModal}
         />
@@ -340,7 +358,6 @@ function DocModal({
   state,
   email,
   emailError,
-  sendError,
   onEmail,
   onSend,
   onToDownload,
@@ -349,7 +366,6 @@ function DocModal({
   state: ModalState;
   email: string;
   emailError: string;
-  sendError: string;
   onEmail: (value: string) => void;
   onSend: () => void;
   onToDownload: () => void;
@@ -366,16 +382,15 @@ function DocModal({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  const maxWidth =
-    state.mode === "view" ? 620 : state.mode === "form" || state.mode === "sending" ? 520 : 480;
+  const maxWidth = state.mode === "view" ? 620 : state.mode === "form" ? 520 : 480;
   const eyebrow =
     state.mode === "view"
       ? `${category.name} · ${d.kind}`
-      : state.mode === "form" || state.mode === "sending"
-        ? "Send me this template"
+      : state.mode === "form"
+        ? "Download this template"
         : state.mode === "unavailable"
           ? "Coming soon"
-          : "Sent";
+          : "Downloaded";
 
   return (
     <div
@@ -553,7 +568,7 @@ function DocModal({
                 style={{ padding: "12px 22px", fontSize: 14, marginTop: 18 }}
               >
                 <Icon name="download" size={16} />
-                Send me this template
+                Download this template
               </button>
               <span style={{ fontSize: 13, color: "var(--ink-400)", marginTop: 18 }}>
                 Structure shown here; figures inside are illustrative.
@@ -562,7 +577,7 @@ function DocModal({
           </div>
         )}
 
-        {(state.mode === "form" || state.mode === "sending") && (
+        {state.mode === "form" && (
           <form
             onSubmit={(ev) => {
               ev.preventDefault();
@@ -584,8 +599,7 @@ function DocModal({
                 maxWidth: "56ch",
               }}
             >
-              Templates are sent by email rather than downloaded, so you get the current version
-              and a short note on how to use it. One email, no list.
+              Leave your email and the download starts right away.
             </p>
             <label style={{ display: "block" }}>
               <span
@@ -607,33 +621,19 @@ function DocModal({
                 className="field"
                 style={{ background: "#fff" }}
                 aria-invalid={!!emailError}
-                disabled={state.mode === "sending"}
               />
             </label>
             {emailError && (
               <p style={{ margin: 0, fontSize: 13, color: "#B42318" }}>{emailError}</p>
             )}
-            {sendError && !emailError && (
-              <p style={{ margin: 0, fontSize: 13, color: "#B42318" }}>{sendError}</p>
-            )}
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
-              <button
-                type="submit"
-                className="cta"
-                disabled={state.mode === "sending"}
-                style={{ padding: "13px 24px", fontSize: 14, opacity: state.mode === "sending" ? 0.7 : 1 }}
-              >
-                {state.mode === "sending" ? "Sending…" : (
-                  <>
-                    Send it to me <CtaIcon />
-                  </>
-                )}
+              <button type="submit" className="cta" style={{ padding: "13px 24px", fontSize: 14 }}>
+                Download it <CtaIcon name="download" />
               </button>
               <button
                 type="button"
                 onClick={onClose}
                 className="cta-quiet"
-                disabled={state.mode === "sending"}
                 style={{ padding: "13px 20px", fontSize: 14, color: "var(--ink-600)" }}
               >
                 Not now
@@ -653,7 +653,7 @@ function DocModal({
             }}
           >
             <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, color: "var(--ink-600)" }}>
-              This template isn&apos;t ready to send yet — check back soon, or say so in a reply
+              This template isn&apos;t ready to download yet — check back soon, or get in touch
               and I&apos;ll prioritize it.
             </p>
             <button
@@ -699,7 +699,7 @@ function DocModal({
                 fontWeight: 500,
               }}
             >
-              On its way to {email}.
+              Your download should start automatically.
             </p>
             <p
               style={{
@@ -710,8 +710,11 @@ function DocModal({
                 maxWidth: "52ch",
               }}
             >
-              {d.name} will arrive with a short note on when to use it. If it would help to walk
-              through it on a call, say so in the reply.
+              If it didn&apos;t,{" "}
+              <a href={toolkitFileUrl(d.name) ?? "#"} style={{ color: "var(--indigo-600)" }}>
+                click here
+              </a>{" "}
+              to get {d.name} directly.
             </p>
             <button
               type="button"

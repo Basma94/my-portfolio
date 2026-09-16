@@ -1,48 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
 import { CtaIcon, Icon } from "../Icon";
-import { DEMOS, type Demo } from "@/data/portfolio";
+import { asset } from "@/lib/asset";
+import { CALENDAR_URL, DEMOS, type Demo } from "@/data/portfolio";
 import { events } from "@/lib/analytics";
 
-/** Each demo renders its page at full desktop width, then scales it to fit. */
-const PAGE_WIDTH = 1280;
-const PAGE_HEIGHT = 800;
-
 export function EvidenceSection() {
-  const root = useRef<HTMLDivElement>(null);
-
-  // Measure each frame and scale (and, for a demo with an embedCrop, pan)
-  // the rendered page to exactly fill that width, so the interface fits
-  // edge to edge instead of showing a cropped corner or a shrunken island.
-  const fit = useCallback(() => {
-    root.current?.querySelectorAll<HTMLElement>("[data-demo-frame]").forEach((frame) => {
-      const iframe = frame.querySelector("iframe");
-      if (!iframe) return;
-      const cropRaw = frame.dataset.crop;
-      const crop = cropRaw ? (JSON.parse(cropRaw) as NonNullable<Demo["embedCrop"]>) : null;
-      const k = frame.clientWidth / (crop?.width ?? PAGE_WIDTH);
-      if (k <= 0) return;
-      const tx = crop ? -crop.x * k : 0;
-      const ty = crop ? -crop.y * k : 0;
-      iframe.style.transform = `translate(${tx}px, ${ty}px) scale(${k})`;
-    });
-  }, []);
-
-  useEffect(() => {
-    fit();
-    const late = setTimeout(fit, 400);
-    window.addEventListener("resize", fit);
-    return () => {
-      clearTimeout(late);
-      window.removeEventListener("resize", fit);
-    };
-  }, [fit]);
-
   return (
     <section id="build" style={{ padding: "clamp(60px,8vw,112px) 24px" }}>
-      <div className="shell" ref={root}>
+      <div className="shell">
         <div className="eyebrow">01 — Evidence</div>
         <h2 className="section-title">What have I built?</h2>
         <p className="section-lead">Products are where strategy becomes tangible.</p>
@@ -201,14 +168,14 @@ function DemoCard({ demo: d }: { demo: Demo }) {
           }}
         >
           <a
-            href={d.primaryHref}
+            href={CALENDAR_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="cta"
             style={{ padding: "12px 22px", fontSize: 14 }}
-            onClick={() => events.demoOpen(d.name)}
+            onClick={() => events.contactClick("calendar", d.name)}
           >
-            Open the demo <Icon name="arrow-up-right" size={16} />
+            Request demo <Icon name="calendar" size={16} />
           </a>
         </div>
       </div>
@@ -243,8 +210,6 @@ function DemoCard({ demo: d }: { demo: Demo }) {
         </div>
 
         <div
-          data-demo-frame=""
-          data-crop={d.embedCrop ? JSON.stringify(d.embedCrop) : undefined}
           style={{
             position: "relative",
             width: "100%",
@@ -256,30 +221,26 @@ function DemoCard({ demo: d }: { demo: Demo }) {
             boxShadow: "0 12px 30px rgba(18,18,58,.12)",
           }}
         >
-          <iframe
-            src={d.embed}
-            title={`${d.name} demo`}
-            loading="lazy"
-            scrolling="no"
-            referrerPolicy="no-referrer-when-downgrade"
+          {/* Static snapshot, not a live embed — see the Demo type's comment
+              in src/data/portfolio.ts for why. */}
+          <img
+            src={asset(d.snapshot)}
+            alt={`${d.name} interface`}
             style={{
               position: "absolute",
-              top: 0,
-              left: 0,
-              width: d.embedFrame?.width ?? PAGE_WIDTH,
-              height: d.embedFrame?.height ?? PAGE_HEIGHT,
-              transform: "scale(.3)",
-              transformOrigin: "top left",
-              border: "none",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
               display: "block",
             }}
           />
           <a
-            href={d.primaryHref}
+            href={CALENDAR_URL}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`Open ${d.name}`}
-            onClick={() => events.demoOpen(d.name)}
+            aria-label={`Request a demo of ${d.name}`}
+            onClick={() => events.contactClick("calendar", d.name)}
             style={{ position: "absolute", inset: 0, display: "block" }}
           />
         </div>
