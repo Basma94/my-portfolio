@@ -55,6 +55,7 @@ export function EvidenceSection() {
 function DemoCard({ demo: d }: { demo: Demo }) {
   return (
     <article
+      className="demo-card"
       style={{
         background: "#fff",
         border: "1px solid var(--border-subtle)",
@@ -200,16 +201,21 @@ function DemoCard({ demo: d }: { demo: Demo }) {
           style={{
             position: "relative",
             width: "100%",
-            aspectRatio: d.cardAspectRatio ?? "16 / 10",
+            aspectRatio: "16 / 10",
             borderRadius: 14,
             overflow: "hidden",
-            background: "#fff",
+            background: d.tint,
             border: "1px solid var(--border-subtle)",
             boxShadow: "0 12px 30px rgba(18,18,58,.12)",
           }}
         >
           {/* Static snapshot, not a live embed — see the Demo type's comment
-              in src/data/portfolio.ts for why. */}
+              in src/data/portfolio.ts for why. Every card shares this same
+              16:10 frame so the cards line up; contain (not cover) means a
+              portrait screenshot like Planzen's letterboxes on d.tint
+              instead of being cropped, while the desktop screenshots (whose
+              1280x800 capture is already ~16:10) fill it edge to edge either
+              way. */}
           <img
             src={asset(d.snapshot)}
             alt={`${d.name} interface`}
@@ -218,7 +224,7 @@ function DemoCard({ demo: d }: { demo: Demo }) {
               inset: 0,
               width: "100%",
               height: "100%",
-              objectFit: "cover",
+              objectFit: "contain",
               display: "block",
             }}
           />

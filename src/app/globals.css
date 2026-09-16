@@ -341,6 +341,19 @@ input[type="range"] {
   box-shadow: var(--shadow-sm);
 }
 
+/* The Evidence section's demo cards: two grid columns (text, snapshot) at
+   >=700px — wide enough for both 330px minmax columns to sit side by side —
+   below that they stack, where a forced height risks clipping stacked
+   content, so only the desktop/tablet layout gets a fixed height. Without
+   this, cards vary in height with how much copy each one has (previously
+   also with the snapshot's own aspect ratio, before every card moved to a
+   shared 16:10 frame). */
+@media (min-width: 700px) {
+  .demo-card {
+    height: 920px;
+  }
+}
+
 .lift {
   transition: transform var(--dur-fast) var(--ease-standard),
     box-shadow var(--dur-fast) var(--ease-standard);

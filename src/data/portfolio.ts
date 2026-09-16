@@ -42,12 +42,6 @@ export type Demo = {
   captureUrl?: string;
   captureFrame?: { width: number; height: number };
   captureCrop?: { x: number; y: number; width: number; height: number };
-  /**
-   * CSS `aspect-ratio` for this card's frame. Defaults to "16 / 10" (a
-   * desktop screenshot shape) — override for content that's naturally
-   * portrait (e.g. a phone mockup).
-   */
-  cardAspectRatio?: string;
 };
 
 export const DEMOS: Demo[] = [
@@ -81,7 +75,6 @@ export const DEMOS: Demo[] = [
     captureUrl: "https://temporary-flying-mandolin-88behgg.vercel.app/prototype.html",
     captureFrame: { width: 1280, height: 880 },
     captureCrop: { x: 406, y: 134, width: 468, height: 715 },
-    cardAspectRatio: "468 / 715",
   },
   {
     name: "AI Sales Coach",
