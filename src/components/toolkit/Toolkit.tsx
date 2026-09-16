@@ -3,10 +3,12 @@
 import { useEffect, useState } from "react";
 import { CtaIcon, Icon } from "../Icon";
 import { CATEGORIES, contentsToSections, type ToolkitDoc } from "@/data/toolkit";
+import { toolkitFileUrl } from "@/data/toolkitFiles";
 import { T } from "@/lib/palette";
 import { events } from "@/lib/analytics";
+import { sendToolkitDoc } from "@/lib/toolkitSend";
 
-type ModalMode = "view" | "form" | "sent";
+type ModalMode = "view" | "form" | "sending" | "sent" | "error" | "unavailable";
 type ModalState = { mode: ModalMode; cat: number; doc: number };
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -16,22 +18,42 @@ export function Toolkit() {
   const [modal, setModal] = useState<ModalState | null>(null);
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [sendError, setSendError] = useState("");
 
   const category = CATEGORIES[cat];
 
   const closeModal = () => {
     setModal(null);
     setEmailError("");
+    setSendError("");
   };
 
-  const send = () => {
+  const send = async () => {
     if (!EMAIL_PATTERN.test(email.trim())) {
       setEmailError("Enter a valid email address and it will be on its way.");
       return;
     }
     const m = modal;
-    if (m) events.toolkitRequest(CATEGORIES[m.cat].name, CATEGORIES[m.cat].docs[m.doc].name);
-    setModal((prev) => (prev ? { ...prev, mode: "sent" } : prev));
+    if (!m) return;
+    const doc = CATEGORIES[m.cat].docs[m.doc];
+    const fileUrl = toolkitFileUrl(doc.name);
+    if (!fileUrl) {
+      setModal({ ...m, mode: "unavailable" });
+      return;
+    }
+
+    events.toolkitRequest(category.name, doc.name);
+    setSendError("");
+    setModal({ ...m, mode: "sending" });
+
+    const result = await sendToolkitDoc({ email: email.trim(), docName: doc.name, fileUrl });
+
+    setModal((prev) => {
+      if (!prev) return prev;
+      if (result.ok) return { ...prev, mode: "sent" };
+      setSendError(result.message || "Something went wrong. Please try again.");
+      return { ...prev, mode: "form" };
+    });
   };
 
   return (
@@ -138,8 +160,9 @@ export function Toolkit() {
                 }}
                 onDownload={() => {
                   events.toolkitDownload(category.name, d.name);
-                  setModal({ mode: "form", cat, doc: i });
+                  setModal({ mode: toolkitFileUrl(d.name) ? "form" : "unavailable", cat, doc: i });
                   setEmailError("");
+                  setSendError("");
                 }}
               />
             ))}
@@ -152,14 +175,17 @@ export function Toolkit() {
           state={modal}
           email={email}
           emailError={emailError}
+          sendError={sendError}
           onEmail={(v) => {
             setEmail(v);
             setEmailError("");
           }}
           onSend={send}
           onToDownload={() => {
-            setModal({ ...modal, mode: "form" });
+            const doc = CATEGORIES[modal.cat].docs[modal.doc];
+            setModal({ ...modal, mode: toolkitFileUrl(doc.name) ? "form" : "unavailable" });
             setEmailError("");
+            setSendError("");
           }}
           onClose={closeModal}
         />
@@ -315,6 +341,7 @@ function DocModal({
   state,
   email,
   emailError,
+  sendError,
   onEmail,
   onSend,
   onToDownload,
@@ -323,6 +350,7 @@ function DocModal({
   state: ModalState;
   email: string;
   emailError: string;
+  sendError: string;
   onEmail: (value: string) => void;
   onSend: () => void;
   onToDownload: () => void;
@@ -339,13 +367,16 @@ function DocModal({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  const maxWidth = state.mode === "sent" ? 480 : state.mode === "form" ? 520 : 620;
+  const maxWidth =
+    state.mode === "view" ? 620 : state.mode === "form" || state.mode === "sending" ? 520 : 480;
   const eyebrow =
     state.mode === "view"
       ? `${category.name} · ${d.kind}`
-      : state.mode === "form"
+      : state.mode === "form" || state.mode === "sending"
         ? "Send me this template"
-        : "Sent";
+        : state.mode === "unavailable"
+          ? "Coming soon"
+          : "Sent";
 
   return (
     <div
@@ -532,7 +563,7 @@ function DocModal({
           </div>
         )}
 
-        {state.mode === "form" && (
+        {(state.mode === "form" || state.mode === "sending") && (
           <form
             onSubmit={(ev) => {
               ev.preventDefault();
@@ -577,28 +608,64 @@ function DocModal({
                 className="field"
                 style={{ background: "#fff" }}
                 aria-invalid={!!emailError}
+                disabled={state.mode === "sending"}
               />
             </label>
             {emailError && (
               <p style={{ margin: 0, fontSize: 13, color: "#B42318" }}>{emailError}</p>
             )}
+            {sendError && !emailError && (
+              <p style={{ margin: 0, fontSize: 13, color: "#B42318" }}>{sendError}</p>
+            )}
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
-              <button type="submit" className="cta" style={{ padding: "13px 24px", fontSize: 14 }}>
-                Send it to me <CtaIcon />
+              <button
+                type="submit"
+                className="cta"
+                disabled={state.mode === "sending"}
+                style={{ padding: "13px 24px", fontSize: 14, opacity: state.mode === "sending" ? 0.7 : 1 }}
+              >
+                {state.mode === "sending" ? "Sending…" : (
+                  <>
+                    Send it to me <CtaIcon />
+                  </>
+                )}
               </button>
               <button
                 type="button"
                 onClick={onClose}
                 className="cta-quiet"
+                disabled={state.mode === "sending"}
                 style={{ padding: "13px 20px", fontSize: 14, color: "var(--ink-600)" }}
               >
                 Not now
               </button>
             </div>
-            <p style={{ margin: 0, fontSize: 12, lineHeight: 1.7, color: "var(--ink-400)" }}>
-              Demo page — nothing is actually sent or stored.
-            </p>
           </form>
+        )}
+
+        {state.mode === "unavailable" && (
+          <div
+            style={{
+              padding: "clamp(26px,4vw,40px)",
+              display: "flex",
+              flexDirection: "column",
+              gap: 16,
+              alignItems: "flex-start",
+            }}
+          >
+            <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, color: "var(--ink-600)" }}>
+              This template isn&apos;t ready to send yet — check back soon, or say so in a reply
+              and I&apos;ll prioritize it.
+            </p>
+            <button
+              type="button"
+              onClick={onClose}
+              className="cta-quiet"
+              style={{ padding: "12px 22px", fontSize: 14, color: "var(--ink-700)" }}
+            >
+              Close
+            </button>
+          </div>
         )}
 
         {state.mode === "sent" && (

@@ -17,3 +17,16 @@ export const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 export function asset(path: string): string {
   return `${BASE_PATH}${path.startsWith("/") ? path : `/${path}`}`;
 }
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://basma94.github.io/my-portfolio";
+
+/**
+ * Absolute URL for a file in `public/`, for contexts that need a fully
+ * qualified link (e.g. a server-side fetch that can't resolve a relative
+ * path) rather than a browser-resolved one. `SITE_URL` already carries the
+ * base path for a project page, so only its origin is combined with `asset()`
+ * to avoid doubling that path.
+ */
+export function absoluteAsset(path: string): string {
+  return `${new URL(SITE_URL).origin}${asset(path)}`;
+}
