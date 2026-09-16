@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @import "../styles/tokens.css";
 
+:root {
+  /* Wider than the design system bundle's 1200px default, so the layout
+     uses more of a large desktop display instead of leaving big gutters.
+     Overridden here rather than in tokens.css, which mirrors the handoff
+     bundle verbatim. */
+  --container-max: 1440px;
+}
+
 /* Expose the Mingloo tokens to Tailwind's utility generator so `bg-mist-100`,
    `text-ink-500`, `rounded-lg` etc. resolve to design-system values. */
 @theme inline {
