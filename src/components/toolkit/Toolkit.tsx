@@ -7,7 +7,8 @@ import { toolkitFileUrl } from "@/data/toolkitFiles";
 import { T } from "@/lib/palette";
 import { events } from "@/lib/analytics";
 import { isValidEmail } from "@/lib/email";
-import { notifyToolkitRequest } from "@/lib/siteMailer";
+import { notifyToolkitRequest, sendToolkitAttachment } from "@/lib/siteMailer";
+import { toolkitDocSlug } from "@/lib/toolkitSlug";
 
 type ModalMode = "view" | "form" | "sent" | "unavailable";
 type ModalState = { mode: ModalMode; cat: number; doc: number };
@@ -69,9 +70,16 @@ export function Toolkit() {
 
     downloadFile(fileUrl);
 
-    // Best-effort lead notification — the download already happened above,
-    // so this isn't allowed to block or fail the visitor-facing flow.
-    notifyToolkitRequest({ email: email.trim(), docName: doc.name }).catch(() => {});
+    // Both best-effort — the download already happened above, so neither
+    // is allowed to block or fail the visitor-facing flow: a lead
+    // notification to the owner, and a real emailed copy to the visitor.
+    const trimmedEmail = email.trim();
+    notifyToolkitRequest({ email: trimmedEmail, docName: doc.name }).catch(() => {});
+    sendToolkitAttachment({
+      email: trimmedEmail,
+      docSlug: toolkitDocSlug(doc.name),
+      docName: doc.name,
+    }).catch(() => {});
   };
 
   return (
@@ -597,7 +605,8 @@ function DocModal({
                 maxWidth: "56ch",
               }}
             >
-              Leave your email and the download starts right away.
+              Leave your email — the download starts right away, and a copy
+              lands in your inbox too.
             </p>
             <label style={{ display: "block" }}>
               <span
@@ -712,7 +721,7 @@ function DocModal({
               <a href={toolkitFileUrl(d.name) ?? "#"} style={{ color: "var(--indigo-600)" }}>
                 click here
               </a>{" "}
-              to get {d.name} directly.
+              to get {d.name} directly. A copy is also on its way to your inbox.
             </p>
             <button
               type="button"

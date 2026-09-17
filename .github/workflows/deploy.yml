@@ -83,6 +83,11 @@ jobs:
           NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: ${{ vars.EMAILJS_TEMPLATE_ID }}
           NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_CONFIRM: ${{ vars.EMAILJS_TEMPLATE_ID_CONFIRM }}
           NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ${{ vars.EMAILJS_PUBLIC_KEY }}
+          # Toolkit downloads also email the visitor a real PDF attachment —
+          # EmailJS's free plan can't do that, so this calls a small separate
+          # serverless function instead. See toolkit-mailer/README.md.
+          NEXT_PUBLIC_TOOLKIT_MAILER_URL: ${{ vars.TOOLKIT_MAILER_URL }}
+          NEXT_PUBLIC_TOOLKIT_MAILER_KEY: ${{ vars.TOOLKIT_MAILER_KEY }}
 
       - name: Stop Pages running Jekyll over the export
         run: touch out/.nojekyll

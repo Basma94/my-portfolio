@@ -177,14 +177,19 @@ Gmail-connected EmailJS service, two templates:
      result is what the widget's UI reports success or failure on.
    - **A confirmation to the visitor**, best-effort (a failure here doesn't fail the
      submission), letting them know the message arrived and a reply is coming.
-2. **The `/toolkit` page's "Download this template" form** doesn't email the visitor at
-   all — a real attachment needs a paid EmailJS plan, so instead the file downloads
-   directly in the visitor's browser (`Toolkit.tsx` triggers it with a synthetic
-   `<a download>` click, same-tab and synchronous so browsers don't treat it as a
-   blocked pop-up), and the owner notification template fires again in the background
-   to log the lead — visitor's email plus which doc they wanted — for `basma.gm.hassan@gmail.com`
-   to build a list from. Every doc shows "coming soon" in the UI until it has a real file
-   registered in `src/data/toolkitFiles.ts`.
+2. **The `/toolkit` page's "Download this template" form** does three things at once:
+   the file downloads directly in the visitor's browser (`Toolkit.tsx` triggers it with
+   a synthetic `<a download>` click, same-tab and synchronous so browsers don't treat it
+   as a blocked pop-up); the owner notification template fires in the background to log
+   the lead — visitor's email plus which doc they wanted — for `basma.gm.hassan@gmail.com`
+   to build a list from; and a **real PDF attachment** is emailed to the visitor by a
+   separate small serverless function (`toolkit-mailer/`, deployed on its own to Vercel),
+   since EmailJS's free plan can't attach files at all. See `toolkit-mailer/README.md`
+   for that one-time setup (a free Resend account plus a Vercel deploy). All three are
+   independent and best-effort against each other — a visitor always gets the file at
+   least via the instant download even if the email side is misconfigured or down. Every
+   doc shows "coming soon" in the UI until it has a real file registered in
+   `src/data/toolkitFiles.ts` (and mirrored in `toolkit-mailer/api/send-toolkit-doc.js`).
 
 One-time setup, all in the EmailJS dashboard:
 

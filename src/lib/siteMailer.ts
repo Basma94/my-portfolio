@@ -98,3 +98,45 @@ export async function notifyToolkitRequest(params: {
     message: `Requested the toolkit template: ${params.docName}`,
   });
 }
+
+/**
+ * Emails the visitor an actual copy of a toolkit document, as a real
+ * attachment — something EmailJS's free plan can't do. This calls a small
+ * standalone serverless function (see toolkit-mailer/) that fetches the
+ * already-public PDF from this site and re-sends it via Resend; the API key
+ * for that lives only on the function, never in this bundle. Best-effort —
+ * the visitor already has the file from the direct browser download, so a
+ * failure here shouldn't surface as an error.
+ */
+export async function sendToolkitAttachment(params: {
+  email: string;
+  docSlug: string;
+  docName: string;
+}): Promise<MailerResult> {
+  const mailerUrl = process.env.NEXT_PUBLIC_TOOLKIT_MAILER_URL;
+  const mailerKey = process.env.NEXT_PUBLIC_TOOLKIT_MAILER_KEY;
+
+  if (!mailerUrl) {
+    return { ok: false, message: "Emailed copies aren't configured yet." };
+  }
+
+  try {
+    const res = await fetch(mailerUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(mailerKey ? { "X-Toolkit-Key": mailerKey } : {}),
+      },
+      body: JSON.stringify({
+        email: params.email,
+        docSlug: params.docSlug,
+        docName: params.docName,
+      }),
+    });
+    if (res.ok) return { ok: true, message: "sent" };
+    const detail = await res.text().catch(() => "");
+    return { ok: false, message: detail || "The mailer rejected the request." };
+  } catch {
+    return { ok: false, message: "Couldn't reach the mailer." };
+  }
+}
