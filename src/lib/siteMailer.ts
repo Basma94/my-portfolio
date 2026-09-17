@@ -112,6 +112,7 @@ export async function sendToolkitAttachment(params: {
   email: string;
   docSlug: string;
   docName: string;
+  contents: string;
 }): Promise<MailerResult> {
   const mailerUrl = process.env.NEXT_PUBLIC_TOOLKIT_MAILER_URL;
   const mailerKey = process.env.NEXT_PUBLIC_TOOLKIT_MAILER_KEY;
@@ -131,6 +132,7 @@ export async function sendToolkitAttachment(params: {
         email: params.email,
         docSlug: params.docSlug,
         docName: params.docName,
+        contents: params.contents,
       }),
     });
     if (res.ok) return { ok: true, message: "sent" };

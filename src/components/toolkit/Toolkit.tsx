@@ -79,6 +79,7 @@ export function Toolkit() {
       email: trimmedEmail,
       docSlug: toolkitDocSlug(doc.name),
       docName: doc.name,
+      contents: doc.contents,
     }).catch(() => {});
   };
 
