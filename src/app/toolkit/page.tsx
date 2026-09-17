@@ -8,7 +8,7 @@ import { Icon } from "@/components/Icon";
 export const metadata: Metadata = {
   title: "Product Toolkit",
   description:
-    "A working product toolkit: the documents, templates and scoring models Basma Mahmoud uses across discovery, strategy, prioritisation, design, build, measurement, AI product management and AI portfolio management.",
+    "A working product toolkit: the discovery and strategy documents and templates Basma Mahmoud uses to frame a problem and make the case for what comes next.",
 };
 
 export default function ToolkitPage() {
@@ -62,8 +62,8 @@ export default function ToolkitPage() {
             }}
           >
             Not a skills list. These are the artefacts a product decision leaves behind —
-            one-pagers, scoring models, blueprints and registers. Each one has a purpose, an owner
-            and a moment it is written.
+            one-pagers, canvases and the documents that make the case for what comes next. Each
+            one has a purpose, an owner and a moment it is written.
           </p>
         </div>
       </section>

@@ -19,6 +19,7 @@ export const TOOLKIT_FILES: Record<string, string> = {
   "strategic-alignment-canvas": "strategic-alignment-canvas.pdf",
   "product-okr-framework": "product-okr-framework.pdf",
   "value-proposition-canvas": "value-proposition-canvas.pdf",
+  "business-case": "business-case.pdf",
 };
 
 export function toolkitFileUrl(docName: string): string | null {
