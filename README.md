@@ -163,67 +163,46 @@ an edit to every component.
 Names are stable: they become column headings in whichever dashboard is attached, so
 renaming one loses its history.
 
-## Email sending (EmailJS)
+## Email sending (Resend, via toolkit-mailer)
 
-Two features send real email even though the site itself is a static export with no
-server, by calling [EmailJS](https://www.emailjs.com)'s REST API directly from the
-browser (`src/lib/siteMailer.ts`) rather than running any backend of their own — one
-Gmail-connected EmailJS service, two templates:
+The site itself is a static export with no server, so every real email it sends goes
+through one small serverless mailer (`toolkit-mailer/`, deployed on its own to Vercel;
+see `toolkit-mailer/README.md` for the one-time setup — a free Resend account plus a
+Vercel deploy) rather than a backend of the site's own. Two endpoints, both called from
+`src/lib/siteMailer.ts`:
 
 1. **The floating "Get in touch" widget** (`src/components/ContactWidget.tsx`, on every
-   page) sends two emails per submission:
-   - **A notification to the owner**, with the visitor's address set as reply-to, so
-     replying reaches them directly. This is the one that matters functionally — its
-     result is what the widget's UI reports success or failure on.
+   page) posts to `toolkit-mailer/api/send-contact-message.js`, which sends two emails:
+   - **A notification to you**, subject "Yayy , New Inquiry", with the visitor's address
+     set as reply-to so replying reaches them directly. This is the one that matters
+     functionally — its result is what the widget's UI reports success or failure on.
    - **A confirmation to the visitor**, best-effort (a failure here doesn't fail the
      submission), letting them know the message arrived and a reply is coming.
 2. **The `/toolkit` page's "Download this template" form** does two things at once: the
    file downloads directly in the visitor's browser (`Toolkit.tsx` triggers it with a
    synthetic `<a download>` click, same-tab and synchronous so browsers don't treat it as
-   a blocked pop-up), and a **real PDF attachment** is separately emailed to the visitor
-   by a small serverless function (`toolkit-mailer/`, deployed on its own to Vercel),
-   since EmailJS's free plan can't attach files at all. See `toolkit-mailer/README.md`
-   for that one-time setup (a free Resend account plus a Vercel deploy) — including the
-   actual branded email template it sends, adapted per document. Both are independent and
-   best-effort against each other — a visitor always gets the file at least via the
-   instant download even if the email side is misconfigured or down. Every doc shows
-   "coming soon" in the UI until it has a real file registered in
-   `src/data/toolkitFiles.ts` (and mirrored in `toolkit-mailer/api/send-toolkit-doc.js`).
+   a blocked pop-up), and a **real attachment** is separately emailed to the visitor by
+   `toolkit-mailer/api/send-toolkit-doc.js` — including the actual branded email template
+   it sends, adapted per document. Both are independent and best-effort against each
+   other — a visitor always gets the file at least via the instant download even if the
+   email side is misconfigured or down. Every doc shows "coming soon" in the UI until it
+   has a real file registered in `src/data/toolkitFiles.ts` (and mirrored in
+   `toolkit-mailer/api/send-toolkit-doc.js`).
 
-One-time setup, all in the EmailJS dashboard:
+Both endpoints share one Resend account, one "from" address, and one shared secret —
+see `toolkit-mailer/README.md` for that setup. This repo only needs to know where the
+mailer lives: Settings → Secrets and variables → Actions → Variables, set:
 
-1. Create a free account at [emailjs.com](https://www.emailjs.com) and add an **Email
-   Service** connected to the Gmail account that should send (Email Services → Add New
-   Service → Gmail → sign in and authorize).
-2. Create the **owner notification template** (Email Templates → Create New Template)
-   with:
-   - **To Email**: `basma.gm.hassan@gmail.com`
-   - **Reply To**: `{{from_email}}`
-   - Body referencing `{{from_email}}` and `{{message}}` — names must match exactly,
-     since `siteMailer.ts` sends them as `template_params`.
-3. Create a **visitor confirmation template** with:
-   - **To Email**: `{{to_email}}` (literally that — it's resolved per-send from
-     `template_params.to_email`, since the recipient is a different visitor every time)
-   - **Reply To**: `basma.gm.hassan@gmail.com`
-   - Body referencing `{{message}}` only.
-4. Account → General → copy the **Public Key**, and note the **Service ID** and both
-   **Template ID**s.
-5. In this repo, Settings → Secrets and variables → Actions → Variables, set:
+| Variable              | Value                                                        |
+| ---------------------- | ------------------------------------------------------------ |
+| `CONTACT_MAILER_URL`   | `https://<your-toolkit-mailer-deploy>.vercel.app/api/send-contact-message` |
+| `TOOLKIT_MAILER_URL`   | `https://<your-toolkit-mailer-deploy>.vercel.app/api/send-toolkit-doc`     |
+| `TOOLKIT_MAILER_KEY`   | the shared secret from `toolkit-mailer`'s `TOOLKIT_MAILER_KEY` env var    |
 
-| Variable                       | Value                                |
-| -------------------------------- | ------------------------------------- |
-| `EMAILJS_SERVICE_ID`             | the Service ID                        |
-| `EMAILJS_TEMPLATE_ID`            | the owner notification Template ID    |
-| `EMAILJS_TEMPLATE_ID_CONFIRM`    | the visitor confirmation Template ID  |
-| `EMAILJS_PUBLIC_KEY`             | the Public Key                        |
-
-None of these are secret in the sense of needing to stay hidden — they end up in the
-site's public JS bundle either way, the same as any client-side EmailJS integration. In
-EmailJS's dashboard (Account → Security), restrict the Public Key to this site's own
-domains (`basma94.github.io`, and `basmamahmoud.com` once that's live) so the key can't be
-used to send from somewhere else. EmailJS's free tier also caps monthly sends across both
-templates combined — Account → General shows the current limit. Re-run the deploy
-workflow (or push to `main`) after setting the variables.
+None of these are secret in the sense of needing to stay hidden — the URLs and shared
+key end up in the site's public JS bundle either way, the same as any client-side mailer
+integration. The actual Resend API key lives only on the `toolkit-mailer` deployment,
+never here. Re-run the deploy workflow (or push to `main`) after setting the variables.
 
 ## Content and honesty rules
 
