@@ -20,23 +20,21 @@ type ModalState = { mode: ModalMode; cat: number; doc: number };
  * since GitHub Pages serves these with permissive CORS headers.
  */
 function downloadFile(url: string) {
-  fetch(url)
-    .then((res) => res.blob())
-    .then((blob) => {
-      const blobUrl = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.download = url.split("/").pop() || "download";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(blobUrl);
-    })
-    .catch(() => {
-      // Fall back to a plain navigation if the fetch fails for any reason
-      // (e.g. offline) — still gets the visitor to the file.
-      window.open(url, "_blank");
-    });
+  // A plain same-origin link with `download` — the file always lives on
+  // this same site in production, so there's no need for the fetch+blob
+  // dance that a cross-origin case would require (that only ever came up
+  // in local dev, where this URL points at the production origin instead
+  // of localhost). Safari's built-in PDF viewer can still open a PDF in a
+  // new tab instead of saving it straight to disk regardless of `download`
+  // — that's Safari's own long-standing behavior for PDFs everywhere, not
+  // something fixable from the page; the visitor can still save it from
+  // Safari's viewer toolbar.
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = url.split("/").pop() || "download";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 }
 
 export function Toolkit() {
