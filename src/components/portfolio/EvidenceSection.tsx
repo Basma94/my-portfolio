@@ -15,8 +15,8 @@ export function EvidenceSection() {
         <p className="section-lead">Products are where strategy becomes tangible.</p>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 24, marginTop: 44 }}>
-          {DEMOS.map((d) => (
-            <DemoCard key={d.name} demo={d} />
+          {DEMOS.map((d, i) => (
+            <DemoCard key={d.name} demo={d} imageFirst={i % 2 === 0} />
           ))}
         </div>
 
@@ -48,27 +48,17 @@ export function EvidenceSection() {
 }
 
 /**
- * All four cards share one structure: same two-column split, same three fields,
- * same single CTA, same light stage panel, and a shared 520px minimum height so
- * they line up regardless of copy length.
+ * All four cards share one structure — text column, snapshot column — but
+ * the snapshot is the lead visual, not a supporting thumbnail: it takes the
+ * wider share of the row (see .demo-card in globals.css) and alternates
+ * sides per card (imageFirst) so the eye lands on a different product shot
+ * first each time, rather than always the same slot. A shared fixed height
+ * (also in globals.css) keeps all four lined up regardless of copy length.
  */
-function DemoCard({ demo: d }: { demo: Demo }) {
-  return (
-    <article
-      className="demo-card"
-      style={{
-        background: "#fff",
-        border: "1px solid var(--border-subtle)",
-        borderRadius: 28,
-        boxShadow: "0 10px 34px rgba(18,18,58,.07)",
-        overflow: "hidden",
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit,minmax(330px,1fr))",
-        alignItems: "stretch",
-        minHeight: 520,
-      }}
-    >
+function DemoCard({ demo: d, imageFirst }: { demo: Demo; imageFirst: boolean }) {
+  const textColumn = (
       <div
+        key="text"
         style={{
           padding: "clamp(24px,3vw,36px)",
           display: "flex",
@@ -180,15 +170,17 @@ function DemoCard({ demo: d }: { demo: Demo }) {
           </a>
         </div>
       </div>
-
+  );
+  const imageColumn = (
       <div
+        key="image"
         style={{
           background: "var(--mist-100)",
-          borderLeft: "1px solid var(--border-subtle)",
-          padding: "clamp(18px,2.4vw,28px)",
+          padding: "clamp(20px,2.8vw,32px)",
           display: "flex",
           flexDirection: "column",
-          gap: 12,
+          justifyContent: "center",
+          gap: 14,
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -202,11 +194,11 @@ function DemoCard({ demo: d }: { demo: Demo }) {
             position: "relative",
             width: "100%",
             aspectRatio: "16 / 10",
-            borderRadius: 14,
+            borderRadius: 16,
             overflow: "hidden",
             background: d.tint,
             border: "1px solid var(--border-subtle)",
-            boxShadow: "0 12px 30px rgba(18,18,58,.12)",
+            boxShadow: `0 30px 60px -20px ${d.tone}4D, 0 16px 36px rgba(18,18,58,.14)`,
           }}
         >
           {/* Static snapshot, not a live embed — see the Demo type's comment
@@ -242,6 +234,24 @@ function DemoCard({ demo: d }: { demo: Demo }) {
           {d.note}
         </p>
       </div>
+  );
+
+  return (
+    <article
+      className={`demo-card ${imageFirst ? "demo-card--image-first" : "demo-card--image-last"}`}
+      style={{
+        background: "#fff",
+        border: "1px solid var(--border-subtle)",
+        borderRadius: 28,
+        boxShadow: "0 10px 34px rgba(18,18,58,.07)",
+        overflow: "hidden",
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit,minmax(330px,1fr))",
+        alignItems: "stretch",
+        minHeight: 520,
+      }}
+    >
+      {imageFirst ? [imageColumn, textColumn] : [textColumn, imageColumn]}
     </article>
   );
 }

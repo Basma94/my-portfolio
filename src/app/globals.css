@@ -343,14 +343,22 @@ input[type="range"] {
 
 /* The Evidence section's demo cards: two grid columns (text, snapshot) at
    >=700px — wide enough for both 330px minmax columns to sit side by side —
-   below that they stack, where a forced height risks clipping stacked
-   content, so only the desktop/tablet layout gets a fixed height. Without
-   this, cards vary in height with how much copy each one has (previously
-   also with the snapshot's own aspect ratio, before every card moved to a
-   shared 16:10 frame). */
+   below that they stack, where a forced height/column split risks clipping
+   or squeezing stacked content, so only the desktop/tablet layout gets a
+   fixed height and an asymmetric split. Without the height, cards vary with
+   how much copy each one has; the wider snapshot column (whichever side it
+   lands on — the two --image-first/--image-last variants track that) is
+   what makes the product shot the visual lead instead of a same-size
+   thumbnail next to the text. */
 @media (min-width: 700px) {
   .demo-card {
     height: 920px;
+  }
+  .demo-card--image-first {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+  .demo-card--image-last {
+    grid-template-columns: 0.85fr 1.15fr;
   }
 }
 
