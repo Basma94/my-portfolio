@@ -147,7 +147,7 @@ export const CATEGORIES: ToolkitCategory[] = [
       },
       {
         name: "Business case",
-        kind: "Document",
+        kind: "Deck",
         icon: "trending-up",
         tint: "#EEF0FF",
         ink: "#4F46E5",
