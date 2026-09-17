@@ -7,7 +7,7 @@ import { toolkitFileUrl } from "@/data/toolkitFiles";
 import { T } from "@/lib/palette";
 import { events } from "@/lib/analytics";
 import { isValidEmail } from "@/lib/email";
-import { notifyToolkitRequest, sendToolkitAttachment } from "@/lib/siteMailer";
+import { sendToolkitAttachment } from "@/lib/siteMailer";
 import { toolkitDocSlug } from "@/lib/toolkitSlug";
 
 type ModalMode = "view" | "form" | "sent" | "unavailable";
@@ -70,13 +70,10 @@ export function Toolkit() {
 
     downloadFile(fileUrl);
 
-    // Both best-effort — the download already happened above, so neither
-    // is allowed to block or fail the visitor-facing flow: a lead
-    // notification to the owner, and a real emailed copy to the visitor.
-    const trimmedEmail = email.trim();
-    notifyToolkitRequest({ email: trimmedEmail, docName: doc.name }).catch(() => {});
+    // Best-effort — the download already happened above, so a failure here
+    // shouldn't surface as an error to the visitor.
     sendToolkitAttachment({
-      email: trimmedEmail,
+      email: email.trim(),
       docSlug: toolkitDocSlug(doc.name),
       docName: doc.name,
       contents: doc.contents,

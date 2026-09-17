@@ -177,18 +177,17 @@ Gmail-connected EmailJS service, two templates:
      result is what the widget's UI reports success or failure on.
    - **A confirmation to the visitor**, best-effort (a failure here doesn't fail the
      submission), letting them know the message arrived and a reply is coming.
-2. **The `/toolkit` page's "Download this template" form** does three things at once:
-   the file downloads directly in the visitor's browser (`Toolkit.tsx` triggers it with
-   a synthetic `<a download>` click, same-tab and synchronous so browsers don't treat it
-   as a blocked pop-up); the owner notification template fires in the background to log
-   the lead — visitor's email plus which doc they wanted — for `basma.gm.hassan@gmail.com`
-   to build a list from; and a **real PDF attachment** is emailed to the visitor by a
-   separate small serverless function (`toolkit-mailer/`, deployed on its own to Vercel),
+2. **The `/toolkit` page's "Download this template" form** does two things at once: the
+   file downloads directly in the visitor's browser (`Toolkit.tsx` triggers it with a
+   synthetic `<a download>` click, same-tab and synchronous so browsers don't treat it as
+   a blocked pop-up), and a **real PDF attachment** is separately emailed to the visitor
+   by a small serverless function (`toolkit-mailer/`, deployed on its own to Vercel),
    since EmailJS's free plan can't attach files at all. See `toolkit-mailer/README.md`
-   for that one-time setup (a free Resend account plus a Vercel deploy). All three are
-   independent and best-effort against each other — a visitor always gets the file at
-   least via the instant download even if the email side is misconfigured or down. Every
-   doc shows "coming soon" in the UI until it has a real file registered in
+   for that one-time setup (a free Resend account plus a Vercel deploy) — including the
+   actual branded email template it sends, adapted per document. Both are independent and
+   best-effort against each other — a visitor always gets the file at least via the
+   instant download even if the email side is misconfigured or down. Every doc shows
+   "coming soon" in the UI until it has a real file registered in
    `src/data/toolkitFiles.ts` (and mirrored in `toolkit-mailer/api/send-toolkit-doc.js`).
 
 One-time setup, all in the EmailJS dashboard:
@@ -201,8 +200,7 @@ One-time setup, all in the EmailJS dashboard:
    - **To Email**: `basma.gm.hassan@gmail.com`
    - **Reply To**: `{{from_email}}`
    - Body referencing `{{from_email}}` and `{{message}}` — names must match exactly,
-     since `siteMailer.ts` sends them as `template_params`. (Toolkit-doc leads reuse this
-     same template, with `message` set to `"Requested the toolkit template: <doc name>"`.)
+     since `siteMailer.ts` sends them as `template_params`.
 3. Create a **visitor confirmation template** with:
    - **To Email**: `{{to_email}}` (literally that — it's resolved per-send from
      `template_params.to_email`, since the recipient is a different visitor every time)
