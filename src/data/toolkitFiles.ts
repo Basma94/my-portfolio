@@ -13,6 +13,12 @@ export const TOOLKIT_FILES: Record<string, string> = {
   "journey-map-with-pain-quantification": "journey-map-with-pain-quantification.pdf",
   "market-and-competitive-read": "market-and-competitive-read.pdf",
   "ai-use-case-canvas": "ai-use-case-canvas.pdf",
+  "product-charter": "product-charter.pdf",
+  "product-vision": "product-vision.pdf",
+  "product-strategy": "product-strategy.pdf",
+  "strategic-alignment-canvas": "strategic-alignment-canvas.pdf",
+  "product-okr-framework": "product-okr-framework.pdf",
+  "value-proposition-canvas": "value-proposition-canvas.pdf",
 };
 
 export function toolkitFileUrl(docName: string): string | null {
